@@ -1,134 +1,182 @@
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+
+import '../../ui/main.html';
+import '../../ui/layouts/MainLayout.html';
+import '../../ui/layouts/GeneralInfoLayout.html';
+import '../../ui/layouts/FundingLayout.html';
+import '../../ui/layouts/CosponsorshipLayout.html';
+import '../../ui/layouts/LibraryLayout.html';
+import '../../ui/layouts/FCULayout.html';
+import '../../ui/layouts/FCUResultsLayout.html';
+import '../../ui/layouts/JCCCLayout.html';
+import '../../ui/layouts/ConstitutionLayout.html';
+import '../../ui/layouts/JCCCApplyLayout.html';
+import '../../ui/layouts/JCCCResultsLayout.html';
+import '../../ui/layouts/JCCCAdminLayout.html';
+import '../../ui/layouts/CIFLayout.html';
+import '../../ui/layouts/CIFApplyLayout.html';
+import '../../ui/layouts/CIFResultsLayout.html';
+import '../../ui/layouts/PGLayout.html';
+import '../../ui/layouts/PGPastLayout.html';
+import '../../ui/layouts/PGCurrentLayout.html';
+import '../../ui/layouts/PGSmallLayout.html';
+import '../../ui/layouts/PGLargeLayout.html';
+import '../../ui/layouts/PGHubLayout.html';
+import '../../ui/layouts/PGAdminLayout.html';
+import '../../ui/layouts/LoginLayout.html';
+
 FlowRouter.route('/', {
-    name: 'home',
+    name: 'main',
     action() {
-        BlazeLayout.render('HomeLayout');
-    }
-});
-FlowRouter.route('/funding-resources', {
-    name: 'funding-resources',
-    action() {
-        BlazeLayout.render('FundingLayout');
-    }
-});
-FlowRouter.route('/funding-resources/cosponsorship', {
-    name: 'cosponsorship',
-    action() {
-        BlazeLayout.render('CosponsorshipLayout');
-    }
-});
-FlowRouter.route('/funding-resources/library', {
-    name: 'resource-library',
-    action() {
-        BlazeLayout.render('LibraryLayout');
-    }
-});
-FlowRouter.route('/fcu', {
-    name: 'fcu',
-    action() {
-        BlazeLayout.render('FCULayout');
-    }
-});
-FlowRouter.route('/fcu/results', {
-    name: 'fcu-results',
-    action() {
-        BlazeLayout.render('FCUResultsLayout');
-    }
-});
-FlowRouter.route('/jccc', {
-    name: 'jccc',
-    action() {
-        BlazeLayout.render('JCCCLayout');
-    }
-});
-FlowRouter.route('/jccc/apply', {
-    name: 'jccc-apply',
-    action() {
-        BlazeLayout.render('JCCCApplyLayout');
-    }
-});
-FlowRouter.route('/jccc/constitution', {
-    name: 'jccc-constitution',
-    action() {
-        BlazeLayout.render('ConstitutionLayout');
-    }
-});
-FlowRouter.route('/jccc/results', {
-    name: 'jccc-results',
-    action() {
-        BlazeLayout.render('JCCCResultsLayout');
+        BlazeLayout.render('MainLayout', {body: 'GeneralInfoLayout'});
     }
 });
 
-FlowRouter.route('/jccc/admin-console', {
+var fresources = FlowRouter.group({
+    prefix: '/funding-resources'
+});
+fresources.route('/', {
+    name: 'funding-resources',
+    action() {
+        BlazeLayout.render('MainLayout', {body: 'FundingLayout'});
+    }
+});
+fresources.route('/cosponsorship', {
+    name: 'cosponsorship',
+    action() {
+        BlazeLayout.render('MainLayout', {body: 'CosponsorshipLayout'});
+    }
+});
+fresources.route('/library', {
+    name: 'resource-library',
+    action() {
+        BlazeLayout.render('MainLayout', {body: 'LibraryLayout'});
+    }
+});
+
+var fcu = FlowRouter.group({
+    prefix: '/fcu'
+});
+fcu.route('/', {
+    name: 'fcu',
+    action() {
+        BlazeLayout.render('MainLayout', {body: 'FCULayout'});
+    }
+});
+fcu.route('/results', {
+    name: 'fcu-results',
+    action() {
+        BlazeLayout.render('MainLayout', {body: 'FCUResultsLayout'});
+    }
+});
+
+var jccc = FlowRouter.group({
+    prefix: '/jccc'
+});
+jccc.route('/', {
+    name: 'jccc',
+    action() {
+        BlazeLayout.render('MainLayout', {body: 'JCCCLayout'});
+    }
+});
+jccc.route('/apply', {
+    name: 'jccc-apply',
+    action() {
+        BlazeLayout.render('MainLayout', {body: 'JCCCApplyLayout'});
+    }
+});
+jccc.route('/constitution', {
+    name: 'jccc-constitution',
+    action() {
+        BlazeLayout.render('MainLayout', {body: 'ConstitutionLayout'});
+    }
+});
+jccc.route('/results', {
+    name: 'jccc-results',
+    action() {
+        BlazeLayout.render('MainLayout', {body: 'JCCCResultsLayout'});
+    }
+});
+jccc.route('/admin-console', {
     name: 'jccc-admin',
     action() {
-        BlazeLayout.render('JCCCAdminLayout');
+        BlazeLayout.render('MainLayout', {body: 'JCCCAdminLayout'});
     }
 });
-FlowRouter.route('/cif', {
+
+var cif = FlowRouter.group({
+    prefix: '/cif'
+});
+cif.route('/', {
     name: 'cif',
     action() {
-        BlazeLayout.render('CIFLayout');
+        BlazeLayout.render('MainLayout', {body: 'CIFLayout'});
     }
 });
-FlowRouter.route('/cif/apply', {
+cif.route('/apply', {
     name: 'cif-apply',
     action() {
-        BlazeLayout.render('CIFApplyLayout');
+        BlazeLayout.render('MainLayout', {body: 'CIFApplyLayout'});
     }
 });
-FlowRouter.route('/cif/results', {
+cif.route('/results', {
     name: 'cif-results',
     action() {
-        BlazeLayout.render('CIFResultsLayout');
+        BlazeLayout.render('MainLayout', {body: 'CIFResultsLayout'});
     }
 });
-FlowRouter.route('/project-grant', {
+
+
+var projectgrant = FlowRouter.group({
+    prefix: '/project-grant'
+});
+projectgrant.route('/', {
     name: 'project-grant',
     action() {
-        BlazeLayout.render('PGLayout');
+        BlazeLayout.render('MainLayout', {body: 'PGLayout'});
     }
 });
-FlowRouter.route('/project-grant/small-application', {
+projectgrant.route('/small-application', {
     name: 'pg-small',
     action() {
-        BlazeLayout.render('PGSmallLayout');
+        BlazeLayout.render('MainLayout', {body: 'PGSmallLayout'});
     }
 });
-FlowRouter.route('/project-grant/large-application', {
+projectgrant.route('/large-application', {
     name: 'pg-large',
     action() {
-        BlazeLayout.render('PGLargeLayout');
+        BlazeLayout.render('MainLayout', {body: 'PGLargeLayout'});
     }
 });
-FlowRouter.route('/project-grant/past', {
+projectgrant.route('/past', {
     name: 'pg-past-projects',
     action() {
-        BlazeLayout.render('PGPastLayout');
+        BlazeLayout.render('MainLayout', {body: 'PGPastLayout'});
     }
 });
-FlowRouter.route('/project-grant/current', {
+projectgrant.route('/current', {
     name: 'pg-current-projects',
     action() {
-        BlazeLayout.render('PGCurrentLayout');
+        BlazeLayout.render('MainLayout', {body: 'PGCurrentLayout'});
     }
 });
-FlowRouter.route('/project-grant/hub', {
+projectgrant.route('/hub', {
     name: 'pg-hub',
     action() {
-        BlazeLayout.render('PGHubLayout');
+        BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
     }
 });
-FlowRouter.route('/project-grant/admin-console', {
+projectgrant.route('/admin-console', {
     name: 'pg-admin',
     action() {
-        BlazeLayout.render('PGAdminLayout');
+        BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
     }
 });
 FlowRouter.route('/login', {
     name: 'login',
     action() {
-        BlazeLayout.render('LoginLayout');
+        BlazeLayout.render('MainLayout', {body: 'LoginLayout'});
     }
 });
 
