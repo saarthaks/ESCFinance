@@ -2,44 +2,51 @@
     <h2 class="ui dividing header">
         ESC Cosponsorships
     </h2>
-    <div class="ui container segment">
-    <form class="ui form" id="request-form">
-        <div class="field">
-            <label>Applicant Name</label>
-            <input type="text" name="applicantName" placeholder="Enter your name">
+    <div class="ui container">
+        <div class="ui attached message">
+            <div class="header">
+                Request an ESC Cosponsorship!
+            </div>
+            <p>{{messageText}}</p>
         </div>
-        <div class="field">
-            <label>Applicant Email</label>
-            <input type="text" name="applicantEmail" placeholder="Enter your email">
-        </div>
-        <div class="field">
-            <label>Student Group</label>
-            <input type="text" name="studentGroup" placeholder="Enter your student group">
-        </div>
-        <div class="field">
-            <label>Desired ESC Cosponsor(s)</label>
-            <div class="ui multiple selection scrolling dropdown" id="recip-drop">
-                <div class="default text">Choose at least 1</div>
-                <i class="dropdown icon"></i>
-                <input type="hidden" name="escRecipient">
-                <div class="menu">
-                    <div class="item" data-value="2020">ESC 2020</div>
-                    <div class="item" data-value="2019">ESC 2019</div>
-                    <div class="item" data-value="2018">ESC 2018</div>
-                    <div class="item" data-value="Finance">ESC Finance</div>
-                    <div class="item" data-value="Tech Rep">ESC Tech Rep</div>
-                    <div class="item" data-value="Diversity Rep">ESC Diversity/Incl. Rep</div>
+        <form class="ui form attached fluid segment" id="request-form">
+            <div class="field">
+                <label>Applicant Name</label>
+                <input type="text" name="applicantName" placeholder="Enter your name">
+            </div>
+            <div class="field">
+                <label>Applicant Email</label>
+                <input type="text" name="applicantEmail" placeholder="Enter your email">
+            </div>
+            <div class="field">
+                <label>Student Group</label>
+                <input type="text" name="studentGroup" placeholder="Enter your student group">
+            </div>
+            <div class="field">
+                <label>Desired ESC Cosponsor(s)</label>
+                <div class="ui multiple selection scrolling dropdown" id="recip-drop">
+                    <div class="default text">Choose at least 1</div>
+                    <i class="dropdown icon"></i>
+                    <input type="hidden" name="escRecipient">
+                    <div class="menu">
+                        <div class="item" data-value="2020">ESC 2020</div>
+                        <div class="item" data-value="2019">ESC 2019</div>
+                        <div class="item" data-value="2018">ESC 2018</div>
+                        <div class="item" data-value="Finance">ESC Finance</div>
+                        <div class="item" data-value="Tech Rep">ESC Tech Rep</div>
+                        <div class="item" data-value="Diversity Rep">ESC Diversity/Incl. Rep</div>
+                        <div class="item" data-value="E-Board">ESC E-Board</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="ui hidden divider"></div>
-        <div class="field">
-            <label>Tell us a bit about your request</label>
-            <textarea name="proposal" placeholder="How can we help you?" form="request-form"></textarea>
-        </div>
-        <div class="ui hidden divider"></div>
-        <div class="ui submit button">Submit Proposal</div>
-    </form>
+            <div class="ui hidden divider"></div>
+            <div class="field">
+                <label>Tell us a bit about your request</label>
+                <textarea name="proposal" placeholder="How can we help you?" form="request-form"></textarea>
+            </div>
+            <div class="ui hidden divider"></div>
+            <button type="submit" id="submit-request" class="ui submit button">Submit Proposal</button>
+        </form>
     </div>
 </template>
 
