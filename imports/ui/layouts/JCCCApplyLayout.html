@@ -72,28 +72,28 @@
                 <div class="field">
                     <label>% of Members in CC</label>
                     <div class="ui right labeled input">
-                        <input type="text" placeholder="25">
+                        <input type="text" name="ccPercentage"  placeholder="25">
                         <div class="ui basic label">%</div>
                     </div>
                 </div>
                 <div class="field">
                     <label>% of Members in SEAS</label>
                     <div class="ui right labeled input">
-                        <input type="text" placeholder="25">
+                        <input type="text" name="seasPercentage" placeholder="25">
                         <div class="ui basic label">%</div>
                     </div>
                 </div>
                 <div class="field">
                     <label>% of Members in GS</label>
                     <div class="ui right labeled input">
-                        <input type="text" placeholder="25">
+                        <input type="text" name="gsPercentage" placeholder="25">
                         <div class="ui basic label">%</div>
                     </div>
                 </div>
                 <div class="field">
                     <label>% of Members in BC</label>
                     <div class="ui right labeled input">
-                        <input type="text" placeholder="25">
+                        <input type="text" name="bcPercentage" placeholder="25">
                         <div class="ui basic label">%</div>
                     </div>
                 </div>
@@ -102,31 +102,31 @@
                 <label>Governing Board</label>
                 <div class="field">
                     <div class="ui radio checkbox">
-                        <input type="radio" name="gov-board">
+                        <input type="radio" name="govBoard" checked="checked">
                         <label>ABC</label>
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui radio checkbox">
-                        <input type="radio" name="gov-board">
+                        <input type="radio" name="govBoard">
                         <label>SGB</label>
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui radio checkbox">
-                        <input type="radio" name="gov-board">
+                        <input type="radio" name="govBoard">
                         <label>GBB</label>
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui radio checkbox">
-                        <input type="radio" name="gov-board">
+                        <input type="radio" name="govBoard">
                         <label>IGC</label>
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui radio checkbox">
-                        <input type="radio" name="gov-board">
+                        <input type="radio" name="govBoard">
                         <label>CSGB</label>
                     </div>
                 </div>
@@ -137,21 +137,21 @@
             </div>
             <div class="field">
                 <label>SGA Account Number (or N/A if not applicable)</label>
-                <input type="text" name="sga-number" placeholder="Account Number">
+                <input type="text" name="sgaNumber" placeholder="Account Number">
             </div>
             <div class="field">
                 <label>Columbia Account Number (or N/A if not applicable)</label>
-                <input type="text" name="columbia-number" placeholder="Account Number">
+                <input type="text" name="columbiaNumber" placeholder="Account Number">
             </div>
             <div class="field">
                 <label>Columbia Project Information (or N/A if not applicable)</label>
-                <input type="text" name="project-number" placeholder="Project Number">
+                <input type="text" name="projectNumber" placeholder="Project Number">
             </div>
             <h4 class="ui dividing header">Event Details</h4>
             <div class="field">
-                <label>Event Type</label>
+                <label>Request Type</label>
                 <div class="ui selection dropdown">
-                    <input type="hidden" name="eventType">
+                    <input type="hidden" name="requestType">
                     <div class="default text">Choose one</div>
                     <i class="dropdown icon"></i>
                     <div class="menu">
@@ -204,12 +204,12 @@
                 <p>As part of your application, you will need to submit an
                 Excel budget detailing your group's revenue streams and costs
                 throughout the year, in addition to a budget of the event for
-                which you are requesting JCCC funding. The excel template will
+                which you are requesting JCCC funding. The Excel template will
                 be emailed to you after you have submitted this application. In
                 addition, you will be responsible for presenting your funding
                 request at a JCCC meeting (held Sundays from 4 - 6 PM).</p>
             </div>
-            <div class="field">
+            <div class="required field">
                 <label>Statement of Acceptance</label>
                 <div class="ui checkbox">
                     <input type="checkbox" name="completeSubmission">
