@@ -1,6 +1,8 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
+import { JCCCRequests } from '../../api/jccc-requests.js';
+
 import './JCCCApplyLayout.html';
 
 const validationRules = {
@@ -72,6 +74,10 @@ const validationRules = {
         identifier: 'columbiaNumber',
         rules: [{ type: 'empty', prompt: "Please write N/A if not applicable" }]
     },
+    departmentNumber: {
+        identifier: 'departmentNumber',
+        rules: [{ type: 'empty', prompt: "Please write N/A if not applicable" }]
+    },
     projectNumber: {
         identifier: 'projectNumber',
         rules: [{ type: 'empty', prompt: "Please write N/A if not applicable" }]
@@ -116,6 +122,47 @@ const validationRules = {
         identifier: 'alternateFunding',
         rules: [{ type: 'empty', prompt: "Please include any other attempt's your club has made for fundraising" }]
     }
+};
+
+var parseResponse = function(data) {
+    const insertData = {
+        "submitted": new Date(),
+        "name": data.studentGroup,
+        "allocation": data.allocation,
+        "ccPercentage": data.ccPercentage,
+        "seasPercentage": data.seasPercentage,
+        "gsPercentage": data.gsPercentage,
+        "bcPercentage": data.bcPercentage,
+        "requestType": data.requestType,
+        "eventName": data.eventName,
+        "eventTime": data.eventTime,
+        "eventLocation": data.eventLocation,
+        "requestedAmount": data.requestedAmount,
+        "applicationStatus": "Pending",
+        "decisionDetails": "N/A",
+        //
+        // Private
+        //
+        "pocName": data.contactName,
+        "pocEmail": data.contactEmail,
+        "pocNumber": data.contactNumber,
+        "advisorName": data.advisorName,
+        "advisorEmail": data.advisorEmail,
+        "gbRepName": data.gbRepName,
+        "gbRepEmail": data.gbRepEmail,
+        "sgaNumber": data.sgaNumber,
+        "columbiaNumber": data.columbiaNumber,
+        "departmentNumber": data.departmentNumber,
+        "projectNumber": data.projectNumber,
+        "eventDescription": data.eventDescription,
+        "estAttendance": data.estAttendance,
+        "audienceDescription": data.audienceDescription,
+        "costBreakdown": data.costBreakdown,
+        "alternateFunding": data.alternateFunding,
+        "receiptSubmitted": false
+    };
+
+    return insertData;
 }
 
 var submitForm = function(template) {
@@ -123,8 +170,17 @@ var submitForm = function(template) {
 
     if( $('.ui.form').form('is valid') ) {
         const data = $('.ui.form').form('get values');
-        console.log(data);
-        $('.ui.form').form('clear');
+        const insertData = parseResponse(data);
+        try {
+            JCCCRequests.schema.validate(insertData); 
+            JCCCRequests.insert(insertData);
+            $('.ui.form').form('clear');
+        } catch (e) {
+            console.log(e);
+            // TODO:
+            // Modal should say there was an error and the applicant should
+            // contact XXX@XXX.XXX
+        }
     } else {
         $('.ui.form').form('validate rules');
     }
@@ -132,7 +188,7 @@ var submitForm = function(template) {
 
 Template.JCCCApplyLayout.events({
     'submit form': function(e, template) {
-        console.log('logging');
+        console.log(JCCCRequests.find({}).fetch());
         e.preventDefault();
         submitForm(template);
         return false;
