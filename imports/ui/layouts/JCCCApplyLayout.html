@@ -2,5 +2,229 @@
     <h2>
         Apply for JCCC
     </h2>
+    <div class="ui container">
+        <h1 class="ui attached message">
+            <div class="header">
+                Apply for JCCC funding!
+            </div>
+            <p>{{messageText}}</p>
+        </h1>
+        <form class="ui form attached fluid segment" id="jccc-apply-form">
+            <div class="field">
+                <label>Applicant Email Address</label>
+                <input type="text" name="applicantEmail" placeholder="Email">
+            </div>
+            <h4 class="ui dividing header">Group Information</h4>
+            <div class="ui message">
+                <p>If you are requesting funding for specific students(e.g. regristration costs, travel expenses, etc.), please make sure to list the percentage breakdowns for the undergraduate school that those specific students are in.</p>
+            </div>
+            <div class="field">
+                <label>Group Name</label>
+                <input type="text" name="studentGroup" placeholder="Student Group">
+            </div>
+            <div class="field">
+                <label>Club Email</label>
+                <input type="text" name="clubEmail" placeholder="Email">
+            </div>
+            <div class="three fields">
+                <div class="field">
+                    <label>Point of Contact Name</label>
+                    <input type="text" name="contactName" placeholder="John Doe">
+                </div>
+                <div class="field">
+                    <label>Point of Contact Email</label>
+                    <input type="text" name="contactEmail" placeholder="jdoe@gmail.com">
+                </div>
+                <div class="field">
+                    <label>Point of Contact Phone Number</label>
+                    <input type="text" name="contactNumber" placeholder="(123) 456-7890">
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Advisor Name</label>
+                    <input type="text" name="advisorName" placeholder="Name">
+                </div>
+                <div class="field">
+                    <label>Advisor Email</label>
+                    <input type="text" name="advisorEmail" placeholder="Email">
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Governing Board Rep Name</label>
+                    <input type="text" name="gbRepName" placeholder="Name">
+                </div>
+                <div class="field">
+                    <label>Governing Board Rep Email</label>
+                    <input type="text" name="gbRepEmail" placeholder="Email">
+                </div>
+            </div>
+            <div class="ui divider"></div>
+            <div class="field">
+                <label>Current year allocation</label>
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" name="allocation" placeholder="500.00">
+                </div>
+            </div>
+            <div class="four fields">
+                <div class="field">
+                    <label>% of Members in CC</label>
+                    <div class="ui right labeled input">
+                        <input type="text" name="ccPercentage"  placeholder="25">
+                        <div class="ui basic label">%</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>% of Members in SEAS</label>
+                    <div class="ui right labeled input">
+                        <input type="text" name="seasPercentage" placeholder="25">
+                        <div class="ui basic label">%</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>% of Members in GS</label>
+                    <div class="ui right labeled input">
+                        <input type="text" name="gsPercentage" placeholder="25">
+                        <div class="ui basic label">%</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>% of Members in BC</label>
+                    <div class="ui right labeled input">
+                        <input type="text" name="bcPercentage" placeholder="25">
+                        <div class="ui basic label">%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="grouped fields">
+                <label>Governing Board</label>
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="govBoard" checked="checked">
+                        <label>ABC</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="govBoard">
+                        <label>SGB</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="govBoard">
+                        <label>GBB</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="govBoard">
+                        <label>IGC</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="govBoard">
+                        <label>CSGB</label>
+                    </div>
+                </div>
+            </div>
+            <h4 class="ui dividing header">Group Account Numbers</h4>
+            <div class="ui message">
+                <p>Because we have to transfer all funds to your club or organization's account, please provide your account number, or else we will not be able to process the transfer.</p>
+            </div>
+            <div class="field">
+                <label>SGA Account Number (or N/A if not applicable)</label>
+                <input type="text" name="sgaNumber" placeholder="Account Number">
+            </div>
+            <div class="field">
+                <label>Columbia Account Number (or N/A if not applicable)</label>
+                <input type="text" name="columbiaNumber" placeholder="Account Number">
+            </div>
+            <div class="field">
+                <label>Columbia Department Number (or N/A if not applicable)</label>
+                <input type="text" name="departmentNumber" placeholder="Department Number">
+            </div>
+            <div class="field">
+                <label>Columbia Project Information (or N/A if not applicable)</label>
+                <input type="text" name="projectNumber" placeholder="Project Number">
+            </div>
+            <h4 class="ui dividing header">Event Details</h4>
+            <div class="field">
+                <label>Request Type</label>
+                <div class="ui selection dropdown">
+                    <input type="hidden" name="requestType">
+                    <div class="default text">Choose one</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item" data-value="New Event">New Event</div>
+                        <div class="item" data-value="Emergency Funding">Emergency Funding</div>
+                        <div class="item" data-value="Travel/Lodging Expenses">Travel/Lodging Expenses</div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>Event Name</label>
+                <input type="text" name="eventName" placeholder="Event Name">
+            </div>
+            <div class="field">
+                <label>Date & Time</label>
+                <input type="text" name="eventTime" placeholder="MM/DD/YR   ##:## AM/PM">
+            </div>
+            <div class="field">
+                <label>Location</label>
+                <input type="text" name="eventLocation" placeholder="Event Location">
+            </div>
+            <div class="field">
+                <label>Estimated Attendance</label>
+                <input type="text" name="estAttendance" placeholder="100">
+            </div>
+            <div class="field">
+                <label>Please briefly describe your event.</label>
+                <textarea name="eventDescription"></textarea>
+            </div>
+            <div class="field">
+                <label>Who is the target audience for this event? How will the wider Columbia community benefit from this event or be included in it?</label>
+                <textarea name="audienceDescription"></textarea>
+            </div>
+            <div class="field">
+                <label>What is the cost breakdown of this event?</label>
+                <textarea name="costBreakdown"></textarea>
+            </div>
+            <div class="field">
+                <label>How much are you requesting from JCCC?</label>
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" name="requestedAmount" placeholder="500.00">
+                </div>
+            </div>
+            <div class="field">
+                <label>How have you fundraised and how much money have you made towards this event? (Ex: Selling ad space, alumni donations, other cosponsorships)</label>
+                <textarea name="alternateFunding"></textarea>
+            </div>
+            <div class="ui message">
+                <p>As part of your application, you will need to submit an
+                Excel budget detailing your group's revenue streams and costs
+                throughout the year, in addition to a budget of the event for
+                which you are requesting JCCC funding. The Excel template will
+                be emailed to you after you have submitted this application. In
+                addition, you will be responsible for presenting your funding
+                request at a JCCC meeting (held Sundays from 4 - 6 PM).</p>
+            </div>
+            <div class="required field">
+                <label>Statement of Acceptance</label>
+                <div class="ui checkbox">
+                    <input type="checkbox" name="completeSubmission">
+                    <label>I have read, understand, and accept the above
+                        statement. I will look for an email regarding next
+                        steps for my JCCC application.</label>
+                </div>
+            </div>
+            <div class="ui hidden divider"></div>
+            <button type="submit" id="submit-jccc" class="ui submit button">Submit Application</button>
+        </form>
+    </div>      
 </template>
 

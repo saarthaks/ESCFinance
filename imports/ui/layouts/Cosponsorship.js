@@ -1,6 +1,8 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var'
 
+import './CosponsorshipLayout.html';
+
 const validationRules = {
     applicantName: {
         identifier: 'applicantName',
