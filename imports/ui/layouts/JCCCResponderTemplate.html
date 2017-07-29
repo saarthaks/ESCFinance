@@ -1,3 +1,17 @@
 <template name="JCCCResponder">
-    <p>Responder content</p>
+    <div class="ui header">Application Responder</div>
+    <div class="ui fluid selection dropdown" id="select-request">
+        <input type="hidden" name="respond-request">
+        <div class="default text">Select one</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            {{#each pendingRequests}}
+                <div class="item" id="{{_id}}" name="pending-request">{{name}} -- {{eventName}}</div>
+            {{/each}}
+        </div>
+    </div>
+    {{#if isResponding}}
+        {{> Template.dynamic template="JCCCDecisionForm" data=appInView }}
+    {{/if}}
 </template>
+
