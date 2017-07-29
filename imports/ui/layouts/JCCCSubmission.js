@@ -45,11 +45,14 @@ Template.JCCCSubmissionTemplate.rendered = function() {
     const appStatus = data.applicationStatus;
     $(statusId).addClass('right aligned');
 
-    if (appStatus.toLowerCase().includes("accepted")) {
-        $(statusId).addClass('positive');
-    } else if (appStatus.toLowerCase().includes("rejected")) {
-        $(statusId).addClass('negative');
-    }
+    //TODO: Doesn't work
+    //if (appStatus.toLowerCase().includes("accept")) {
+    //    console.log(appStatus.toLowerCase());
+    //    $(statusId).addClass('positive');
+    //} else if (appStatus.toLowerCase().includes("reject")) {
+    //    console.log('reject' + appStatus.toLowerCase());
+    //    $(statusId).addClass('negative');
+    //}
 
     this.$('i.info.circle.icon').popup();
 };
