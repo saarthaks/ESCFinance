@@ -1,0 +1,65 @@
+<template name="JCCCViewer">
+    <div class="ui header">Application Viewer</div>
+    <div class="ui fluid selection dropdown">
+        <input type="hidden" name="request">
+        <div class="default text">Select one</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            {{#each requests}}
+                <div class="item" id="{{_id}}" name="request">{{name}} -- {{eventName}}</div>
+            {{/each}}
+        </div>
+    </div>
+    {{#if isViewing}}
+        {{#with requestInView}}
+            <div class="ui segment">
+                <h4 class="ui dividing header">Summary</h4>
+                <b>Request Type: </b>{{requestType}}
+                <br>
+                <b>Requested Amount: </b>{{requestedAmount}}
+                <br>
+                <b>Percentage Breakdown (CC/SEAS/GS/BC): </b>{{ccPercentage}}%/{{seasPercentage}}%/{{gsPercentage}}%/{{bcPercentage}}%
+                <br>
+                <b>Application Status: </b>{{applicationStatus}}
+                <br>
+                <b>Decision Details: </b>{{decisionDetails}}
+                <br>
+                <b>Receipt Submitted: </b>{{strReceiptSubmitted}}
+                <h4 class="ui dividing header">Request Details</h4>
+                <b>Date & Time: </b>{{eventTime}}
+                <br>
+                <b>Location: </b>{{eventLocation}}
+                <br>
+                <b>Estimated Attendance: </b>{{estAttendance}}
+                <br>
+                <b>Brief description of event: </b>{{eventDescription}}
+                <br>
+                <b>Expected audience: </b>{{audienceDescription}}
+                <br>
+                <b>Alternate funding: </b>{{alternateFunding}}
+                <br>
+                <b>Cost breakdown: </b>{{costBreakdown}}
+                <h4 class="ui dividing header">Club Details</h4>
+                <b>Governing Board: TOFIX</b>
+                <br>
+                <b>Allocation: </b>{{allocation}}
+                <br>
+                <b>Point of Contact: </b>{{pocName}}, {{pocEmail}}, {{pocNumber}}
+                <br>
+                <b>Club Email: TOFIX</b>
+                <br>
+                <b>Governing Board Rep: </b>{{gbRepName}}, {{gbRepEmail}}
+                <br>
+                <b>Advisor: </b>{{advisorName}}, {{advisorEmail}}
+                <br>
+                <b>SGA Account Number: </b>{{sgaNumber}}
+                <br>
+                <b>Columbia Account Number: </b>{{columbiaNumber}}
+                <br>
+                <b>Columbia Department Number: </b>{{departmentNumber}}
+                <br>
+                <b>Columbia Project Information: </b>{{projectNumber}}
+            </div>
+        {{/with}}
+    {{/if}}
+</template>

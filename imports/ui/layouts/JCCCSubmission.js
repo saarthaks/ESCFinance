@@ -25,6 +25,10 @@ Template.JCCCSubmissionTemplate.helpers({
         const data = Template.instance().data;
         return data.eventName;
     },
+    requestType: function() {
+        const data = Template.instance().data;
+        return data.requestType;
+    },
     applicationStatus: function() {
         const data = Template.instance().data;
         return data.applicationStatus;
@@ -49,3 +53,4 @@ Template.JCCCSubmissionTemplate.rendered = function() {
 
     this.$('i.info.circle.icon').popup();
 };
+
