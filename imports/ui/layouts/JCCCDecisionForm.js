@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-import { JCCCRequests } from '../../api/jccc-requests';
-import { JCCCFinances } from '../../api/jccc-finances';
+import { JCCCRequests } from '../../api/jccc-requests.js';
+import { JCCCSettingsDB } from '../../api/jccc-settings.js';
+import { JCCCFinances } from '../../api/jccc-finances.js';
 
 import './JCCCDecisionFormTemplate.html';
 
@@ -55,6 +56,15 @@ var decideApplication = function(data) {
     Meteor.call('jccc-requests.update', Template.instance().data._id, updateData);
 }
 
+var emailDecision = function(data) {
+    const to = Template.instance().data.pocEmail;
+    const from = JCCCSettingsDB.findOne().pocEmail;
+    const subject = "JCCC Notification: " + data.responseAction;
+    const body = data.emailBody;
+
+    Meteor.call('sendEmail', to, from, subject, body);
+}
+
 var insertTransaction = function(data) {
     const financeInsert = {
         "applicationID": Template.instance().data._id,
@@ -85,6 +95,7 @@ var submitForm = function(template) {
         const data = $('.ui.form').form('get values');
         try { 
             decideApplication(data);
+            emailDecision(data);
             if (Template.instance().isAccepting.get()) {
                 try {
                     insertTransaction(data);
