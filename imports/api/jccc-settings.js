@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
@@ -21,3 +22,13 @@ JCCCSettingsDB.schema = new SimpleSchema({
 JCCCSettingsDB.attachSchema(JCCCSettingsDB.schema);
 
 export { JCCCSettingsDB };
+
+Meteor.methods({
+    'jccc-settings.insert'(formData) {
+        JCCCSettingsDB.schema.validate(formData);
+        JCCCSettingsDB.insert(formData);
+    },
+    'jccc-settings.update'(settingId, formData) {
+        JCCCRequests.update({ _id: settingId }, { $set: formData });
+    }
+});

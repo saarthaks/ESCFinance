@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
 import { JCCCRequests } from '../../api/jccc-requests.js';
@@ -51,8 +52,10 @@ var submitForm = function(elem) {
             }
 
             try {
-                JCCCRequests.update({ _id: Template.instance().data._id }, { $set: { receiptSubmitted: true }});
-                elem.form('clear');
+                const receiptUpdate = {
+                    "receiptSubmitted": true
+                };
+                Meteor.call('jccc-requests.update', Template.instance().data._id, receiptUpdate);
             } catch (e) {
                 console.log(e);
                 //TODO:
@@ -60,7 +63,8 @@ var submitForm = function(elem) {
             }
         }
         try {
-            JCCCFinances.update({ applicationID: Template.instance().data._id }, { $set: updateData });
+            Meteor.call('jccc-finances.updateByAppID', Template.instance().data._id, updateData);
+            elem.form('clear');
         } catch (e) {
             console.log(e);
             //TODO:

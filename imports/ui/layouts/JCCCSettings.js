@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
 import { JCCCSettingsDB } from '../../api/jccc-settings.js';
@@ -43,12 +44,14 @@ var updatePoc = function(template) {
                 "emailTag": data.emailTag,
                 "formStatus": true
             }
-            JCCCSettingsDB.insert(insertData);
+            Meteor.call('jccc-settings.insert', insertData);
         } else {
             const entryId = JCCCSettingsDB.findOne()._id;
-            JCCCSettingsDB.update({ _id : entryId }, {
-                $set: { pocEmail: data.pocEmail,
-                        emailTag: data.emailTag }});
+            const updateData = {
+                "pocEmail": data.pocEmail,
+                "emailTag": data.emailTag
+            };
+            Meteor.call('jccc-settings.update', entryId, updateData);
         }
         formElem.form('clear');
     } else {
@@ -59,8 +62,10 @@ var updatePoc = function(template) {
 var updateFormStatus = function(value) {
     Template.instance().formIsLive.set(value);
     const entryId = JCCCSettingsDB.findOne()._id;
-    JCCCSettingsDB.update({ _id : entryId }, {
-        $set: { formStatus: value }});
+    const updateData = {
+        "formStatus": value 
+    };
+    Meteor.call('jccc-settings.update', entryId, updateData);
     console.log(JCCCSettingsDB.findOne().formStatus);
 }
 
@@ -84,7 +89,7 @@ var initFinances = function(template) {
             "bcTransaction": bcAmt,
             "receiptAmount": totalAmt
         };
-        JCCCFinances.insert(insertData);
+        Meteor.call('jccc-finances.insert', insertData);
         formElem.form('clear');
     } else {
         formElem.form('validate rules');

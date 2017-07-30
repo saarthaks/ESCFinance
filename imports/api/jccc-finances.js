@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
@@ -43,3 +44,17 @@ JCCCFinances.schema = new SimpleSchema({
 JCCCFinances.attachSchema(JCCCFinances.schema);
 
 export { JCCCFinances };
+
+Meteor.methods({
+    'jccc-finances.insert'(formData) {
+        JCCCFinances.schema.validate(formData);
+        JCCCFinances.insert(formData);
+    },
+    'jccc-finances.updateByID'(transactionId, formData) {
+        JCCCFinances.update({ _id: transactionId }, { $set: formData });
+    },
+    'jccc-finances.updateByAppID'(requestId, formData) {
+        JCCCFinances.update({ applicationID: requestId }, { $set: formData });
+    }
+});
+

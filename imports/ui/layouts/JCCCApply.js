@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
@@ -128,11 +129,13 @@ var parseResponse = function(data) {
     const insertData = {
         "submitted": new Date(),
         "name": data.studentGroup,
+        "clubEmail": data.clubEmail,
         "allocation": data.allocation,
         "ccPercentage": data.ccPercentage,
         "seasPercentage": data.seasPercentage,
         "gsPercentage": data.gsPercentage,
         "bcPercentage": data.bcPercentage,
+        "governingBoard": data.govBoard,
         "requestType": data.requestType,
         "eventName": data.eventName,
         "eventTime": data.eventTime,
@@ -172,8 +175,7 @@ var submitForm = function(template) {
         const data = $('.ui.form').form('get values');
         const insertData = parseResponse(data);
         try {
-            JCCCRequests.schema.validate(insertData); 
-            JCCCRequests.insert(insertData);
+            Meteor.call('jccc-requests.insert', insertData);
             $('.ui.form').form('clear');
         } catch (e) {
             console.log(e);

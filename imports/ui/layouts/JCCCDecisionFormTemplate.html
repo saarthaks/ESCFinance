@@ -29,6 +29,7 @@
                     <input type="text" name="acceptedAmount" placeholder="{{requestedAmount}}">
                 </div>
             </div>
+            {{#if notConditional}}
             <div class="four fields">
                 <div class="field">
                     <label>CC Funding</label>
@@ -59,6 +60,7 @@
                     </div>
                 </div>
             </div>
+            {{/if}}
         {{/if}}
         <div class="field">
             <label>Briefly describe your decision</label>

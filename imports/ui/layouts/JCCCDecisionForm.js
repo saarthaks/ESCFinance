@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
 import { JCCCRequests } from '../../api/jccc-requests';
@@ -20,11 +21,14 @@ const basicRules = {
     }
 };
 
-const extraRules = {
+const basicAcceptRules = {
     acceptedAmount: {
         identifier: 'acceptedAmount',
         rules: [{ type: 'empty', prompt: "Please enter an amount" }]
-    },
+    }
+};
+
+const fullAcceptRules = {
     ccFunding: {
         identifier: 'ccFunding',
         rules: [{ type: 'empty', prompt: "Please enter an amount" }]
@@ -43,43 +47,53 @@ const extraRules = {
     }
 };
 
-var updateRequest = function(data) {
-    JCCCRequests.update({ _id: Template.instance().data._id }, {
-        $set: { applicationStatus: data.responseAction, 
-                decisionDetails: data.decisionDetails }});
+var decideApplication = function(data) {
+    const updateData = {
+        "applicationStatus": data.responseAction,
+        "decisionDetails": data.decisionDetails
+    };
+    Meteor.call('jccc-requests.update', Template.instance().data._id, updateData);
 }
 
 var insertTransaction = function(data) {
     const financeInsert = {
         "applicationID": Template.instance().data._id,
         "totalTransaction": parseFloat(data.acceptedAmount),
-        "ccTransaction": parseFloat(data.ccFunding),
-        "seasTransaction": parseFloat(data.seasFunding),
-        "gsTransaction": parseFloat(data.gsFunding),
-        "bcTransaction": parseFloat(data.bcFunding),
+        "ccTransaction": !Template.instance().isConditional.get() ? parseFloat(data.ccFunding) : 0.0,
+        "seasTransaction": !Template.instance().isConditional.get() ? parseFloat(data.seasFunding) : 0.0,
+        "gsTransaction": !Template.instance().isConditional.get() ? parseFloat(data.gsFunding) : 0.0,
+        "bcTransaction": !Template.instance().isConditional.get() ? parseFloat(data.bcFunding) : 0.0,
         "receiptAmount": 0.0
     };
-    JCCCFinances.schema.validate(financeInsert);
-    JCCCFinances.insert(financeInsert);
+    Meteor.call('jccc-finances.insert', financeInsert);
 }
 
 var submitForm = function(template) {
-    $('.ui.form').form({ fields: basicRules, inline: true });
+    console.log(Template.instance().isAccepting.get());
+    console.log(Template.instance().isConditional.get());
+    var rules = basicRules;
     if (Template.instance().isAccepting.get()) {
-        const allRules = $.extend(basicRules, extraRules);
-        $('.ui.form').form({ fields: allRules, inline: true });
+        rules = $.extend(rules, basicAcceptRules);
+        if (!Template.instance().isConditional.get()) {
+            rules = $.extend(rules, fullAcceptRules);
+        }
     }
+    console.log(rules);
+    $('.ui.form').form({ fields: rules, inline: true });
 
     if( $('.ui.form').form('is valid') ) {
         const data = $('.ui.form').form('get values');
         try { 
-            updateRequest(data);
-            try {
-                insertTransaction(data);
-                $('.ui.form').form('clear');
-            } catch (e) {
-                console.log(e);
+            decideApplication(data);
+            if (Template.instance().isAccepting.get()) {
+                try {
+                    insertTransaction(data);
+                    $('.ui.form').form('clear');
+                } catch (e) {
+                    console.log(e);
+                }
             }
+            $('.ui.form').form('clear');
         } catch (e) {
             console.log(e);
         }
@@ -92,6 +106,7 @@ var submitForm = function(template) {
 
 Template.JCCCDecisionForm.onCreated( function() {
     this.isAccepting = new ReactiveVar(false);
+    this.isConditional = new ReactiveVar(false);
 });
 
 Template.JCCCDecisionForm.rendered = function() {
@@ -100,11 +115,18 @@ Template.JCCCDecisionForm.rendered = function() {
 
 Template.JCCCDecisionForm.events({
     'change [name=responseAction]': function(e, template) {
-        if (e.target.value.toLowerCase().includes('accept')) {
+        const responseStatus = e.target.value.toLowerCase();
+        if (responseStatus.includes('accept')) {
             Template.instance().isAccepting.set(true);
+            if (responseStatus.includes('condition')) {
+                Template.instance().isConditional.set(true);
+            } else {
+                Template.instance().isConditional.set(false);
+            }
         } else {
             $('.ui.form').form('destroy');
             Template.instance().isAccepting.set(false);
+            Template.instance().isConditional.set(false);
         }
     },
     'submit form': function(e, template) {
@@ -130,4 +152,7 @@ Template.JCCCDecisionForm.helpers({
     isAccepting: function() {
         return Template.instance().isAccepting.get();
     },
+    notConditional: function() {
+        return !Template.instance().isConditional.get();
+    }
 });
