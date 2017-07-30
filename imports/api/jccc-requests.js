@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
@@ -16,6 +17,10 @@ JCCCRequests.schema  = new SimpleSchema({
     "name": {
         type: String,
         label: "Student Group Name"
+    },
+    "clubEmail": {
+        type: String,
+        label: "Student Group Email"
     },
     "allocation": {
         type: String,
@@ -36,6 +41,10 @@ JCCCRequests.schema  = new SimpleSchema({
     "bcPercentage": {
         type: String,
         label: "BC Percentage"
+    },
+    "governingBoard": {
+        type: String,
+        label: "Governing Board"
     },
     "requestType": {
         type: String,
@@ -141,3 +150,14 @@ JCCCRequests.schema  = new SimpleSchema({
 JCCCRequests.attachSchema(JCCCRequests.schema);
 
 export { JCCCRequests };
+
+Meteor.methods({
+    'jccc-requests.insert'(formData) {
+        JCCCRequests.schema.validate(formData);
+        JCCCRequests.insert(formData);
+    },
+    'jccc-requests.update'(requestId, formData) {
+        JCCCRequests.update({ _id: requestId }, { $set: formData });
+    }
+});
+

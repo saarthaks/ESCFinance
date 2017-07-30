@@ -1,0 +1,16 @@
+<template name="JCCCUpdater">
+    <div class="ui header">Application Updater</div>
+    <div class="ui fluid selection dropdown" id="select-update">
+        <input type="hidden" name="update-request">
+        <div class="default text">Select one</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            {{#each updateRequests}}
+                <div class="item" id="{{_id}}" name="pending-update">{{name}} -- {{eventName}}</div>
+            {{/each}}
+        </div>
+    </div>
+    {{#if isUpdating}}
+        {{> Template.dynamic template="JCCCUpdateForm" data=appInView }}
+    {{/if}}
+</template>
