@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 
 import { JCCCSettingsDB } from '../../api/jccc-settings.js';
+import { JCCCFinances } from '../../api/jccc-finances.js';
 
 import './JCCCSettingsTemplate.html';
 
@@ -42,11 +43,9 @@ var updatePoc = function(template) {
                 "emailTag": data.emailTag,
                 "formStatus": true
             }
-            console.log('first');
             JCCCSettingsDB.insert(insertData);
         } else {
             const entryId = JCCCSettingsDB.findOne()._id;
-            console.log('not first');
             JCCCSettingsDB.update({ _id : entryId }, {
                 $set: { pocEmail: data.pocEmail,
                         emailTag: data.emailTag }});
@@ -71,7 +70,21 @@ var initFinances = function(template) {
 
     if ( formElem.form('is valid') ) {
         const data = formElem.form('get values');
-        console.log(data);
+        const ccAmt = parseFloat(data.ccAllocation);
+        const seasAmt = parseFloat(data.seasAllocation);
+        const gsAmt = parseFloat(data.gsAllocation);
+        const bcAmt = parseFloat(data.bcAllocation);
+        const totalAmt = ccAmt + seasAmt + gsAmt + bcAmt;
+        const insertData = {
+            "applicationID": "Initialize",
+            "totalTransaction": totalAmt,
+            "ccTransaction": ccAmt,
+            "seasTransaction": seasAmt,
+            "gsTransaction": gsAmt,
+            "bcTransaction": bcAmt,
+            "receiptAmount": totalAmt
+        };
+        JCCCFinances.insert(insertData);
         formElem.form('clear');
     } else {
         formElem.form('validate rules');
@@ -120,15 +133,15 @@ Template.JCCCSettings.helpers({
         return str.charAt(0).toUpperCase() + str.slice(1);
     },
     currentCC: function() {
-        return
+        return JCCCFinances.findOne({ "applicationID": "Initialize" }).ccTransaction.toString();
     },
     currentSEAS: function() {
-        return
+        return JCCCFinances.findOne({ "applicationID": "Initialize" }).seasTransaction.toString();
     },
     currentGS: function() {
-        return
+        return JCCCFinances.findOne({ "applicationID": "Initialize" }).gsTransaction.toString();
     },
     currentBC: function() {
-        return
+        return JCCCFinances.findOne({ "applicationID": "Initialize" }).bcTransaction.toString();
     },
 });

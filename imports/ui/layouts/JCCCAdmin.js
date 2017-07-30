@@ -3,6 +3,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './JCCCViewer.js';
 import './JCCCResponder.js';
+import './JCCCUpdater.js';
 import './JCCCSettings.js';
 
 Template.JCCCAdminLayout.onCreated( function() {

@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 
 import { JCCCRequests } from '../../api/jccc-requests';
+import { JCCCFinances } from '../../api/jccc-finances';
 
 import './JCCCDecisionFormTemplate.html';
 
@@ -42,10 +43,24 @@ const extraRules = {
     }
 };
 
-var updateDb = function(data) {
+var updateRequest = function(data) {
     JCCCRequests.update({ _id: Template.instance().data._id }, {
         $set: { applicationStatus: data.responseAction, 
                 decisionDetails: data.decisionDetails }});
+}
+
+var insertTransaction = function(data) {
+    const financeInsert = {
+        "applicationID": Template.instance().data._id,
+        "totalTransaction": parseFloat(data.acceptedAmount),
+        "ccTransaction": parseFloat(data.ccFunding),
+        "seasTransaction": parseFloat(data.seasFunding),
+        "gsTransaction": parseFloat(data.gsFunding),
+        "bcTransaction": parseFloat(data.bcFunding),
+        "receiptAmount": 0.0
+    };
+    JCCCFinances.schema.validate(financeInsert);
+    JCCCFinances.insert(financeInsert);
 }
 
 var submitForm = function(template) {
@@ -57,8 +72,18 @@ var submitForm = function(template) {
 
     if( $('.ui.form').form('is valid') ) {
         const data = $('.ui.form').form('get values');
-        updateDb(data);
-        $('.ui.form').form('clear');
+        try { 
+            updateRequest(data);
+            try {
+                insertTransaction(data);
+                $('.ui.form').form('clear');
+            } catch (e) {
+                console.log(e);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
         console.log(data);
     } else {
         $('.ui.form').form('validate rules');

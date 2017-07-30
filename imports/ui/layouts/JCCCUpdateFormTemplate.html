@@ -1,0 +1,67 @@
+<template name="JCCCUpdateForm">
+    <h4 class="ui attached message">
+        <div class="header">
+            Update approved request for {{name}}: {{eventName}}
+        </div>
+        <p>Approved maximum of ${{approvedAmount}}</p>
+    </h4>
+    <form class="ui form attached fluid segment">
+        <div class="field">
+            <label>How would you like to update?</label>
+            <div class="ui fluid selection dropdown" id="select-action">
+                <input type="hidden" name="updateAction">
+                <div class="default text">Select one</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="item" data-value="Change Award">Change allocated amount</div>
+                    <div class="item" data-value="Log Receipt">Log receipt</div>
+                </div>
+            </div>
+        </div>
+        {{#if isReady}}
+        <div class="field">
+            {{#if isChanging}}
+            <label>New Allocation Amount</label>
+            {{/if}}
+            {{#if isLogging}}
+            <label>Final Cost</label>
+            {{/if}}
+            <div class="ui labeled input">
+                <div class="ui label">$</div>
+                <input type="text" name="finalAmount" placeholder="{{approvedAmount}}">
+            </div>
+        </div>
+        <div class="four fields">
+            <div class="field">
+                <label>CC Funding</label>
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" name="ccFunding">
+                </div>
+            </div>
+            <div class="field">
+                <label>SEAS Funding</label>
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" name="seasFunding">
+                </div>
+            </div>
+            <div class="field">
+                <label>GS Funding</label>
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" name="gsFunding">
+                </div>
+            </div>
+            <div class="field">
+                <label>BC Funding</label>
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>        
+                    <input type="text" name="bcFunding">
+                </div>
+            </div>
+        </div>
+        <button type="submit" id="complete-update" class="ui submit button">Submit</button>
+        {{/if}}
+    </form>
+</template>
