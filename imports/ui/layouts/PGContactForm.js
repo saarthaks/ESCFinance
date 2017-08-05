@@ -4,7 +4,7 @@ import './PGContactFormTemplate.html';
 
 Template.PGContactForm.rendered = function() {
     $('.ui.selection.dropdown').dropdown();
-    const formFields = Session.get('pgsmallform')
+    const formFields = Session.get('pgform')
     initFields(formFields);
 }
 

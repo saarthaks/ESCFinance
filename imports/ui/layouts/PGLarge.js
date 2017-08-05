@@ -2,31 +2,33 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session'
 import { ReactiveVar } from 'meteor/reactive-var';
 
-import './PGSmallRules.js';
+import './PGLargeRules.js';
 import './PGContactForm.js';
 import './PGProjectQuestions.js';
+import './PGAdvisorForm.js';
 
-Template.PGSmallLayout.onCreated( function() {
-    this.currentTab = new ReactiveVar("PGSmallRules");
+Template.PGLargeLayout.onCreated( function() {
+    this.currentTab = new ReactiveVar("PGLargeRules");
     this.formError = new ReactiveVar(false);
     this.errorMessage = new ReactiveVar("");
     Session.set('pgform', initForm());
+    console.log(Session.get('pgform'));
 });
 
-Template.PGSmallLayout.onDestroyed( function() {
+Template.PGLargeLayout.onDestroyed( function() {
     Session.set('pgform', initForm());
 });
 
 var initForm = function() {
     var fields = {
         'acceptTerms': null,
-        'names': [null, null, null, null],
-        'unis': [null, null, null, null],
-        'emails': [null, null, null, null],
-        'phones': [null, null, null, null],
-        'schools': [null, null, null, null],
-        'class': [null, null, null, null],
-        'majors': [null, null, null, null],
+        'names': [null, null, null, null, null, null, null, null],
+        'unis': [null, null, null, null, null, null, null, null],
+        'emails': [null, null, null, null, null, null, null, null],
+        'phones': [null, null, null, null, null, null, null, null],
+        'schools': [null, null, null, null, null, null, null, null],
+        'class': [null, null, null, null, null, null, null, null],
+        'majors': [null, null, null, null, null, null, null, null],
         'projectName': null,
         'requestedAmount': null,
         'projectedCompletion': null,
@@ -36,7 +38,12 @@ var initForm = function() {
         'estimatedTimeline': null,
         'feasibility': null,
         'communityBenefit': null,
-        'additionalInfo': null
+        'additionalInfo': null,
+        'advisorName': null,
+        'advisorTitle': null,
+        'advisorEmail': null,
+        'advisorExperience': null,
+        'advisorAssistance': null
     };
 
     return fields;
@@ -44,7 +51,7 @@ var initForm = function() {
 
 var saveFormSession = function(templateName) {
     switch (templateName) {
-        case "PGSmallRules":
+        case "PGLargeRules":
             var formFields = Session.get('pgform');
             formFields['acceptTerms'] = $("[name='acceptTerms']").is(':checked');
             Session.set('pgform', formFields);
@@ -100,6 +107,14 @@ var saveFormSession = function(templateName) {
             formFields['additionalInfo'] = $("[name='additionalInfo']").val();
             Session.set('pgform', formFields);
             break;
+        case "PGAdvisorForm":
+            var formFields = Session.get('pgform');
+            formFields['advisorName'] = $("[name='advisorName']").val();
+            formFields['advisorTitle'] = $("[name='advisorTitle']").val();
+            formFields['advisorEmail'] = $("[name='advisorEmail']").val();
+            formFields['advisorExperience'] = $("[name='advisorExperience']").val();
+            formFields['advisorAssistance'] = $("[name='advisorAssistance']").val();
+            Session.set('pgform', formFields);
         default:
             return undefined;
     }
@@ -116,7 +131,13 @@ var validateForm = function() {
         && !!formFields['emails'][0]
         && !!formFields['phones'][0]
         && !!formFields['schools'][0]
-        && !!formFields['majors'][0]) {
+        && !!formFields['majors'][0]
+        && !!formFields['names'][1]
+        && !!formFields['unis'][1]
+        && !!formFields['emails'][1]
+        && !!formFields['phones'][1]
+        && !!formFields['schools'][1]
+        && !!formFields['majors'][1]) {
 
             if (!!formFields['projectName']
                 && !!formFields['requestedAmount']
@@ -160,19 +181,22 @@ var submitPGForm = function() {
     }
 }
 
-Template.PGSmallLayout.helpers({
+Template.PGLargeLayout.helpers({
     tab: function() {
         return Template.instance().currentTab.get();
     },
     tabData: function() {
         switch (Template.instance().currentTab.get()) {
-            case "PGSmallRules":
+            case "PGLargeRules":
                 return undefined;
                 break;
             case "PGContactForm":
-                return { "max_team_size" : 4 };
+                return { "max_team_size" : 8 };
                 break;
             case "PGProjectQuestions":
+                return undefined;
+                break;
+            case "PGAdvisorForm":
                 return undefined;
                 break;
             default:
@@ -180,7 +204,7 @@ Template.PGSmallLayout.helpers({
         }
     },
     rules: function() {
-        return Template.instance().currentTab.get() === "PGSmallRules";
+        return Template.instance().currentTab.get() === "PGLargeRules";
     },
     contact: function() {
         return Template.instance().currentTab.get() === "PGContactForm";
@@ -196,7 +220,7 @@ Template.PGSmallLayout.helpers({
     }
 });
 
-Template.PGSmallLayout.events({
+Template.PGLargeLayout.events({
     'click': function(e, template) {
         var cTab = undefined;
         if (e.target.id === "form-step") {

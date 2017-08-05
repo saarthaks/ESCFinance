@@ -4,7 +4,7 @@ import { Session } from 'meteor/session'
 import './PGProjectQuestionsTemplate.html';
 
 Template.PGProjectQuestions.rendered = function() {
-    const formFields = Session.get('pgsmallform')
+    const formFields = Session.get('pgform')
     initFields(formFields);
 };
 

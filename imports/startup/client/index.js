@@ -6,3 +6,4 @@ import '../../ui/layouts/JCCCApply.js';
 import '../../ui/layouts/JCCCResults.js';
 import '../../ui/layouts/JCCCAdmin.js';
 import '../../ui/layouts/PGSmall.js';
+import '../../ui/layouts/PGLarge.js';
