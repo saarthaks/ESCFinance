@@ -1,0 +1,30 @@
+<template name="PGAdvisorForm">
+    <h3 class="ui dividing header">Project Advisor</h3>
+    <p>
+        While an advisor (postgraduate, professor, or professional in industry) is not required, we highly recommend that each team find an advisor with relevant experience who will be able to guide the project to completion.
+    </p>
+    <h4 class="ui dividing header">Contact information</h4>
+    <div class="three fields">
+        <div class="field">
+            <label>Name</label>
+            <input type="text" name="advisorName">
+        </div>
+        <div class="field">
+            <label>Title in Organization</label>
+            <input type="text" name="advisorTitle" placeholder="Professor in Elec. Engineering Department">
+        </div>
+        <div class="field">
+            <label>Email</label>
+            <input type="text" name="advisorEmail">
+        </div>
+    </div>
+    <h4 class="ui dividing header">Project involvement</h4>
+    <div class="field">
+        <label>Describe your advisor's relevant experience.</label>
+        <textarea name="advisorExperience"></textarea>
+    </div>
+    <div class="field">
+        <label>Describe how your advisor will be able to assist you throughout the duration of the project.</label>
+        <textarea name="advisorAssistance"></textarea>
+    </div>
+</template>

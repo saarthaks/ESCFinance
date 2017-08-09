@@ -2,4 +2,49 @@
     <h2>
         Large-Scale Project Application
     </h2>
+    <div class="ui container">
+        <div class="four ui attached steps">
+            <a class="active step" data-template="PGLargeRules" id="form-step">
+                <i class="info circle icon"></i>
+                <div class="content">
+                    <div class="title">Rules</div>
+                    <div class="description">Confirm terms and conditions</div>
+                </div>
+            </a>
+            <a class="step" data-template="PGContactForm" id="form-step">
+                <i class="users icon"></i>
+                <div class="content">
+                    <div class="title">Contact info</div>
+                    <div class="description">Enter your team information</div>
+                </div>
+            </a>
+            <a class="step" data-template="PGProjectQuestions" id="form-step">
+                <i class="trophy icon"></i>
+                <div class="content">
+                    <div class="title">Project info</div>
+                    <div class="description">Tell us about your proposal</div>
+                </div>
+            </a>
+            <a class="step" data-template="PGAdvisorForm" id="form-step">
+                <i class="student icon"></i>
+                <div class="content">
+                    <div class="title">Advisor info</div>
+                    <div class="description">Choose an advisor</div>
+                </div>
+            </a>
+        </div>
+        <div class="ui attached segment">
+            <form class="ui form" id="pg-ss-form">
+                {{> Template.dynamic template=tab data=tabData}}
+                {{#if hasError}}
+                    <div class="ui message">
+                        <p>
+                            {{errorMessages}}
+                        </p>
+                    </div>
+                {{/if}}
+                <button type="submit" id="submit-pg-ss" class="ui submit button">Submit Application</button>
+            </form>
+        </div>
+    </div>
 </template>
