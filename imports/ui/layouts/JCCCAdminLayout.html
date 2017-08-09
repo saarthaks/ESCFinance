@@ -1,6 +1,23 @@
 <template name="JCCCAdminLayout">
-    <h2>
+    <h2 class="ui dividing header">
         JCCC Admin Console
     </h2>
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="two wide column">
+                <div class="ui vertical fluid tabular menu">
+                    <a data-template="JCCCViewer" class="item active" id="admin-tab">View</a>
+                    <a data-template="JCCCResponder" class="item" id="admin-tab">Respond</a>
+                    <a data-template="JCCCUpdater" class="item" id="admin-tab">Update</a>
+                    <a data-template="JCCCSettings" class="item" id="admin-tab">Settings</a>
+                </div>
+            </div>
+            <div class="fourteen wide stretched column">
+                <div class="ui segment">
+                    {{> Template.dynamic template=tab}}
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
