@@ -1,95 +1,46 @@
 <template name="LoginLayout">
     <div class="ui vertical center aligned segment">
         <div class="ui stackable container grid">
-            {{#if toLogin}}
-                <div class="row">
-                    <div class="sixteen wide column">
-                        <br>
-                        <br>
-                        <br>
-                        <h1 class="ui header">Login</h1>
-                    </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <br>
+                    <br>
+                    <br>
+                    <h1 class="ui header">Login</h1>
                 </div>
-                <div class="row">
-                    <div class="four wide column"></div>
-                    <div class="eight wide column middle aligned">
-                        <form class="ui form" id="login-form">
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" placeholder="Username" name="loginUsername" />
-                                    <i class="send icon"></i>
-                                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"></div>
+                <div class="eight wide column middle aligned">
+                    <form class="ui form" id="login-form">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <input type="text" placeholder="Username" name="loginUsername" />
+                                <i class="send icon"></i>
                             </div>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="password" placeholder="Password" name="loginPassword" />
-                                    <i class="lock icon"></i>
-                                </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <input type="password" placeholder="Password" name="loginPassword" />
+                                <i class="lock icon"></i>
                             </div>
-                            <button class="ui big blue button" id="login-button" type="submit">Login</button>
-                        </form>
-                    </div>
-                    <div class="four wide column"></div>
+                        </div>
+                        <button class="ui big blue button" id="login-button" type="submit">Login</button>
+                    </form>
                 </div>
-                <div class="row">
-                    <div class="sixteen wide column">
-                        <div class="ui basic segment center aligned top">
-                            <div class="ui bulleted list">
-                                <div class="item">
-                                    <a id="register">Click here to register</a>
-                                </div>
+                <div class="four wide column"></div>
+            </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="ui basic segment center aligned top">
+                        <div class="ui bulleted list">
+                            <div class="item">
+                                <a id="register">Click here to register</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            {{else}}
-                <div class="row">
-                    <div class="sixteen wide column">
-                        <br>
-                        <br>
-                        <br>
-                        <h1 class="ui header">Register</h1>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column"></div>
-                    <div class="eight wide column middle aligned">
-                        <form class="ui form" id="register-form">
-                            <div class="row">
-                                <div class="twelve wide column left aligned">
-                                    <div class="field">
-                                        <label>Username</label>
-                                        <div class="ui input">
-                                            <input type="text" placeholder="Username" name="registerUsername" />
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <label>Password</label>
-                                        <div class="ui input">
-                                            <input type="text" placeholder="Password" name="registerPassword" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="row">
-                                <div class="twelve wide column">
-                                    <button class="ui blue large button" id="register-button" type="submit">Register</button>
-                                    <div class="ui basic segment center aligned top">
-                                        <div class="ui bulleted list">
-                                            <div class="item">
-                                                <a id="login">Login? Click here</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="four wide column"></div>
-                </div>
-            {{/if}}
+            </div>
         </div>
     </div>
 </template>
