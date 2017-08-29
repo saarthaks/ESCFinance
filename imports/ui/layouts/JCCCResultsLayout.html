@@ -16,13 +16,22 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each submission in submissions}}
-                    {{> Template.dynamic template="JCCCSubmissionTemplate" data=submission}}
-                {{/each}}
+                {{#if notEmpty}}
+                    {{#each submission in submissions}}
+                        {{> Template.dynamic template="JCCCSubmissionTemplate" data=submission}}
+                    {{/each}}
+                {{else}}
+                <tr class="six wide center aligned">
+                    <th>
+                        <br>
+                        There are no submitted applications yet.
+                        <br><br>
+                    </th>
+                </tr>
+                {{/if}}
             </tbody>
             <tfoot>
             </tfoot>
         </table>
     </div>
 </template>
-
