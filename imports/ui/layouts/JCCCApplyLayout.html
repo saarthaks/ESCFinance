@@ -3,6 +3,7 @@
         Apply for JCCC
     </h2>
     <div class="ui container">
+        {{#if formIsLive}}
         <h1 class="ui attached message">
             <div class="header">
                 Apply for JCCC funding!
@@ -166,6 +167,13 @@
                 </div>
             </div>
             <div class="field">
+                <label>How much are you requesting from JCCC?</label>
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" name="requestedAmount" placeholder="500.00">
+                </div>
+            </div>
+            <div class="field">
                 <label>Event Name</label>
                 <input type="text" name="eventName" placeholder="Event Name">
             </div>
@@ -194,13 +202,6 @@
                 <textarea name="costBreakdown"></textarea>
             </div>
             <div class="field">
-                <label>How much are you requesting from JCCC?</label>
-                <div class="ui labeled input">
-                    <div class="ui label">$</div>
-                    <input type="text" name="requestedAmount" placeholder="500.00">
-                </div>
-            </div>
-            <div class="field">
                 <label>How have you fundraised and how much money have you made towards this event? (Ex: Selling ad space, alumni donations, other cosponsorships)</label>
                 <textarea name="alternateFunding"></textarea>
             </div>
@@ -225,6 +226,10 @@
             <div class="ui hidden divider"></div>
             <button type="submit" id="submit-jccc" class="ui submit button">Submit Application</button>
         </form>
-    </div>      
+        {{else}}
+        <div class="ui very padded center aligned segment">
+            <h2>Sorry, this form is not currently live...</h2>
+        </div>
+        {{/if}}
+    </div>
 </template>
-

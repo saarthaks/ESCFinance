@@ -29,6 +29,9 @@ Meteor.methods({
         JCCCSettingsDB.insert(formData);
     },
     'jccc-settings.update'(settingId, formData) {
-        JCCCRequests.update({ _id: settingId }, { $set: formData });
+        JCCCSettingsDB.update({ _id: settingId }, { $set: formData });
+    },
+    'jccc-settings.drop'() {
+        JCCCSettingsDB.remove({});
     }
 });

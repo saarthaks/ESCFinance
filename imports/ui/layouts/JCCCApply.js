@@ -179,7 +179,7 @@ var sendEmails = function(data) {
     var body = data.studentGroup + " requests $" + data.requestedAmount + " for the following: \n\n" + JSON.stringify(data)
 
     Meteor.call('sendEmail', to, from, subject, body);
-    
+
     //send additional information to student group POC
     to = data.contactEmail;
     subject = "JCCC Application Additional Information";
@@ -229,6 +229,11 @@ var submitForm = function(template) {
     }
 }
 
+Template.JCCCApplyLayout.onCreated( function() {
+    const entry = JCCCSettingsDB.findOne();
+    this.formIsLive = new ReactiveVar(!!entry && entry.formStatus);
+})
+
 Template.JCCCApplyLayout.events({
     'submit form': function(e, template) {
         console.log(JCCCRequests.find({}).fetch());
@@ -238,6 +243,18 @@ Template.JCCCApplyLayout.events({
         return false;
     }
 });
+
+Template.JCCCApplyLayout.helpers({
+    formIsLive() {
+        if (!Template.instance().formIsLive.get()) {
+            console.log('checking');
+            const entry = JCCCSettingsDB.findOne();
+            Template.instance().formIsLive.set(!!entry && entry.formStatus);
+        }
+
+        return Template.instance().formIsLive.get();
+    }
+})
 
 Template.JCCCApplyLayout.rendered = function() {
     this.$('.ui.selection.dropdown').dropdown();
