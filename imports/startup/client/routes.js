@@ -64,7 +64,8 @@ fresources.route('/cosponsorship', {
 fresources.route('/library', {
     name: 'resource-library',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'LibraryLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'LibraryLayout'});
     }
 });
 
@@ -74,13 +75,15 @@ var fcu = FlowRouter.group({
 fcu.route('/', {
     name: 'fcu',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'FCULayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'FCULayout'});
     }
 });
 fcu.route('/results', {
     name: 'fcu-results',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'FCUResultsLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'FCUResultsLayout'});
     }
 });
 
@@ -129,19 +132,22 @@ var cif = FlowRouter.group({
 cif.route('/', {
     name: 'cif',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'CIFLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'CIFLayout'});
     }
 });
 cif.route('/apply', {
     name: 'cif-apply',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'CIFApplyLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'CIFApplyLayout'});
     }
 });
 cif.route('/results', {
     name: 'cif-results',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'CIFResultsLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'CIFResultsLayout'});
     }
 });
 
@@ -152,31 +158,36 @@ var projectgrant = FlowRouter.group({
 projectgrant.route('/', {
     name: 'project-grant',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGLayout'});
     }
 });
 projectgrant.route('/small-application', {
     name: 'pg-small',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGSmallLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGSmallLayout'});
     }
 });
 projectgrant.route('/large-application', {
     name: 'pg-large',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGLargeLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGLargeLayout'});
     }
 });
 projectgrant.route('/past', {
     name: 'pg-past-projects',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGPastLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGPastLayout'});
     }
 });
 projectgrant.route('/current', {
     name: 'pg-current-projects',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGCurrentLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGCurrentLayout'});
     }
 });
 projectgrant.route('/hub', {
@@ -187,7 +198,8 @@ projectgrant.route('/hub', {
         }
     }],
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
     }
 });
 projectgrant.route('/admin-console', {
@@ -198,7 +210,8 @@ projectgrant.route('/admin-console', {
         }
     }],
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
     }
 });
 FlowRouter.route('/login', {
@@ -207,3 +220,10 @@ FlowRouter.route('/login', {
         BlazeLayout.render('MainLayout', {body: 'LoginLayout'});
     }
 });
+
+FlowRouter.notFound = {
+    action: function() {
+        FlowRouter.go('/');
+        console.log('route not found');
+    }
+}
