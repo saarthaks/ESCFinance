@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+import { Tracker } from 'meteor/tracker';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
@@ -23,6 +25,19 @@ import '../../ui/layouts/PGLargeLayout.html';
 import '../../ui/layouts/PGHubLayout.html';
 import '../../ui/layouts/PGAdminLayout.html';
 import '../../ui/layouts/LoginLayout.html';
+
+const userCollection = Meteor.subscribe('userData');
+
+FlowRouter.wait();
+
+Tracker.autorun(() => {
+    console.log('autorunning');
+    if (userCollection.ready() && !FlowRouter._initialized) {
+        console.log(Meteor.user());
+        console.log(Meteor.users.find().fetch());
+        FlowRouter.initialize();
+    }
+})
 
 FlowRouter.route('/', {
     name: 'main',
@@ -98,6 +113,11 @@ jccc.route('/results', {
 });
 jccc.route('/admin-console', {
     name: 'jccc-admin',
+    triggersEnter: [(context, redirect) => {
+        if (!Meteor.user() || !Meteor.user().isAdmin) {
+            redirect('/login');
+        }
+    }],
     action() {
         BlazeLayout.render('MainLayout', {body: 'JCCCAdminLayout'});
     }
@@ -161,12 +181,22 @@ projectgrant.route('/current', {
 });
 projectgrant.route('/hub', {
     name: 'pg-hub',
+    triggersEnter: [(context, redirect) => {
+        if (!Meteor.user()) {
+            redirect('/login');
+        }
+    }],
     action() {
         BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
     }
 });
 projectgrant.route('/admin-console', {
     name: 'pg-admin',
+    triggersEnter: [(context, redirect) => {
+        if (!Meteor.user() || !Meteor.user().isAdmin) {
+            redirect('/login');
+        }
+    }],
     action() {
         BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
     }
@@ -177,4 +207,3 @@ FlowRouter.route('/login', {
         BlazeLayout.render('MainLayout', {body: 'LoginLayout'});
     }
 });
-
