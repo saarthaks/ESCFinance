@@ -158,6 +158,8 @@ Meteor.methods({
     },
     'jccc-requests.update'(requestId, formData) {
         JCCCRequests.update({ _id: requestId }, { $set: formData });
+    },
+    'jccc-requests.drop'() {
+        JCCCRequests.remove({});
     }
 });
-

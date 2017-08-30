@@ -65,9 +65,16 @@ var emailDecision = function(data) {
     Meteor.call('sendEmail', to, from, subject, body);
 }
 
+var checkSums = function(data) {
+    const totalSum = parseFloat(data.ccFunding) + parseFloat(data.seasFunding) + parseFloat(data.gsFunding) + parseFloat(data.bcFunding);
+    return (totalSum == parseFloat(data.acceptedAmount));
+}
+
 var insertTransaction = function(data) {
     const financeInsert = {
+        "date": new Date,
         "applicationID": Template.instance().data._id,
+        "applicationName": Template.instance().data.name + ": " + Template.instance().data.eventName,
         "totalTransaction": parseFloat(data.acceptedAmount),
         "ccTransaction": !Template.instance().isConditional.get() ? parseFloat(data.ccFunding) : 0.0,
         "seasTransaction": !Template.instance().isConditional.get() ? parseFloat(data.seasFunding) : 0.0,
@@ -93,11 +100,14 @@ var submitForm = function(template) {
 
     if( $('.ui.form').form('is valid') ) {
         const data = $('.ui.form').form('get values');
-        try { 
+        try {
             decideApplication(data);
             emailDecision(data);
             if (Template.instance().isAccepting.get()) {
                 try {
+                    if (!checkSums(data)) {
+                        throw Error("Check sum failed");
+                    }
                     insertTransaction(data);
                     $('.ui.form').form('clear');
                 } catch (e) {

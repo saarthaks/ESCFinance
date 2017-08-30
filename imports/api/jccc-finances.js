@@ -5,9 +5,20 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 const JCCCFinances = new Mongo.Collection('jccc-finances');
 JCCCFinances.schema = new SimpleSchema({
+    "date": {
+        type: Date,
+        label: "Date that Entry was Updated",
+        autoValue: function() {
+            return new Date;
+        }
+    },
     "applicationID": {
         type: String,
         label: "JCCC Application ID"
+    },
+    "applicationName": {
+        type: String,
+        label: "JCCC Application Name"
     },
     "totalTransaction": {
         type: Number,
@@ -55,6 +66,11 @@ Meteor.methods({
     },
     'jccc-finances.updateByAppID'(requestId, formData) {
         JCCCFinances.update({ applicationID: requestId }, { $set: formData });
+    },
+    'jccc-finances.remove'(logId) {
+        JCCCFinances.remove({ applicationID: logId });
+    },
+    'jccc-finances.drop'() {
+        JCCCFinances.remove({});
     }
 });
-

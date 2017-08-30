@@ -3,6 +3,7 @@
         Apply for JCCC
     </h2>
     <div class="ui container">
+        {{#if formIsLive}}
         <h1 class="ui attached message">
             <div class="header">
                 Apply for JCCC funding!
@@ -153,16 +154,10 @@
             </div>
             <h4 class="ui dividing header">Event Details</h4>
             <div class="field">
-                <label>Request Type</label>
-                <div class="ui selection dropdown">
-                    <input type="hidden" name="requestType">
-                    <div class="default text">Choose one</div>
-                    <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <div class="item" data-value="New Event">New Event</div>
-                        <div class="item" data-value="Emergency Funding">Emergency Funding</div>
-                        <div class="item" data-value="Travel/Lodging Expenses">Travel/Lodging Expenses</div>
-                    </div>
+                <label>How much are you requesting from JCCC?</label>
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" name="requestedAmount" placeholder="500.00">
                 </div>
             </div>
             <div class="field">
@@ -182,6 +177,19 @@
                 <input type="text" name="estAttendance" placeholder="100">
             </div>
             <div class="field">
+                <label>Request Type</label>
+                <div class="ui selection dropdown" id="request-dropdown">
+                    <input type="hidden" name="requestType">
+                    <div class="default text">Choose one</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item" data-value="New Event">New Event</div>
+                        <div class="item" data-value="Emergency Funding">Emergency Funding</div>
+                        <div class="item" data-value="Travel/Lodging Expenses">Travel/Lodging Expenses</div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
                 <label>Please briefly describe your event.</label>
                 <textarea name="eventDescription"></textarea>
             </div>
@@ -192,13 +200,6 @@
             <div class="field">
                 <label>What is the cost breakdown of this event?</label>
                 <textarea name="costBreakdown"></textarea>
-            </div>
-            <div class="field">
-                <label>How much are you requesting from JCCC?</label>
-                <div class="ui labeled input">
-                    <div class="ui label">$</div>
-                    <input type="text" name="requestedAmount" placeholder="500.00">
-                </div>
             </div>
             <div class="field">
                 <label>How have you fundraised and how much money have you made towards this event? (Ex: Selling ad space, alumni donations, other cosponsorships)</label>
@@ -225,6 +226,10 @@
             <div class="ui hidden divider"></div>
             <button type="submit" id="submit-jccc" class="ui submit button">Submit Application</button>
         </form>
-    </div>      
+        {{else}}
+        <div class="ui very padded center aligned segment">
+            <h2>Sorry, this form is not currently live...</h2>
+        </div>
+        {{/if}}
+    </div>
 </template>
-
