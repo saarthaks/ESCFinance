@@ -6,3 +6,19 @@ h2.ui.center.aligned.header.top {
 .ui.container.headless {
     padding-top: 55px;
 }
+
+.ui.masthead {
+    padding-top: 200px;
+    padding-bottom: 200px;
+    background-image: url('/columbia-main.jpg') !important;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+h1.ui.header.main {
+    font-size: 4em;
+}
+
+.ui.container.primary {
+    margin-top: 20px;
+}
