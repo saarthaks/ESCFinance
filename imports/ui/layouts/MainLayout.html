@@ -1,7 +1,23 @@
 <template name="MainLayout">
-    <header>
-        <h1>ESC Finance</h1>
-    </header>
+    <div class="ui fixed menu navbar page grid">
+        <a href="/" class="brand item">ESC Finance</a>
+        <div class="ui dropdown item" id="funding-drop">Funding Resources
+            <div class="menu">
+                <a href="/funding-resources" class="item">About</a>
+                <a href="/funding-resources/cosponsorship" class="item">Cosponsorships</a>
+            </div>
+        </div>
+        <div class="ui dropdown item" id="jccc-drop">JCCC
+            <div class="menu">
+                <a href="/jccc" class="item">About</a>
+                <a href="/jccc/constitution" class="item">Constitution</a>
+                <a href="/jccc/apply" class="item">Apply</a>
+                <a href="/jccc/results" class="item">Results</a>
+                <a href="/jccc/admin-console" class="item">Admin Console</a>
+            </div>
+        </div>
+    </div>
+
     <main>
         {{> Template.dynamic template=body}}
     </main>

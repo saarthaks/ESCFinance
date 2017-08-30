@@ -1,1 +1,8 @@
 /* CSS declarations go here */
+h2.ui.center.aligned.header.top {
+    padding-top: 55px;
+}
+
+.ui.container.headless {
+    padding-top: 55px;
+}
