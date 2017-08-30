@@ -154,19 +154,6 @@
             </div>
             <h4 class="ui dividing header">Event Details</h4>
             <div class="field">
-                <label>Request Type</label>
-                <div class="ui selection dropdown">
-                    <input type="hidden" name="requestType">
-                    <div class="default text">Choose one</div>
-                    <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <div class="item" data-value="New Event">New Event</div>
-                        <div class="item" data-value="Emergency Funding">Emergency Funding</div>
-                        <div class="item" data-value="Travel/Lodging Expenses">Travel/Lodging Expenses</div>
-                    </div>
-                </div>
-            </div>
-            <div class="field">
                 <label>How much are you requesting from JCCC?</label>
                 <div class="ui labeled input">
                     <div class="ui label">$</div>
@@ -188,6 +175,19 @@
             <div class="field">
                 <label>Estimated Attendance</label>
                 <input type="text" name="estAttendance" placeholder="100">
+            </div>
+            <div class="field">
+                <label>Request Type</label>
+                <div class="ui selection dropdown" id="request-dropdown">
+                    <input type="hidden" name="requestType">
+                    <div class="default text">Choose one</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item" data-value="New Event">New Event</div>
+                        <div class="item" data-value="Emergency Funding">Emergency Funding</div>
+                        <div class="item" data-value="Travel/Lodging Expenses">Travel/Lodging Expenses</div>
+                    </div>
+                </div>
             </div>
             <div class="field">
                 <label>Please briefly describe your event.</label>

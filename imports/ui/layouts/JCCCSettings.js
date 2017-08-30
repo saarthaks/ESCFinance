@@ -95,7 +95,9 @@ var initFinances = function(template) {
         const bcAmt = parseFloat(data.bcAllocation);
         const totalAmt = ccAmt + seasAmt + gsAmt + bcAmt;
         const insertData = {
+            "date": new Date(),
             "applicationID": "Deposit",
+            "applicationName": "Deposit",
             "totalTransaction": totalAmt,
             "ccTransaction": ccAmt,
             "seasTransaction": seasAmt,

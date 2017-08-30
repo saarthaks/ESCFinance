@@ -29,47 +29,63 @@ const validationRules = {
     }
 };
 
+var checkSums = function(data) {
+    const totalSum = parseFloat(data.ccFunding) + parseFloat(data.seasFunding) + parseFloat(data.gsFunding) + parseFloat(data.bcFunding);
+    return (totalSum == parseFloat(data.finalAmount));
+}
+
 var submitForm = function(elem) {
     elem.form({ fields: validationRules, inline: true });
     if(elem.form('is valid')) {
         const data = elem.form('get values');
         var updateData = {};
-        if (Template.instance().isChanging.get()) {
-            updateData = {
-                "totalTransaction": parseFloat(data.finalAmount),
-                "ccTransaction": parseFloat(data.ccFunding),
-                "seasTransaction": parseFloat(data.seasFunding),
-                "gsTransaction": parseFloat(data.gsFunding),
-                "bcTransaction": parseFloat(data.bcFunding)
+        try {
+            if (!checkSums(data)) {
+                throw Error("Check sum failed");
             }
-        } else {
-            updateData = {
-                "ccTransaction": parseFloat(data.ccFunding),
-                "seasTransaction": parseFloat(data.seasFunding),
-                "gsTransaction": parseFloat(data.gsFunding),
-                "bcTransaction": parseFloat(data.bcFunding),
-                "receiptAmount": parseFloat(data.finalAmount)
-            }
+            if (Template.instance().isChanging.get()) {
+                updateData = {
+                    "totalTransaction": parseFloat(data.finalAmount),
+                    "ccTransaction": parseFloat(data.ccFunding),
+                    "seasTransaction": parseFloat(data.seasFunding),
+                    "gsTransaction": parseFloat(data.gsFunding),
+                    "bcTransaction": parseFloat(data.bcFunding)
+                }
+            } else {
+                updateData = {
+                    "totalTransaction": parseFloat(data.finalAmount),
+                    "ccTransaction": parseFloat(data.ccFunding),
+                    "seasTransaction": parseFloat(data.seasFunding),
+                    "gsTransaction": parseFloat(data.gsFunding),
+                    "bcTransaction": parseFloat(data.bcFunding),
+                    "receiptAmount": parseFloat(data.finalAmount)
+                }
 
+                try {
+                    const receiptUpdate = {
+                        "receiptSubmitted": true
+                    };
+                    Meteor.call('jccc-requests.update', Template.instance().data._id, receiptUpdate);
+                } catch (e) {
+                    console.log(e);
+                    //TODO:
+                    //Something with update error
+                }
+            }
             try {
-                const receiptUpdate = {
-                    "receiptSubmitted": true
-                };
-                Meteor.call('jccc-requests.update', Template.instance().data._id, receiptUpdate);
+                Meteor.call('jccc-finances.updateByAppID', Template.instance().data._id, updateData);
+                elem.form('clear');
             } catch (e) {
                 console.log(e);
                 //TODO:
-                //Something with update error
+                //Something with updateByAppID error
             }
-        }
-        try {
-            Meteor.call('jccc-finances.updateByAppID', Template.instance().data._id, updateData);
-            elem.form('clear');
         } catch (e) {
             console.log(e);
             //TODO:
-            //Something with update error
+            //Something with checksum error
         }
+
     } else {
         elem.form('validate rules');
     }
@@ -128,4 +144,3 @@ Template.JCCCUpdateForm.helpers({
         return entry.totalTransaction;
     }
 });
-

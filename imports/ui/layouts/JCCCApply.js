@@ -257,5 +257,5 @@ Template.JCCCApplyLayout.helpers({
 })
 
 Template.JCCCApplyLayout.rendered = function() {
-    this.$('.ui.selection.dropdown').dropdown();
+    this.$('#request-dropdown.ui.selection.dropdown').dropdown();
 }

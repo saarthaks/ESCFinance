@@ -1,14 +1,13 @@
-<template name="JCCCSubmissionTemplate">
-    <tr>
+<template name="JCCCSubmission">
+    <tr class="{{rowColor}}">
         <td>{{logDate}}</td>
-        <td>{{groupName}}</td>
-        <td>{{allocation}}</td>
-        <td>{{requestedAmount}}</td>
+        <td>{{name}}</td>
+        <td>${{allocation}}</td>
+        <td>${{requestedAmount}}</td>
         <td>{{eventName}}</td>
         <td>{{requestType}}</td>
-        <td id="{{_id}}-status">{{applicationStatus}}
+        <td class="right aligned" id="{{_id}}-status">{{applicationStatus}}
             <i class="info circle icon" data-content="{{decisionDetails}}" data-variation="wide"></i>
         </td>
     </tr>
 </template>
-
