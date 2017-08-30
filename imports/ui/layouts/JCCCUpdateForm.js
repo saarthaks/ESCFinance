@@ -41,6 +41,12 @@ var submitForm = function(elem) {
         var updateData = {};
         try {
             if (!checkSums(data)) {
+                Template.instance().modalHeader.set("Error");
+                Template.instance().modalMessage.set("Your contributions do not add up to your total.");
+                $('.ui.modal').modal({inverted: true}).modal('show');
+                Meteor.setTimeout(() => {
+                    $('.ui.modal').modal('hide');
+                }, 2000);
                 throw Error("Check sum failed");
             }
             if (Template.instance().isChanging.get()) {
@@ -68,22 +74,38 @@ var submitForm = function(elem) {
                     Meteor.call('jccc-requests.update', Template.instance().data._id, receiptUpdate);
                 } catch (e) {
                     console.log(e);
-                    //TODO:
-                    //Something with update error
+
+                    Template.instance().modalHeader.set("Error");
+                    Template.instance().modalMessage.set("Your receipt could not be processed at this time. Please try again later.");
+                    $('.ui.modal').modal({inverted: true}).modal('show');
+                    Meteor.setTimeout(() => {
+                        $('.ui.modal').modal('hide');
+                    }, 2000);
                 }
             }
             try {
                 Meteor.call('jccc-finances.updateByAppID', Template.instance().data._id, updateData);
+
+                Template.instance().modalHeader.set("Success!");
+                Template.instance().modalMessage.set("Your decision has been updated.");
+                $('.ui.modal').modal({inverted: true}).modal('show');
+                Meteor.setTimeout(() => {
+                    $('.ui.modal').modal('hide');
+                }, 1000);
                 elem.form('clear');
             } catch (e) {
                 console.log(e);
-                //TODO:
-                //Something with updateByAppID error
+
+                Template.instance().modalHeader.set("Error");
+                Template.instance().modalMessage.set("Your update could not be processed at this time. Please try again later.");
+                $('.ui.modal').modal({inverted: true}).modal('show');
+                Meteor.setTimeout(() => {
+                    $('.ui.modal').modal('hide');
+                }, 2000);
+
             }
         } catch (e) {
             console.log(e);
-            //TODO:
-            //Something with checksum error
         }
 
     } else {
@@ -95,6 +117,8 @@ Template.JCCCUpdateForm.onCreated( function() {
     this.isReady = new ReactiveVar(false);
     this.isChanging = new ReactiveVar(false);
     this.isLogging = new ReactiveVar(false);
+    this.modalHeader = new ReactiveVar("");
+    this.modalMessage = new ReactiveVar("");
 });
 
 Template.JCCCUpdateForm.rendered = function() {
@@ -123,6 +147,12 @@ Template.JCCCUpdateForm.events({
 });
 
 Template.JCCCUpdateForm.helpers({
+    modalHeader: function() {
+        return Template.instance().modalHeader.get();
+    },
+    modalMessage: function() {
+        return Template.instance().modalMessage.get();
+    },
     name: function() {
         return Template.instance().data.name;
     },

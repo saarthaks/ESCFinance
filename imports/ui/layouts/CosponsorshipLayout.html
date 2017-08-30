@@ -1,4 +1,12 @@
 <template name="CosponsorshipLayout">
+    <div class="ui fullscreen modal">
+        <div class="header">{{modalHeader}}</div>
+        <div class="content">
+            <p>
+                {{modalMessage}}
+            </p>
+        </div>
+    </div>
     <h2 class="ui dividing header">
         ESC Cosponsorships
     </h2>
@@ -7,7 +15,7 @@
             <div class="header">
                 Request an ESC Cosponsorship!
             </div>
-            <p>{{messageText}}</p>
+            <p>Fill out this form and we'll get in touch with you ASAP!</p>
         </h1>
         <form class="ui form attached fluid segment" id="request-form">
             <div class="field">
@@ -29,13 +37,13 @@
                     <i class="dropdown icon"></i>
                     <input type="hidden" name="escRecipient">
                     <div class="menu">
-                        <div class="item" data-value="2020">ESC 2020</div>
-                        <div class="item" data-value="2019">ESC 2019</div>
-                        <div class="item" data-value="2018">ESC 2018</div>
-                        <div class="item" data-value="Finance">ESC Finance</div>
-                        <div class="item" data-value="Tech Rep">ESC Tech Rep</div>
-                        <div class="item" data-value="Diversity Rep">ESC Diversity/Incl. Rep</div>
-                        <div class="item" data-value="E-Board">ESC E-Board</div>
+                        <div class="item" data-value="{{email2020}}">ESC 2020</div>
+                        <div class="item" data-value="{{email2019}}">ESC 2019</div>
+                        <div class="item" data-value="{{email2018}}">ESC 2018</div>
+                        <div class="item" data-value="{{emailFinance}}">ESC Finance</div>
+                        <div class="item" data-value="{{emailTech}}">ESC Tech Rep</div>
+                        <div class="item" data-value="{{emailDiversity}}">ESC Diversity/Incl. Rep</div>
+                        <div class="item" data-value="{{emailEboard}}">ESC E-Board</div>
                     </div>
                 </div>
             </div>
@@ -49,4 +57,3 @@
         </form>
     </div>
 </template>
-

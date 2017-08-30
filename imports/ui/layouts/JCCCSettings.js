@@ -57,6 +57,13 @@ var updatePoc = function(template) {
             Template.instance().pocEmail.set(data.pocEmail);
             Template.instance().emailTag.set(data.emailTag);
         }
+
+        Template.instance().modalHeader.set("Success!");
+        Template.instance().modalMessage.set("You have successfully updated the point of contact info.");
+        $('.ui.modal').modal({inverted: true}).modal('show');
+        Meteor.setTimeout(() => {
+            $('.ui.modal').modal('hide');
+        }, 1000);
         formElem.form('clear');
     } else {
         formElem.form('validate rules');
@@ -105,12 +112,19 @@ var initFinances = function(template) {
             "bcTransaction": bcAmt,
             "receiptAmount": totalAmt
         };
+        
         Meteor.call('jccc-finances.insert', insertData);
         if (ccAmt > 0) { Template.instance().currentCC.set(ccAmt.toString()); }
         if (seasAmt > 0) { Template.instance().currentSEAS.set(seasAmt.toString()); }
         if (gsAmt > 0) { Template.instance().currentGS.set(gsAmt.toString()); }
         if (bcAmt > 0) { Template.instance().currentBC.set(bcAmt.toString()); }
 
+        Template.instance().modalHeader.set("Success!");
+        Template.instance().modalMessage.set("You have successfully deposited new finances.");
+        $('.ui.modal').modal({inverted: true}).modal('show');
+        Meteor.setTimeout(() => {
+            $('.ui.modal').modal('hide');
+        }, 1000);
         formElem.form('clear');
     } else {
         formElem.form('validate rules');
@@ -143,6 +157,8 @@ Template.JCCCSettings.onCreated( function() {
         this.currentBC = new ReactiveVar(lastDeposit.bcTransaction.toString());
     }
 
+    this.modalHeader = new ReactiveVar('');
+    this.modalMessage = new ReactiveVar('');
 });
 
 Template.JCCCSettings.events({
@@ -162,6 +178,12 @@ Template.JCCCSettings.events({
 });
 
 Template.JCCCSettings.helpers({
+    modalHeader: function() {
+        return Template.instance().modalHeader.get();
+    },
+    modalMessage: function() {
+        return Template.instance().modalMessage.get();
+    },
     currentPoc: function() {
         return Template.instance().pocEmail.get();
     },
