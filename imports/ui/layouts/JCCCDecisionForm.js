@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { JCCCRequests } from '../../api/jccc-requests.js';
 import { JCCCSettingsDB } from '../../api/jccc-settings.js';
@@ -106,17 +107,37 @@ var submitForm = function(template) {
             if (Template.instance().isAccepting.get()) {
                 try {
                     if (!checkSums(data)) {
+                        Template.instance().modalHeader.set("Error");
+                        Template.instance().modalMessage.set("Your contributions do not add up to your total.");
+                        $('.ui.modal').modal({inverted: true}).modal('show');
+                        Meteor.setTimeout(() => {
+                            $('.ui.modal').modal('hide');
+                        }, 2000);
                         throw Error("Check sum failed");
                     }
                     insertTransaction(data);
-                    $('.ui.form').form('clear');
                 } catch (e) {
                     console.log(e);
                 }
             }
+            Template.instance().modalHeader.set("Success!");
+            Template.instance().modalMessage.set("Your decision has been recorded.");
+            $('.ui.modal').modal({inverted: true}).modal('show');
+            Meteor.setTimeout(() => {
+                $('.ui.modal').modal('hide');
+                FlowRouter.go('/jccc/admin-console');
+            }, 1000);
+
             $('.ui.form').form('clear');
         } catch (e) {
             console.log(e);
+
+            Template.instance().modalHeader.set("Error");
+            Template.instance().modalMessage.set("Your decision could not be processed at this time. Please try again later.");
+            $('.ui.modal').modal({inverted: true}).modal('show');
+            Meteor.setTimeout(() => {
+                $('.ui.modal').modal('hide');
+            }, 2000);
         }
 
         console.log(data);
@@ -128,6 +149,8 @@ var submitForm = function(template) {
 Template.JCCCDecisionForm.onCreated( function() {
     this.isAccepting = new ReactiveVar(false);
     this.isConditional = new ReactiveVar(false);
+    this.modalHeader = new ReactiveVar("");
+    this.modalMessage = new ReactiveVar("");
 });
 
 Template.JCCCDecisionForm.rendered = function() {
@@ -158,6 +181,12 @@ Template.JCCCDecisionForm.events({
 });
 
 Template.JCCCDecisionForm.helpers({
+    modalHeader: function() {
+        return Template.instance().modalHeader.get();
+    },
+    modalMessage: function() {
+        return Template.instance().modalMessage.get();
+    },
     name: function() {
         return Template.instance().data.name;
     },

@@ -1,4 +1,12 @@
 <template name="JCCCApplyLayout">
+    <div class="ui fullscreen modal">
+        <div class="header">{{modalHeader}}</div>
+        <div class="content">
+            <p>
+                {{modalMessage}}
+            </p>
+        </div>
+    </div>
     <h2>
         Apply for JCCC
     </h2>
@@ -8,7 +16,7 @@
             <div class="header">
                 Apply for JCCC funding!
             </div>
-            <p>{{messageText}}</p>
+            <p>Fill out this form to start your JCCC application!</p>
         </h1>
         <form class="ui form attached fluid segment" id="jccc-apply-form">
             <div class="field">

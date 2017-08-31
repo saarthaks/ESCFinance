@@ -1,4 +1,12 @@
 <template name="JCCCDecisionForm">
+    <div class="ui fullscreen modal">
+        <div class="header">{{modalHeader}}</div>
+        <div class="content">
+            <p>
+                {{modalMessage}}
+            </p>
+        </div>
+    </div>
     <h4 class="ui attached message">
         <div class="header">
             Update {{name}} request for {{eventName}}
