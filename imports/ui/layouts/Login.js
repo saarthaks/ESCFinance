@@ -53,7 +53,7 @@ var loginAction = function() {
     }
 }
 
-Template.LoginLayout.onCreated( {
+Template.LoginLayout.onCreated( function() {
     this.modalHeader = new ReactiveVar('');
     this.modalMessage = new ReactiveVar('');
 
