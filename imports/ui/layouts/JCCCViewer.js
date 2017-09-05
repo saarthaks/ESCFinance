@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating';
-
+import { ReactiveVar } from 'meteor/reactive-var';
 import { JCCCRequests } from '../../api/jccc-requests.js';
 
 import './JCCCViewerTemplate.html';

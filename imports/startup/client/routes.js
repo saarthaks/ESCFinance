@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+import { Session } from 'meteor/session';
 
 import '../../ui/main.html';
 import '../../ui/layouts/MainLayout.html';
@@ -118,6 +119,7 @@ jccc.route('/admin-console', {
     name: 'jccc-admin',
     triggersEnter: [(context, redirect) => {
         if (!Meteor.user() || !Meteor.user().isAdmin) {
+            Session.set('redirectURI', '/jccc/admin-console');
             redirect('/login');
         }
     }],
