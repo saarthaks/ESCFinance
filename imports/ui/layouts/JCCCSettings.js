@@ -131,6 +131,7 @@ var initFinances = function(template) {
 }
 
 Template.JCCCSettings.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
     const entry = JCCCSettingsDB.findOne();
     if (entry === undefined) {
         this.formIsLive = new ReactiveVar(false);

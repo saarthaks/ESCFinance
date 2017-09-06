@@ -151,6 +151,12 @@ JCCCRequests.attachSchema(JCCCRequests.schema);
 
 export { JCCCRequests };
 
+if (Meteor.isServer) {
+    Meteor.publish('jccc-requests', function JCCCRequestsPublication() {
+        return JCCCRequests.find();
+    });
+}
+
 Meteor.methods({
     'jccc-requests.insert'(formData) {
         JCCCRequests.schema.validate(formData);

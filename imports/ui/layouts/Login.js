@@ -17,36 +17,6 @@ var loginRules = {
     }
 };
 
-var setErrorModal = function() {
-    console.log(Template.instance().modalHeader.get());
-    console.log(Template.instance().modalMessage.get());
-    console.log('setting error');
-    Template.instance().modalHeader.set("Error");
-    Template.instance().modalMessage.set("Please try again.");
-    console.log(Template.instance().modalHeader.get());
-    console.log(Template.instance().modalMessage.get());
-    $('.ui.modal').modal({inverted: true}).modal('show');
-    Meteor.setTimeout(() => {
-        $('.ui.modal').modal('hide');
-    }, 1000);
-}
-
-var setSuccessModal = function() {
-    // console.log(Template.instance().modalHeader.get());
-    // console.log(Template.instance().modalMessage.get());
-    console.log('setting success');
-    // Template.instance().modalHeader.set("Success!");
-    // Template.instance().modalMessage.set("You have successfully logged in.");
-    // console.log(Template.instance().modalHeader.get());
-    // console.log(Template.instance().modalMessage.get());
-    $('.ui.fullscreen.modal.successful').modal({inverted: true}).modal('show');
-    Meteor.setTimeout(() => {
-        $('.ui.modal').modal('hide');
-        const redirect = !!Session.get("redirectURI") ? Session.get("redirectURI") : "/";
-        FlowRouter.go(redirect);
-    }, 1000);
-}
-
 var loginAction = function() {
     $('.ui.form').form({ fields: loginRules, inline: true });
 
@@ -55,7 +25,7 @@ var loginAction = function() {
         Meteor.loginWithPassword(data.loginUsername, data.loginPassword, function(error) {
             if (error) {
                 console.log(error);
-                
+
                 $('.ui.fullscreen.modal.errored').modal({inverted: true}).modal('show');
                 Meteor.setTimeout(() => {
                     $('.ui.modal').modal('hide');

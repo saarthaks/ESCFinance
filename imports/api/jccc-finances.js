@@ -56,6 +56,12 @@ JCCCFinances.attachSchema(JCCCFinances.schema);
 
 export { JCCCFinances };
 
+if (Meteor.isServer) {
+    Meteor.publish('jccc-finances', function JCCCFinancesPublication() {
+        return JCCCFinances.find();
+    });
+}
+
 Meteor.methods({
     'jccc-finances.insert'(formData) {
         JCCCFinances.schema.validate(formData);

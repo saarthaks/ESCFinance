@@ -6,6 +6,8 @@ import './JCCCResponderTemplate.html';
 import './JCCCDecisionForm.js';
 
 Template.JCCCResponder.onCreated( function() {
+    Meteor.subscribe('jccc-requests');
+
     this.responding = new ReactiveVar(false);
     this.appInView = new ReactiveVar(undefined);
 });

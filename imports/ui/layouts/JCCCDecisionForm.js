@@ -143,6 +143,10 @@ var submitForm = function(template) {
 }
 
 Template.JCCCDecisionForm.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
+    Meteor.subscribe('jccc-requests');
+    Meteor.subscribe('jccc-finances');
+
     this.isAccepting = new ReactiveVar(false);
     this.isConditional = new ReactiveVar(false);
     this.modalHeader = new ReactiveVar("");

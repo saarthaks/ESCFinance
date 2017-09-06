@@ -6,6 +6,8 @@ import './JCCCUpdaterTemplate.html';
 import './JCCCUpdateForm.js';
 
 Template.JCCCUpdater.onCreated( function() {
+    Meteor.subscribe('jccc-requests');
+
     this.updating = new ReactiveVar(false);
     this.appInView = new ReactiveVar(undefined);
 });

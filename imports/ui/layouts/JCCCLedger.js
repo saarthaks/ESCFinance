@@ -7,6 +7,9 @@ import './JCCCLedgerTemplate.html';
 import './JCCCLedgerEntry.js';
 
 Template.JCCCLedger.onCreated( function() {
+    Meteor.subscribe('jccc-finances');
+    Meteor.subscribe('jccc-requests');
+
     this.CCApproved = new ReactiveVar(0.00);
     this.CCReceipted = new ReactiveVar(0.00);
     this.SEASApproved = new ReactiveVar(0.00);

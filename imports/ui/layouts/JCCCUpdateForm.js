@@ -127,6 +127,10 @@ var submitForm = function(elem) {
 }
 
 Template.JCCCUpdateForm.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
+    Meteor.subscribe('jccc-finances');
+    Meteor.subscribe('jccc-requests');
+
     this.isReady = new ReactiveVar(false);
     this.isChanging = new ReactiveVar(false);
     this.isLogging = new ReactiveVar(false);

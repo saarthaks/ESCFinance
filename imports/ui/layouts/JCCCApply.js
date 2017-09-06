@@ -237,6 +237,8 @@ var submitForm = function(template) {
 }
 
 Template.JCCCApplyLayout.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
+    Meteor.subscribe('jccc-requests');
     const entry = JCCCSettingsDB.findOne();
     this.formIsLive = new ReactiveVar(!!entry && entry.formStatus);
     this.modalHeader = new ReactiveVar("");
