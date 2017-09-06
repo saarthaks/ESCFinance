@@ -69,6 +69,12 @@
                 </div>
             </div>
         </div>
+        {{#if isChanging}}
+        <div class="field">
+            <label>Enter the body of your decision email</label>
+            <textarea name="emailBody"></textarea>
+        </div>
+        {{/if}}
         <button type="submit" id="complete-update" class="ui submit button">Submit</button>
         {{/if}}
     </form>

@@ -18,7 +18,6 @@ Template.JCCCUpdater.events({
     'click .item[name=pending-update]': function(e, template) {
         Template.instance().updating.set(true);
         Template.instance().appInView.set(e.target.id);
-        console.log(e.target.id);
     }
 });
 
@@ -37,6 +36,3 @@ Template.JCCCUpdater.helpers({
         return JCCCRequests.findOne({ _id: Template.instance().appInView.get() });
     }
 });
-
-
-

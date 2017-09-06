@@ -17,7 +17,6 @@ Template.JCCCViewer.events({
     'click .item': function(e, template) {
         Template.instance().viewing.set(true);
         Template.instance().requestInView.set(e.target.id);
-        console.log(e.target.id);
     }
 });
 

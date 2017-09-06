@@ -29,22 +29,23 @@ const validationRules = {
 };
 
 const contacts = {
-    "2020" : "2020",
-    "2019" : "2019",
-    "2018" : "2018",
-    "Finance" : "Finance",
-    "Tech" : "Tech",
-    "Diversity" : "Diversity",
-    "Eboard" : "Eboard"
+    "2020" : "ss4754+2020@columbia.edu",
+    "2019" : "ss4754+2019@columbia.edu",
+    "2018" : "ss4754+2018@columbia.edu",
+    "Finance" : "ss4754+finance@columbia.edu",
+    "Tech" : "ss4754+tech@columbia.edu",
+    "Diversity" : "ss4754+div@columbia.edu",
+    "Eboard" : "esc@columbia.edu"
 }
 
 var emailRequest = function(data) {
     const to = data.escRecipient;
-    const from = "";
+    const from = data.applicantEmail;
     const subject = "Cosponsorship Request";
     const body = data.proposal;
+    const cc = "esc@columbia.edu"
 
-    // Meteor.call('sendEmail', to, from, subject, body);
+    Meteor.call('sendEmailWithCC', to, from, subject, body, cc);
 }
 
 var submitForm = function(template) {
@@ -53,7 +54,6 @@ var submitForm = function(template) {
     if( $('.ui.form').form('is valid') ) {
         const data = $('.ui.form').form('get values');
         emailRequest(data);
-        console.log(data);
         Template.instance().modalHeader.set("Success!");
         Template.instance().modalMessage.set("You should hear from us soon.");
         $('.ui.modal').modal({inverted: true}).modal('show');

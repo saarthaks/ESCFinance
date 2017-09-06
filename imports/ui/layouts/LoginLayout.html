@@ -1,9 +1,17 @@
 <template name="LoginLayout">
-    <div class="ui fullscreen modal">
-        <div class="header">{{modalHeader}}</div>
+    <div class="ui fullscreen modal successful">
+        <div class="header">Success!</div>
         <div class="content">
             <p>
-                {{modalMessage}}
+                You have successfully logged in.
+            </p>
+        </div>
+    </div>
+    <div class="ui fullscreen modal errored">
+        <div class="header">Error</div>
+        <div class="content">
+            <p>
+                Please try again.
             </p>
         </div>
     </div>

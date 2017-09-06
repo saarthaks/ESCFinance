@@ -17,6 +17,36 @@ var loginRules = {
     }
 };
 
+var setErrorModal = function() {
+    console.log(Template.instance().modalHeader.get());
+    console.log(Template.instance().modalMessage.get());
+    console.log('setting error');
+    Template.instance().modalHeader.set("Error");
+    Template.instance().modalMessage.set("Please try again.");
+    console.log(Template.instance().modalHeader.get());
+    console.log(Template.instance().modalMessage.get());
+    $('.ui.modal').modal({inverted: true}).modal('show');
+    Meteor.setTimeout(() => {
+        $('.ui.modal').modal('hide');
+    }, 1000);
+}
+
+var setSuccessModal = function() {
+    // console.log(Template.instance().modalHeader.get());
+    // console.log(Template.instance().modalMessage.get());
+    console.log('setting success');
+    // Template.instance().modalHeader.set("Success!");
+    // Template.instance().modalMessage.set("You have successfully logged in.");
+    // console.log(Template.instance().modalHeader.get());
+    // console.log(Template.instance().modalMessage.get());
+    $('.ui.fullscreen.modal.successful').modal({inverted: true}).modal('show');
+    Meteor.setTimeout(() => {
+        $('.ui.modal').modal('hide');
+        const redirect = !!Session.get("redirectURI") ? Session.get("redirectURI") : "/";
+        FlowRouter.go(redirect);
+    }, 1000);
+}
+
 var loginAction = function() {
     $('.ui.form').form({ fields: loginRules, inline: true });
 
@@ -24,30 +54,25 @@ var loginAction = function() {
         const data = $('.ui.form').form('get values');
         Meteor.loginWithPassword(data.loginUsername, data.loginPassword, function(error) {
             if (error) {
-                //alert of some kind
-                Template.instance().modalHeader.set("Error");
-                Template.instance().modalMessage.set("Please try again.");
-                $('.ui.modal').modal({inverted: true}).modal('show');
-                Meteor.setTimeout(() => {
-                    $('.ui.modal').modal('hide');
-                    FlowRouter.go(Template.instance().redirect.get());
-                }, 1000);
-
-                $('.ui.form').form('clear');
                 console.log(error);
-            } else {
-                // modal for success + some routing with FlowRouter.go('/')
-                Template.instance().modalHeader.set("Success!");
-                Template.instance().modalMessage.set("You have successfully logged in.");
-                $('.ui.modal').modal({inverted: true}).modal('show');
+                
+                $('.ui.fullscreen.modal.errored').modal({inverted: true}).modal('show');
                 Meteor.setTimeout(() => {
                     $('.ui.modal').modal('hide');
-                    FlowRouter.go(Template.instance().redirect.get());
+                }, 1000);
+                $('.ui.form').form('clear');
+
+            } else {
+                $('.ui.fullscreen.modal.successful').modal({inverted: true}).modal('show');
+                Meteor.setTimeout(() => {
+                    $('.ui.modal').modal('hide');
+                    const redirect = !!Session.get("redirectURI") ? Session.get("redirectURI") : "/";
+                    FlowRouter.go(redirect);
                 }, 1000);
 
             }
         });
-        $('.ui.form').form('clear');
+
     } else {
         $('.ui.form').form('validate rules');
     }
@@ -56,11 +81,6 @@ var loginAction = function() {
 Template.LoginLayout.onCreated( function() {
     this.modalHeader = new ReactiveVar('');
     this.modalMessage = new ReactiveVar('');
-
-    this.redirect = Session.get("redirectURI");
-    if (!this.redirect) {
-        this.redirect = '/';
-    }
 })
 
 Template.LoginLayout.events({

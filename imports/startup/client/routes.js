@@ -34,8 +34,6 @@ FlowRouter.wait();
 Tracker.autorun(() => {
     console.log('autorunning');
     if (userCollection.ready() && !FlowRouter._initialized) {
-        console.log(Meteor.user());
-        console.log(Meteor.users.find().fetch());
         FlowRouter.initialize();
     }
 })
@@ -120,6 +118,7 @@ jccc.route('/admin-console', {
     triggersEnter: [(context, redirect) => {
         if (!Meteor.user() || !Meteor.user().isAdmin) {
             Session.set('redirectURI', '/jccc/admin-console');
+            console.log(Session.get('redirectURI'));
             redirect('/login');
         }
     }],

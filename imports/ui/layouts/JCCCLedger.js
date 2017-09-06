@@ -60,7 +60,6 @@ Template.JCCCLedger.helpers({
 
             totaledEntries.push(data);
         }
-        console.log(totaledEntries);
         Template.instance().CCApproved.set(lastCCApp);
         Template.instance().CCReceipted.set(lastCCRec);
         Template.instance().SEASApproved.set(lastSEASApp);

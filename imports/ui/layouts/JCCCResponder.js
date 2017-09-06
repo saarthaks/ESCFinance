@@ -18,7 +18,6 @@ Template.JCCCResponder.events({
     'click .item[name=pending-request]': function(e, template) {
         Template.instance().responding.set(true);
         Template.instance().appInView.set(e.target.id);
-        console.log(e.target.id);
     }
 });
 
@@ -33,4 +32,3 @@ Template.JCCCResponder.helpers({
         return JCCCRequests.findOne({ _id: Template.instance().appInView.get() });
     }
 });
-

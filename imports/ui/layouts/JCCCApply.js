@@ -200,15 +200,6 @@ var sendEmails = function(data) {
     Meteor.call('sendEmail', to, from, subject, body);
 }
 
-var testEmail = function() {
-    const to = "saarthak.sarup+esctest@gmail.com";
-    const from = "ss4754@columbia.edu";
-    const subject = "TEST";
-    const body = "EMPTY";
-
-    Meteor.call('sendEmail', to, from, subject, body);
-}
-
 var submitForm = function(template) {
     $('.ui.form').form({ fields: validationRules, inline: true });
 
@@ -254,9 +245,7 @@ Template.JCCCApplyLayout.onCreated( function() {
 
 Template.JCCCApplyLayout.events({
     'submit form': function(e, template) {
-        console.log(JCCCRequests.find({}).fetch());
         e.preventDefault();
-        //testEmail();
         submitForm(template);
         return false;
     }
@@ -271,7 +260,6 @@ Template.JCCCApplyLayout.helpers({
     },
     formIsLive() {
         if (!Template.instance().formIsLive.get()) {
-            console.log('checking');
             const entry = JCCCSettingsDB.findOne();
             Template.instance().formIsLive.set(!!entry && entry.formStatus);
         }
