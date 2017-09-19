@@ -151,6 +151,12 @@ JCCCRequests.attachSchema(JCCCRequests.schema);
 
 export { JCCCRequests };
 
+if (Meteor.isServer) {
+    Meteor.publish('jccc-requests', function JCCCRequestsPublication() {
+        return JCCCRequests.find();
+    });
+}
+
 Meteor.methods({
     'jccc-requests.insert'(formData) {
         JCCCRequests.schema.validate(formData);
@@ -158,6 +164,8 @@ Meteor.methods({
     },
     'jccc-requests.update'(requestId, formData) {
         JCCCRequests.update({ _id: requestId }, { $set: formData });
+    },
+    'jccc-requests.drop'() {
+        JCCCRequests.remove({});
     }
 });
-

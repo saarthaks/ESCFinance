@@ -23,12 +23,21 @@ JCCCSettingsDB.attachSchema(JCCCSettingsDB.schema);
 
 export { JCCCSettingsDB };
 
+if (Meteor.isServer) {
+    Meteor.publish('jccc-settings', function JCCCSettingsPublication() {
+        return JCCCSettingsDB.find();
+    });
+}
+
 Meteor.methods({
     'jccc-settings.insert'(formData) {
         JCCCSettingsDB.schema.validate(formData);
         JCCCSettingsDB.insert(formData);
     },
     'jccc-settings.update'(settingId, formData) {
-        JCCCRequests.update({ _id: settingId }, { $set: formData });
+        JCCCSettingsDB.update({ _id: settingId }, { $set: formData });
+    },
+    'jccc-settings.drop'() {
+        JCCCSettingsDB.remove({});
     }
 });

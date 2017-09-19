@@ -4,6 +4,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import './JCCCViewer.js';
 import './JCCCResponder.js';
 import './JCCCUpdater.js';
+import './JCCCLedger.js';
 import './JCCCSettings.js';
 
 Template.JCCCAdminLayout.onCreated( function() {
@@ -23,6 +24,5 @@ Template.JCCCAdminLayout.events({
         cTab.addClass('active');
 
         Template.instance().currentTab.set(cTab.data('template'));
-        console.log(Template.instance().currentTab.get());
     }
 });

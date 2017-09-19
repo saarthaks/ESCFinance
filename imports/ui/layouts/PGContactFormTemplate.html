@@ -1,0 +1,62 @@
+<template name="PGContactForm">
+    <h3 class="ui dividing header">Team Members' Info</h3>
+    <p>
+        Note that one person must be the designated primary contact for communication with ESC. This individual does not necessarily have to be the team leader, but must act as a reliable liaison between the council and all team members. While we suggest a team of around {{rec_num}}, please use these additional boxes if your project demands a greater number of collaborators.
+    </p>
+    {{#each num in contact_num}}
+        <h4 class="ui dividing header">Member #{{one_num num}}</h4>
+        <div class="four fields">
+            <div class="field">
+                <label>Name</label>
+                <input type="text" name="contactField" id="{{name num}}">
+            </div>
+            <div class="field">
+                <label>UNI</label>
+                <input type="text" name="contactField" id="{{uni num}}">
+            </div>
+            <div class="field">
+                <label>Email</label>
+                <input type="text" name="contactField" id="{{email num}}">
+            </div>
+            <div class="field">
+                <label>Phone Number</label>
+                <input type="text" name="contactField" id="{{phone num}}" placeholder="(123) 456-7890">
+            </div>
+        </div>
+        <div class="three fields">
+            <div class="field">
+                <label>School</label>
+                <div class="ui fluid selection dropdown" id="{{school num}}">
+                    <input type="hidden" name="contactField" id="{{school num}}">
+                    <div class="default text">Select one</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item" data-value="SEAS">SEAS</div>
+                        <div class="item" data-value="CC">CC</div>
+                        <div class="item" data-value="BC">Barnard</div>
+                        <div class="item" data-value="GS">GS</div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>Class</label>
+                <div class="ui fluid selection dropdown" id="{{class num}}">
+                    <input type="hidden" name="contactField" id="{{class num}}">
+                    <div class="default text">Select one</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item" data-value="2018">2018</div>
+                        <div class="item" data-value="2019">2019</div>
+                        <div class="item" data-value="2020">2020</div>
+                        <div class="item" data-value="2021">2021</div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>Major</label>
+                <input type="text" name="contactField" id="{{major num}}" placeholder="Undecided">
+            </div>
+        </div>
+        <div class="ui hidden divider"></div>
+    {{/each}}
+</template>

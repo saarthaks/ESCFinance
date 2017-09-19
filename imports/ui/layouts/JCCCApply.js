@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import { JCCCRequests } from '../../api/jccc-requests.js';
@@ -179,7 +180,7 @@ var sendEmails = function(data) {
     var body = data.studentGroup + " requests $" + data.requestedAmount + " for the following: \n\n" + JSON.stringify(data)
 
     Meteor.call('sendEmail', to, from, subject, body);
-    
+
     //send additional information to student group POC
     to = data.contactEmail;
     subject = "JCCC Application Additional Information";
@@ -199,15 +200,6 @@ var sendEmails = function(data) {
     Meteor.call('sendEmail', to, from, subject, body);
 }
 
-var testEmail = function() {
-    const to = "saarthak.sarup+esctest@gmail.com";
-    const from = "ss4754@columbia.edu";
-    const subject = "TEST";
-    const body = "EMPTY";
-
-    Meteor.call('sendEmail', to, from, subject, body);
-}
-
 var submitForm = function(template) {
     $('.ui.form').form({ fields: validationRules, inline: true });
 
@@ -217,28 +209,67 @@ var submitForm = function(template) {
         try {
             Meteor.call('jccc-requests.insert', insertData);
             sendEmails(data);
+
+            Template.instance().modalHeader.set("Success!");
+            Template.instance().modalMessage.set("You should receive an email with your next steps from us soon.");
+            $('.ui.modal').modal({inverted: true}).modal('show');
+            Meteor.setTimeout(() => {
+                $('.ui.modal').modal('hide');
+                FlowRouter.go('/jccc/results');
+            }, 2000);
+
             $('.ui.form').form('clear');
         } catch (e) {
             console.log(e);
-            // TODO:
-            // Modal should say there was an error and the applicant should
-            // contact XXX@XXX.XXX
+
+            Template.instance().modalHeader.set("Error");
+            Template.instance().modalMessage.set("There was an error processing your application. Please reach out to treasurers@columbia.edu with your issue.");
+            $('.ui.modal').modal({inverted: true}).modal('show');
+            Meteor.setTimeout(() => {
+                $('.ui.modal').modal('hide');
+                FlowRouter.go('/jccc/results');
+            }, 5000);
         }
     } else {
         $('.ui.form').form('validate rules');
+        $(document).scrollTop(0);
     }
 }
 
+Template.JCCCApplyLayout.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
+    Meteor.subscribe('jccc-requests');
+    const entry = JCCCSettingsDB.findOne();
+    this.formIsLive = new ReactiveVar(!!entry && entry.formStatus);
+    this.modalHeader = new ReactiveVar("");
+    this.modalMessage = new ReactiveVar("");
+})
+
 Template.JCCCApplyLayout.events({
     'submit form': function(e, template) {
-        console.log(JCCCRequests.find({}).fetch());
         e.preventDefault();
-        //testEmail();
         submitForm(template);
         return false;
     }
 });
 
+Template.JCCCApplyLayout.helpers({
+    modalHeader: function() {
+        return Template.instance().modalHeader.get();
+    },
+    modalMessage: function() {
+        return Template.instance().modalMessage.get();
+    },
+    formIsLive() {
+        if (!Template.instance().formIsLive.get()) {
+            const entry = JCCCSettingsDB.findOne();
+            Template.instance().formIsLive.set(!!entry && entry.formStatus);
+        }
+
+        return Template.instance().formIsLive.get();
+    }
+})
+
 Template.JCCCApplyLayout.rendered = function() {
-    this.$('.ui.selection.dropdown').dropdown();
+    this.$('#request-dropdown.ui.selection.dropdown').dropdown();
 }

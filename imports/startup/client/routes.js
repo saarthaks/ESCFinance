@@ -1,5 +1,8 @@
+import { Meteor } from 'meteor/meteor';
+import { Tracker } from 'meteor/tracker';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+import { Session } from 'meteor/session';
 
 import '../../ui/main.html';
 import '../../ui/layouts/MainLayout.html';
@@ -23,6 +26,17 @@ import '../../ui/layouts/PGLargeLayout.html';
 import '../../ui/layouts/PGHubLayout.html';
 import '../../ui/layouts/PGAdminLayout.html';
 import '../../ui/layouts/LoginLayout.html';
+
+const userCollection = Meteor.subscribe('userData');
+
+FlowRouter.wait();
+
+Tracker.autorun(() => {
+    console.log('autorunning');
+    if (userCollection.ready() && !FlowRouter._initialized) {
+        FlowRouter.initialize();
+    }
+})
 
 FlowRouter.route('/', {
     name: 'main',
@@ -49,7 +63,8 @@ fresources.route('/cosponsorship', {
 fresources.route('/library', {
     name: 'resource-library',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'LibraryLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'LibraryLayout'});
     }
 });
 
@@ -59,13 +74,15 @@ var fcu = FlowRouter.group({
 fcu.route('/', {
     name: 'fcu',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'FCULayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'FCULayout'});
     }
 });
 fcu.route('/results', {
     name: 'fcu-results',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'FCUResultsLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'FCUResultsLayout'});
     }
 });
 
@@ -98,6 +115,13 @@ jccc.route('/results', {
 });
 jccc.route('/admin-console', {
     name: 'jccc-admin',
+    triggersEnter: [(context, redirect) => {
+        if (!Meteor.user() || !Meteor.user().isAdmin) {
+            Session.set('redirectURI', '/jccc/admin-console');
+            console.log(Session.get('redirectURI'));
+            redirect('/login');
+        }
+    }],
     action() {
         BlazeLayout.render('MainLayout', {body: 'JCCCAdminLayout'});
     }
@@ -109,19 +133,22 @@ var cif = FlowRouter.group({
 cif.route('/', {
     name: 'cif',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'CIFLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'CIFLayout'});
     }
 });
 cif.route('/apply', {
     name: 'cif-apply',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'CIFApplyLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'CIFApplyLayout'});
     }
 });
 cif.route('/results', {
     name: 'cif-results',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'CIFResultsLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'CIFResultsLayout'});
     }
 });
 
@@ -132,43 +159,60 @@ var projectgrant = FlowRouter.group({
 projectgrant.route('/', {
     name: 'project-grant',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGLayout'});
     }
 });
 projectgrant.route('/small-application', {
     name: 'pg-small',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGSmallLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGSmallLayout'});
     }
 });
 projectgrant.route('/large-application', {
     name: 'pg-large',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGLargeLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGLargeLayout'});
     }
 });
 projectgrant.route('/past', {
     name: 'pg-past-projects',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGPastLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGPastLayout'});
     }
 });
 projectgrant.route('/current', {
     name: 'pg-current-projects',
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGCurrentLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGCurrentLayout'});
     }
 });
 projectgrant.route('/hub', {
     name: 'pg-hub',
+    triggersEnter: [(context, redirect) => {
+        if (!Meteor.user()) {
+            redirect('/login');
+        }
+    }],
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
     }
 });
 projectgrant.route('/admin-console', {
     name: 'pg-admin',
+    triggersEnter: [(context, redirect) => {
+        if (!Meteor.user() || !Meteor.user().isAdmin) {
+            redirect('/login');
+        }
+    }],
     action() {
-        BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
+        FlowRouter.go('/');
+        // BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
     }
 });
 FlowRouter.route('/login', {
@@ -178,3 +222,9 @@ FlowRouter.route('/login', {
     }
 });
 
+FlowRouter.notFound = {
+    action: function() {
+        FlowRouter.go('/');
+        console.log('route not found');
+    }
+}

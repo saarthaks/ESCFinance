@@ -1,0 +1,30 @@
+<template name="JCCCLedger">
+    <div class="ui header">JCCC Ledger</div>
+    <table class="ui celled table">
+        <thead>
+            <tr class="sixteen wide">
+                <th class="three wide">Date</th>
+                <th class="three wide">Name</th>
+                <th colspan="1">CC: ${{ccRemaining}}/${{ccReceiptRemaining}}</th>
+                <th colspan="1">SEAS: ${{seasRemaining}}/${{seasReceiptRemaining}}</th>
+                <th colspan="1">GS: ${{gsRemaining}}/${{gsReceiptRemaining}}</th>
+                <th colspan="1">BC: ${{bcRemaining}}/${{bcReceiptRemaining}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#if notEmpty}}
+                {{#each entry in entries}}
+                    {{> Template.dynamic template="JCCCLedgerEntry" data=entry}}
+                {{/each}}
+            {{else}}
+            <tr class="six wide center aligned">
+                <th>
+                    <br>
+                    There are no entries yet.
+                    <br><br>
+                </th>
+            </tr>
+            {{/if}}
+        </tbody>
+    </table>
+</template>

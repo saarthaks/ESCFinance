@@ -42,9 +42,11 @@ var updatePoc = function(template) {
             const insertData = {
                 "pocEmail": data.pocEmail,
                 "emailTag": data.emailTag,
-                "formStatus": true
+                "formStatus": false
             }
             Meteor.call('jccc-settings.insert', insertData);
+            Template.instance().pocEmail.set(data.pocEmail);
+            Template.instance().emailTag.set(data.emailTag);
         } else {
             const entryId = JCCCSettingsDB.findOne()._id;
             const updateData = {
@@ -52,7 +54,16 @@ var updatePoc = function(template) {
                 "emailTag": data.emailTag
             };
             Meteor.call('jccc-settings.update', entryId, updateData);
+            Template.instance().pocEmail.set(data.pocEmail);
+            Template.instance().emailTag.set(data.emailTag);
         }
+
+        Template.instance().modalHeader.set("Success!");
+        Template.instance().modalMessage.set("You have successfully updated the point of contact info.");
+        $('.ui.modal').modal({inverted: true}).modal('show');
+        Meteor.setTimeout(() => {
+            $('.ui.modal').modal('hide');
+        }, 1000);
         formElem.form('clear');
     } else {
         formElem.form('validate rules');
@@ -60,13 +71,22 @@ var updatePoc = function(template) {
 }
 
 var updateFormStatus = function(value) {
+    if (Template.instance().firstTime.get()) {
+        const insertData = {
+            "pocEmail": "d@mmy.com",
+            "emailTag": "dtag",
+            "formStatus": value
+        };
+        Meteor.call('jccc-settings.insert', insertData);
+        Template.instance().firstTime.set(false);
+    } else {
+        const entryId = JCCCSettingsDB.findOne()._id;
+        const updateData = {
+            "formStatus": value
+        };
+        Meteor.call('jccc-settings.update', entryId, updateData);
+    }
     Template.instance().formIsLive.set(value);
-    const entryId = JCCCSettingsDB.findOne()._id;
-    const updateData = {
-        "formStatus": value 
-    };
-    Meteor.call('jccc-settings.update', entryId, updateData);
-    console.log(JCCCSettingsDB.findOne().formStatus);
 }
 
 var initFinances = function(template) {
@@ -81,7 +101,9 @@ var initFinances = function(template) {
         const bcAmt = parseFloat(data.bcAllocation);
         const totalAmt = ccAmt + seasAmt + gsAmt + bcAmt;
         const insertData = {
-            "applicationID": "Initialize",
+            "date": new Date(),
+            "applicationID": "Deposit",
+            "applicationName": "Deposit",
             "totalTransaction": totalAmt,
             "ccTransaction": ccAmt,
             "seasTransaction": seasAmt,
@@ -89,7 +111,19 @@ var initFinances = function(template) {
             "bcTransaction": bcAmt,
             "receiptAmount": totalAmt
         };
+
         Meteor.call('jccc-finances.insert', insertData);
+        if (ccAmt > 0) { Template.instance().currentCC.set(ccAmt.toString()); }
+        if (seasAmt > 0) { Template.instance().currentSEAS.set(seasAmt.toString()); }
+        if (gsAmt > 0) { Template.instance().currentGS.set(gsAmt.toString()); }
+        if (bcAmt > 0) { Template.instance().currentBC.set(bcAmt.toString()); }
+
+        Template.instance().modalHeader.set("Success!");
+        Template.instance().modalMessage.set("You have successfully deposited new finances.");
+        $('.ui.modal').modal({inverted: true}).modal('show');
+        Meteor.setTimeout(() => {
+            $('.ui.modal').modal('hide');
+        }, 1000);
         formElem.form('clear');
     } else {
         formElem.form('validate rules');
@@ -97,14 +131,34 @@ var initFinances = function(template) {
 }
 
 Template.JCCCSettings.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
     const entry = JCCCSettingsDB.findOne();
     if (entry === undefined) {
-        this.formIsLive = new ReactiveVar(true);
+        this.formIsLive = new ReactiveVar(false);
         this.firstTime = new ReactiveVar(true);
+        this.pocEmail = new ReactiveVar('');
+        this.emailTag = new ReactiveVar('');
     } else {
         this.formIsLive = new ReactiveVar(entry.formStatus);
         this.firstTime = new ReactiveVar(false);
+        this.pocEmail = new ReactiveVar(entry.pocEmail==="d@mmy.com" ? '' : entry.pocEmail);
+        this.emailTag = new ReactiveVar(entry.emailTag==="dtag" ? '' : entry.emailTag);
     }
+    const lastDeposit = JCCCFinances.find({"applicationID": "Deposit"}, {sort: {'submitted': -1}}).fetch()[0];
+    if (lastDeposit === undefined) {
+        this.currentCC = new ReactiveVar('');
+        this.currentSEAS = new ReactiveVar('');
+        this.currentGS = new ReactiveVar('');
+        this.currentBC = new ReactiveVar('');
+    } else {
+        this.currentCC = new ReactiveVar(lastDeposit.ccTransaction.toString());
+        this.currentSEAS = new ReactiveVar(lastDeposit.seasTransaction.toString());
+        this.currentGS = new ReactiveVar(lastDeposit.gsTransaction.toString());
+        this.currentBC = new ReactiveVar(lastDeposit.bcTransaction.toString());
+    }
+
+    this.modalHeader = new ReactiveVar('');
+    this.modalMessage = new ReactiveVar('');
 });
 
 Template.JCCCSettings.events({
@@ -124,29 +178,34 @@ Template.JCCCSettings.events({
 });
 
 Template.JCCCSettings.helpers({
+    modalHeader: function() {
+        return Template.instance().modalHeader.get();
+    },
+    modalMessage: function() {
+        return Template.instance().modalMessage.get();
+    },
     currentPoc: function() {
-        return JCCCSettingsDB.findOne().pocEmail;
+        return Template.instance().pocEmail.get();
     },
     currentTag: function() {
-        return JCCCSettingsDB.findOne().emailTag;
+        return Template.instance().emailTag.get();
     },
     formStatus: function() {
         return Template.instance().formIsLive.get();
     },
     formStatusFormat: function() {
-        const str = Template.instance().formIsLive.get().toString();
-        return str.charAt(0).toUpperCase() + str.slice(1);
+        return Template.instance().formIsLive.get() ? 'Live' : 'Closed';
     },
     currentCC: function() {
-        return JCCCFinances.findOne({ "applicationID": "Initialize" }).ccTransaction.toString();
+        return Template.instance().currentCC.get();
     },
     currentSEAS: function() {
-        return JCCCFinances.findOne({ "applicationID": "Initialize" }).seasTransaction.toString();
+        return Template.instance().currentSEAS.get();
     },
     currentGS: function() {
-        return JCCCFinances.findOne({ "applicationID": "Initialize" }).gsTransaction.toString();
+        return Template.instance().currentGS.get();
     },
     currentBC: function() {
-        return JCCCFinances.findOne({ "applicationID": "Initialize" }).bcTransaction.toString();
-    },
+        return Template.instance().currentBC.get();
+    }
 });

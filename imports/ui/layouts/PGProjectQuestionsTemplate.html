@@ -1,0 +1,54 @@
+<template name="PGProjectQuestions">
+    <h3 class="ui dividing header">Project Proposal</h3>
+    <p>
+        Please answer the following questions to the best of your ability. Note that ESC expects all applicants to provide sound documentation in order to support these projections. <b>Upon completion of this form, you will be emailed links to two additional documents which you will need to complete--a budget spreadsheet and a powerpoint presentation.</b>
+        Only applicants with these documents completed will be considered for the grants.
+    </p>
+    <h4 class="ui dividing header">Basic Information</h4>
+    <div class="field">
+        <label>Project Name</label>
+        <input type="text" name="projectName" placeholder="Coolest ESC Project Ever">
+    </div>
+    <div class="two fields">
+        <div class="field">
+            <label>Projected Budget</label>
+            <div class="ui labeled input">
+                <div class="ui label">$</div>
+                <input type="text" name="requestedAmount" placeholder="100.00">
+            </div>
+        </div>
+        <div class="field">
+            <label>Projected Completion Date</label>
+            <input type="text" name="projectedCompletion" placeholder="April 1st">
+        </div>
+    </div>
+    <h4 class="ui dividing header">Project Details</h4>
+    <div class="field">
+        <label>Describe your project and its intended purpose.</label>
+        <textarea name="projectDescription"></textarea>
+    </div>
+    <div class="field">
+        <label>Describe all necessary materials and their indented use.</label>
+        <textarea name="necessaryMaterials"></textarea>
+    </div>
+    <div class="field">
+        <label>Describe how ESC funds will be used for this project.</label>
+        <textarea name="costBreakdown"></textarea>
+    </div>
+    <div class="field">
+        <label>Describe the timeline to completion.</label>
+        <textarea name="estimatedTimeline"></textarea>
+    </div>
+    <div class="field">
+        <label>Describe the overall feasibility of your project and any additional resources you may need.</label>
+        <textarea name="feasibility"></textarea>
+    </div>
+    <div class="field">
+        <label>Describe how this project will benefit Columbia Engineering and engineering spirit on campus.</label>
+        <textarea name="communityBenefit"></textarea>
+    </div>
+    <div class="field">
+        <label>Additional Information (risks, potential fallbacks, etc.)</label>
+        <textarea name="additionalInfo"></textarea>
+    </div>
+</template>

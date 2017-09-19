@@ -1,4 +1,5 @@
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import { ReactiveVar } from 'meteor/reactive-var'
 
 import './CosponsorshipLayout.html';
@@ -27,14 +28,39 @@ const validationRules = {
     }
 };
 
+const contacts = {
+    "2020" : "ss4754+2020@columbia.edu",
+    "2019" : "ss4754+2019@columbia.edu",
+    "2018" : "ss4754+2018@columbia.edu",
+    "Finance" : "ss4754+finance@columbia.edu",
+    "Tech" : "ss4754+tech@columbia.edu",
+    "Diversity" : "ss4754+div@columbia.edu",
+    "Eboard" : "esc@columbia.edu"
+}
+
+var emailRequest = function(data) {
+    const to = data.escRecipient;
+    const from = data.applicantEmail;
+    const subject = "Cosponsorship Request";
+    const body = data.proposal;
+    const cc = "esc@columbia.edu"
+
+    Meteor.call('sendEmailWithCC', to, from, subject, body, cc);
+}
+
 var submitForm = function(template) {
     $('.ui.form').form({ fields: validationRules, inline: true });
-    
+
     if( $('.ui.form').form('is valid') ) {
         const data = $('.ui.form').form('get values');
-        $('.ui.attached.message').addClass('positive');
-        template.helper_text.set("Hooray! You should hear from us soon.")
-        console.log(data);
+        emailRequest(data);
+        Template.instance().modalHeader.set("Success!");
+        Template.instance().modalMessage.set("You should hear from us soon.");
+        $('.ui.modal').modal({inverted: true}).modal('show');
+        Meteor.setTimeout(() => {
+            $('.ui.modal').modal('hide');
+            FlowRouter.go('/');
+        }, 2000);
         $('.ui.form').form('clear');
     } else {
         $('.ui.form').form('validate form');
@@ -42,12 +68,37 @@ var submitForm = function(template) {
 }
 
 Template.CosponsorshipLayout.onCreated(function() {
-    this.helper_text = new ReactiveVar("Fill out this form and we'll get in touch with you ASAP!");
+    this.modalHeader = new ReactiveVar("");
+    this.modalMessage = new ReactiveVar("");
 });
 
 Template.CosponsorshipLayout.helpers({
-    messageText: function() {
-        return Template.instance().helper_text.get();
+    modalHeader: function() {
+        return Template.instance().modalHeader.get();
+    },
+    modalMessage: function() {
+        return Template.instance().modalMessage.get();
+    },
+    email2020: function() {
+        return contacts["2020"];
+    },
+    email2019: function() {
+        return contacts["2019"];
+    },
+    email2018: function() {
+        return contacts["2018"];
+    },
+    emailFinance: function() {
+        return contacts["Finance"]
+    },
+    emailTech: function() {
+        return contacts["Tech"];
+    },
+    emailDiversity: function() {
+        return contacts["Diversity"];
+    },
+    emailEboard: function() {
+        return contacts["Eboard"];
     }
 });
 

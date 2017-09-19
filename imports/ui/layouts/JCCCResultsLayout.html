@@ -1,5 +1,5 @@
 <template name="JCCCResultsLayout">
-    <h2 class="ui dividing header">
+    <h2 class="ui center aligned header top">
         2017-2018 JCCC Results
     </h2>
     <div class="ui container">
@@ -16,9 +16,19 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each submission in submissions}}
-                    {{> Template.dynamic template="JCCCSubmissionTemplate" data=submission}}
-                {{/each}}
+                {{#if notEmpty}}
+                    {{#each submission in submissions}}
+                        {{> Template.dynamic template="JCCCSubmission" data=submission}}
+                    {{/each}}
+                {{else}}
+                <tr class="six wide center aligned">
+                    <th>
+                        <br>
+                        There are no submitted applications yet.
+                        <br><br>
+                    </th>
+                </tr>
+                {{/if}}
             </tbody>
             <tfoot>
             </tfoot>

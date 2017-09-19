@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { JCCCRequests } from '../../api/jccc-requests.js';
 import { JCCCSettingsDB } from '../../api/jccc-settings.js';
@@ -58,16 +59,23 @@ var decideApplication = function(data) {
 
 var emailDecision = function(data) {
     const to = Template.instance().data.pocEmail;
-    const from = JCCCSettingsDB.findOne().pocEmail;
+    const from = "Finance Committee <" + JCCCSettingsDB.findOne().pocEmail + ">";
     const subject = "JCCC Notification: " + data.responseAction;
     const body = data.emailBody;
 
     Meteor.call('sendEmail', to, from, subject, body);
 }
 
+var checkSums = function(data) {
+    const totalSum = parseFloat(data.ccFunding) + parseFloat(data.seasFunding) + parseFloat(data.gsFunding) + parseFloat(data.bcFunding);
+    return (totalSum == parseFloat(data.acceptedAmount));
+}
+
 var insertTransaction = function(data) {
     const financeInsert = {
+        "date": new Date,
         "applicationID": Template.instance().data._id,
+        "applicationName": Template.instance().data.name + ": " + Template.instance().data.eventName,
         "totalTransaction": parseFloat(data.acceptedAmount),
         "ccTransaction": !Template.instance().isConditional.get() ? parseFloat(data.ccFunding) : 0.0,
         "seasTransaction": !Template.instance().isConditional.get() ? parseFloat(data.seasFunding) : 0.0,
@@ -79,8 +87,6 @@ var insertTransaction = function(data) {
 }
 
 var submitForm = function(template) {
-    console.log(Template.instance().isAccepting.get());
-    console.log(Template.instance().isConditional.get());
     var rules = basicRules;
     if (Template.instance().isAccepting.get()) {
         rules = $.extend(rules, basicAcceptRules);
@@ -88,36 +94,63 @@ var submitForm = function(template) {
             rules = $.extend(rules, fullAcceptRules);
         }
     }
-    console.log(rules);
     $('.ui.form').form({ fields: rules, inline: true });
 
     if( $('.ui.form').form('is valid') ) {
         const data = $('.ui.form').form('get values');
-        try { 
+        try {
             decideApplication(data);
             emailDecision(data);
             if (Template.instance().isAccepting.get()) {
                 try {
+                    if (!Template.instance().isConditional.get() && !checkSums(data)) {
+                        Template.instance().modalHeader.set("Error");
+                        Template.instance().modalMessage.set("Your contributions do not add up to your total.");
+                        $('.ui.modal').modal({inverted: true}).modal('show');
+                        Meteor.setTimeout(() => {
+                            $('.ui.modal').modal('hide');
+                        }, 2000);
+                        throw Error("Check sum failed");
+                    }
                     insertTransaction(data);
-                    $('.ui.form').form('clear');
                 } catch (e) {
                     console.log(e);
                 }
             }
+            Template.instance().modalHeader.set("Success!");
+            Template.instance().modalMessage.set("Your decision has been recorded.");
+            $('.ui.modal').modal({inverted: true}).modal('show');
+            Meteor.setTimeout(() => {
+                $('.ui.modal').modal('hide');
+                FlowRouter.go('/jccc/admin-console');
+            }, 1000);
+
             $('.ui.form').form('clear');
         } catch (e) {
             console.log(e);
+
+            Template.instance().modalHeader.set("Error");
+            Template.instance().modalMessage.set("Your decision could not be processed at this time. Please try again later.");
+            $('.ui.modal').modal({inverted: true}).modal('show');
+            Meteor.setTimeout(() => {
+                $('.ui.modal').modal('hide');
+            }, 2000);
         }
 
-        console.log(data);
     } else {
         $('.ui.form').form('validate rules');
     }
 }
 
 Template.JCCCDecisionForm.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
+    Meteor.subscribe('jccc-requests');
+    Meteor.subscribe('jccc-finances');
+
     this.isAccepting = new ReactiveVar(false);
     this.isConditional = new ReactiveVar(false);
+    this.modalHeader = new ReactiveVar("");
+    this.modalMessage = new ReactiveVar("");
 });
 
 Template.JCCCDecisionForm.rendered = function() {
@@ -148,6 +181,12 @@ Template.JCCCDecisionForm.events({
 });
 
 Template.JCCCDecisionForm.helpers({
+    modalHeader: function() {
+        return Template.instance().modalHeader.get();
+    },
+    modalMessage: function() {
+        return Template.instance().modalMessage.get();
+    },
     name: function() {
         return Template.instance().data.name;
     },
