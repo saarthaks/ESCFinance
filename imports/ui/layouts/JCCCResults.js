@@ -6,6 +6,10 @@ import './JCCCSubmission.js';
 import './JCCCSubmissionTemplate.html';
 import './JCCCResultsLayout.html';
 
+Template.JCCCResultsLayout.onCreated( function() {
+    Meteor.subscribe('jccc-requests');
+})
+
 Template.JCCCResultsLayout.helpers({
     notEmpty() {
             return (JCCCRequests.find().count() > 0);

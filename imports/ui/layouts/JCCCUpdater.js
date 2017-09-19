@@ -6,6 +6,8 @@ import './JCCCUpdaterTemplate.html';
 import './JCCCUpdateForm.js';
 
 Template.JCCCUpdater.onCreated( function() {
+    Meteor.subscribe('jccc-requests');
+
     this.updating = new ReactiveVar(false);
     this.appInView = new ReactiveVar(undefined);
 });
@@ -18,7 +20,6 @@ Template.JCCCUpdater.events({
     'click .item[name=pending-update]': function(e, template) {
         Template.instance().updating.set(true);
         Template.instance().appInView.set(e.target.id);
-        console.log(e.target.id);
     }
 });
 
@@ -37,6 +38,3 @@ Template.JCCCUpdater.helpers({
         return JCCCRequests.findOne({ _id: Template.instance().appInView.get() });
     }
 });
-
-
-

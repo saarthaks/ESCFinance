@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+import { Session } from 'meteor/session';
 
 import '../../ui/main.html';
 import '../../ui/layouts/MainLayout.html';
@@ -33,8 +34,6 @@ FlowRouter.wait();
 Tracker.autorun(() => {
     console.log('autorunning');
     if (userCollection.ready() && !FlowRouter._initialized) {
-        console.log(Meteor.user());
-        console.log(Meteor.users.find().fetch());
         FlowRouter.initialize();
     }
 })
@@ -118,6 +117,8 @@ jccc.route('/admin-console', {
     name: 'jccc-admin',
     triggersEnter: [(context, redirect) => {
         if (!Meteor.user() || !Meteor.user().isAdmin) {
+            Session.set('redirectURI', '/jccc/admin-console');
+            console.log(Session.get('redirectURI'));
             redirect('/login');
         }
     }],

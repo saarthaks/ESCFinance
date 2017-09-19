@@ -59,7 +59,7 @@ var decideApplication = function(data) {
 
 var emailDecision = function(data) {
     const to = Template.instance().data.pocEmail;
-    const from = JCCCSettingsDB.findOne().pocEmail;
+    const from = "Finance Committee <" + JCCCSettingsDB.findOne().pocEmail + ">";
     const subject = "JCCC Notification: " + data.responseAction;
     const body = data.emailBody;
 
@@ -87,8 +87,6 @@ var insertTransaction = function(data) {
 }
 
 var submitForm = function(template) {
-    console.log(Template.instance().isAccepting.get());
-    console.log(Template.instance().isConditional.get());
     var rules = basicRules;
     if (Template.instance().isAccepting.get()) {
         rules = $.extend(rules, basicAcceptRules);
@@ -96,7 +94,6 @@ var submitForm = function(template) {
             rules = $.extend(rules, fullAcceptRules);
         }
     }
-    console.log(rules);
     $('.ui.form').form({ fields: rules, inline: true });
 
     if( $('.ui.form').form('is valid') ) {
@@ -106,7 +103,7 @@ var submitForm = function(template) {
             emailDecision(data);
             if (Template.instance().isAccepting.get()) {
                 try {
-                    if (!checkSums(data)) {
+                    if (!Template.instance().isConditional.get() && !checkSums(data)) {
                         Template.instance().modalHeader.set("Error");
                         Template.instance().modalMessage.set("Your contributions do not add up to your total.");
                         $('.ui.modal').modal({inverted: true}).modal('show');
@@ -140,13 +137,16 @@ var submitForm = function(template) {
             }, 2000);
         }
 
-        console.log(data);
     } else {
         $('.ui.form').form('validate rules');
     }
 }
 
 Template.JCCCDecisionForm.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
+    Meteor.subscribe('jccc-requests');
+    Meteor.subscribe('jccc-finances');
+
     this.isAccepting = new ReactiveVar(false);
     this.isConditional = new ReactiveVar(false);
     this.modalHeader = new ReactiveVar("");

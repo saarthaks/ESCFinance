@@ -3,6 +3,7 @@ import { Template } from 'meteor/templating';
 
 import { JCCCRequests } from '../../api/jccc-requests.js';
 import { JCCCFinances } from '../../api/jccc-finances.js';
+import { JCCCSettingsDB } from '../../api/jccc-settings.js';
 
 import './JCCCUpdateFormTemplate.html';
 
@@ -32,6 +33,15 @@ const validationRules = {
 var checkSums = function(data) {
     const totalSum = parseFloat(data.ccFunding) + parseFloat(data.seasFunding) + parseFloat(data.gsFunding) + parseFloat(data.bcFunding);
     return (totalSum == parseFloat(data.finalAmount));
+}
+
+var sendUpdateEmail = function(data) {
+    const to = Template.instance().data.pocEmail;
+    const from = "Finance Committee <" + JCCCSettingsDB.findOne().pocEmail + ">";
+    const subject = "JCCC Update";
+    const body = data.emailBody;
+
+    Meteor.call('sendEmail', to, from, subject, body);
 }
 
 var submitForm = function(elem) {
@@ -86,6 +96,9 @@ var submitForm = function(elem) {
             try {
                 Meteor.call('jccc-finances.updateByAppID', Template.instance().data._id, updateData);
 
+                if (Template.instance().isChanging.get()) {
+                    sendUpdateEmail(data);
+                }
                 Template.instance().modalHeader.set("Success!");
                 Template.instance().modalMessage.set("Your decision has been updated.");
                 $('.ui.modal').modal({inverted: true}).modal('show');
@@ -114,6 +127,10 @@ var submitForm = function(elem) {
 }
 
 Template.JCCCUpdateForm.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
+    Meteor.subscribe('jccc-finances');
+    Meteor.subscribe('jccc-requests');
+
     this.isReady = new ReactiveVar(false);
     this.isChanging = new ReactiveVar(false);
     this.isLogging = new ReactiveVar(false);
@@ -127,8 +144,6 @@ Template.JCCCUpdateForm.rendered = function() {
 
 Template.JCCCUpdateForm.events({
     'change [name=updateAction]': function(e, template) {
-        console.log('changed');
-        console.log(e.target.value);
         if (e.target.value.toLowerCase().includes('change')) {
             Template.instance().isReady.set(true);
             Template.instance().isLogging.set(false);
@@ -169,7 +184,6 @@ Template.JCCCUpdateForm.helpers({
         return Template.instance().isLogging.get();
     },
     approvedAmount: function() {
-        console.log(JCCCFinances.find({}).fetch());
         const entry = JCCCFinances.findOne({ applicationID: Template.instance().data._id });
         return entry.totalTransaction;
     }

@@ -14,5 +14,18 @@ Meteor.methods({
                 text: text
             });
         });
+    },
+    sendEmailWithCC(to, from, subject, text, cc) {
+        check([to, from, subject, text, cc], [String]);
+
+        Meteor.defer(() => {
+            Email.send({
+                to: to,
+                from: from,
+                subject: subject,
+                text: text,
+                cc: cc
+            });
+        });
     }
 });

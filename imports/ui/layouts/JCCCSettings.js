@@ -85,7 +85,6 @@ var updateFormStatus = function(value) {
             "formStatus": value
         };
         Meteor.call('jccc-settings.update', entryId, updateData);
-        console.log(JCCCSettingsDB.findOne().formStatus);
     }
     Template.instance().formIsLive.set(value);
 }
@@ -112,7 +111,7 @@ var initFinances = function(template) {
             "bcTransaction": bcAmt,
             "receiptAmount": totalAmt
         };
-        
+
         Meteor.call('jccc-finances.insert', insertData);
         if (ccAmt > 0) { Template.instance().currentCC.set(ccAmt.toString()); }
         if (seasAmt > 0) { Template.instance().currentSEAS.set(seasAmt.toString()); }
@@ -132,6 +131,7 @@ var initFinances = function(template) {
 }
 
 Template.JCCCSettings.onCreated( function() {
+    Meteor.subscribe('jccc-settings');
     const entry = JCCCSettingsDB.findOne();
     if (entry === undefined) {
         this.formIsLive = new ReactiveVar(false);

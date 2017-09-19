@@ -1,6 +1,8 @@
 import { Template } from 'meteor/templating';
 import { Meteor }  from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base'
+import { Accounts } from 'meteor/accounts-base';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { ReactiveVar } from 'meteor/reactive-var';
 
 import './LoginLayout.html';
 
@@ -22,23 +24,47 @@ var loginAction = function() {
         const data = $('.ui.form').form('get values');
         Meteor.loginWithPassword(data.loginUsername, data.loginPassword, function(error) {
             if (error) {
-                //alert of some kind
-                $('.ui.form').form('clear');
                 console.log(error);
+
+                $('.ui.fullscreen.modal.errored').modal({inverted: true}).modal('show');
+                Meteor.setTimeout(() => {
+                    $('.ui.modal').modal('hide');
+                }, 1000);
+                $('.ui.form').form('clear');
+
             } else {
-                // modal for success + some routing with FlowRouter.go('/')
-                console.log('login success');
+                $('.ui.fullscreen.modal.successful').modal({inverted: true}).modal('show');
+                Meteor.setTimeout(() => {
+                    $('.ui.modal').modal('hide');
+                    const redirect = !!Session.get("redirectURI") ? Session.get("redirectURI") : "/";
+                    FlowRouter.go(redirect);
+                }, 1000);
+
             }
         });
-        $('.ui.form').form('clear');
+
     } else {
         $('.ui.form').form('validate rules');
     }
 }
 
+Template.LoginLayout.onCreated( function() {
+    this.modalHeader = new ReactiveVar('');
+    this.modalMessage = new ReactiveVar('');
+})
+
 Template.LoginLayout.events({
     'click #login-button': function(e, template) {
         e.preventDefault();
         loginAction();
+    }
+})
+
+Template.LoginLayout.helpers({
+    modalHeader: function() {
+        return Template.instance().modalHeader.get();
+    },
+    modalMessage: function() {
+        return Template.instance().modalMessage.get();
     }
 })
