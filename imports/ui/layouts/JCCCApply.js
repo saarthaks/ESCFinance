@@ -188,11 +188,11 @@ var sendEmails = function(data) {
          + "Thank you for beginning the application for JCCC! There are still a few parts to the application, so please make sure you’ve completed the following instructions by Saturday at noon, to be considered in time.\n\n"
          + "Instructions: \n"
          + "1. Visit the following links to generate your budget template:\n"
-         + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1ZKnZHOTIjYitDcCLDU38x2HPNZGcOLgdWzVNnvU3Q30/copy\n"
+         + "https://docs.google.com/spreadsheets/d/1iOCkgwBLMdhrTHF65mdXTElVn5y2cMgcksrkysAFKyY/copy\n"
          + "2. Fill in the templates! If you have any questions, feel free to reach out to us at treasurers@columbia.edu and we will help as best we can.\n"
          + "3. Share the documents with us at treasurers@columbia.edu and with your club advisor.\n"
          + "4. Sign up for a presentation slot here:\n"
-         + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1cZcaCNRXHdtgDBiOrkeVho2H0JnuMJDcfa6ul0CZ0ug/edit?usp=sharing\n\n"
+         + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1TATaSjF1ku0G9bEtLsY9zQS4n6qs8KA7uhlttGUNCgE/edit?usp=sharing\n\n"
          + "Good luck, and we look forward to reviewing your application!\n\n"
          + "Best Regards,\n"
          + "JCCC\n";
