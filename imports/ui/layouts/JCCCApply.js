@@ -170,6 +170,11 @@ var parseResponse = function(data) {
     return insertData;
 }
 
+var enableDropdown = function() {
+    console.log('enabled');
+    $('#request-dropdown.ui.selection.dropdown').dropdown();
+}
+
 var sendEmails = function(data) {
     const adminSetting = JCCCSettingsDB.findOne();
     const from = "Finance Committee <" + adminSetting.pocEmail + ">";
@@ -250,6 +255,10 @@ Template.JCCCApplyLayout.events({
         e.preventDefault();
         submitForm(template);
         return false;
+    },
+    'click': function(e, template) {
+        console.log('clicked');
+        $('#request-dropdown.ui.selection.dropdown').dropdown();
     }
 });
 
@@ -269,7 +278,3 @@ Template.JCCCApplyLayout.helpers({
         return Template.instance().formIsLive.get();
     }
 })
-
-Template.JCCCApplyLayout.rendered = function() {
-    this.$('#request-dropdown.ui.selection.dropdown').dropdown();
-}
