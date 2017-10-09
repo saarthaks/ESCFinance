@@ -170,6 +170,11 @@ var parseResponse = function(data) {
     return insertData;
 }
 
+var enableDropdown = function() {
+    console.log('enabled');
+    $('#request-dropdown.ui.selection.dropdown').dropdown();
+}
+
 var sendEmails = function(data) {
     const adminSetting = JCCCSettingsDB.findOne();
     const from = "Finance Committee <" + adminSetting.pocEmail + ">";
@@ -183,21 +188,22 @@ var sendEmails = function(data) {
 
     //send additional information to student group POC
     to = data.contactEmail;
+    const cc = adminSetting.pocEmail;
     subject = "JCCC Application Additional Information";
     body = "Hi!\n\n"
          + "Thank you for beginning the application for JCCC! There are still a few parts to the application, so please make sure you’ve completed the following instructions by Saturday at noon, to be considered in time.\n\n"
          + "Instructions: \n"
          + "1. Visit the following links to generate your budget template:\n"
-         + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1ZKnZHOTIjYitDcCLDU38x2HPNZGcOLgdWzVNnvU3Q30/copy\n"
+         + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1QrxH6N8D-awlQHc7wkKfbz7mP3ELbJhlWnNFXR2byJQ/copy\n"
          + "2. Fill in the templates! If you have any questions, feel free to reach out to us at treasurers@columbia.edu and we will help as best we can.\n"
          + "3. Share the documents with us at treasurers@columbia.edu and with your club advisor.\n"
          + "4. Sign up for a presentation slot here:\n"
-         + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1cZcaCNRXHdtgDBiOrkeVho2H0JnuMJDcfa6ul0CZ0ug/edit?usp=sharing\n\n"
+         + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1TATaSjF1ku0G9bEtLsY9zQS4n6qs8KA7uhlttGUNCgE/edit?usp=sharing\n\n"
          + "Good luck, and we look forward to reviewing your application!\n\n"
          + "Best Regards,\n"
          + "JCCC\n";
 
-    Meteor.call('sendEmail', to, from, subject, body);
+    Meteor.call('sendEmailWithCC', to, from, subject, body, cc);
 }
 
 var submitForm = function(template) {
@@ -211,12 +217,12 @@ var submitForm = function(template) {
             sendEmails(data);
 
             Template.instance().modalHeader.set("Success!");
-            Template.instance().modalMessage.set("You should receive an email with your next steps from us soon.");
+            Template.instance().modalMessage.set("You should receive an email with your next steps from us soon. If you don't, please reach out to treasurers@columbia.edu.");
             $('.ui.modal').modal({inverted: true}).modal('show');
             Meteor.setTimeout(() => {
                 $('.ui.modal').modal('hide');
                 FlowRouter.go('/jccc/results');
-            }, 2000);
+            }, 5000);
 
             $('.ui.form').form('clear');
         } catch (e) {
@@ -250,6 +256,10 @@ Template.JCCCApplyLayout.events({
         e.preventDefault();
         submitForm(template);
         return false;
+    },
+    'click': function(e, template) {
+        console.log('clicked');
+        $('#request-dropdown.ui.selection.dropdown').dropdown();
     }
 });
 
@@ -269,7 +279,3 @@ Template.JCCCApplyLayout.helpers({
         return Template.instance().formIsLive.get();
     }
 })
-
-Template.JCCCApplyLayout.rendered = function() {
-    this.$('#request-dropdown.ui.selection.dropdown').dropdown();
-}
