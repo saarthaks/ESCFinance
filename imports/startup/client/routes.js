@@ -159,22 +159,22 @@ var projectgrant = FlowRouter.group({
 projectgrant.route('/', {
     name: 'project-grant',
     action() {
-        FlowRouter.go('/');
-        // BlazeLayout.render('MainLayout', {body: 'PGLayout'});
+        // FlowRouter.go('/');
+        BlazeLayout.render('MainLayout', {body: 'PGLayout'});
     }
 });
-projectgrant.route('/small-application', {
+projectgrant.route('/small', {
     name: 'pg-small',
     action() {
-        FlowRouter.go('/');
-        // BlazeLayout.render('MainLayout', {body: 'PGSmallLayout'});
+        // FlowRouter.go('/');
+        BlazeLayout.render('MainLayout', {body: 'PGSmallLayout'});
     }
 });
-projectgrant.route('/large-application', {
+projectgrant.route('/large', {
     name: 'pg-large',
     action() {
-        FlowRouter.go('/');
-        // BlazeLayout.render('MainLayout', {body: 'PGLargeLayout'});
+        // FlowRouter.go('/');
+        BlazeLayout.render('MainLayout', {body: 'PGLargeLayout'});
     }
 });
 projectgrant.route('/past', {
