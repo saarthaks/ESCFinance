@@ -40,8 +40,9 @@ var sendUpdateEmail = function(data) {
     const from = "Finance Committee <" + JCCCSettingsDB.findOne().pocEmail + ">";
     const subject = "JCCC Update";
     const body = data.emailBody;
+    const cc = JCCCSettingsDB.findOne().pocEmail;
 
-    Meteor.call('sendEmail', to, from, subject, body);
+    Meteor.call('sendEmailWithCC', to, from, subject, body, cc);
 }
 
 var submitForm = function(elem) {
