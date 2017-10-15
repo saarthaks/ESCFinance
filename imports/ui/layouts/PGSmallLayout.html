@@ -1,4 +1,12 @@
 <template name="PGSmallLayout">
+    <div class="ui fullscreen modal">
+        <div class="header">{{modalHeader}}</div>
+        <div class="content">
+            <p>
+                {{modalMessage}}
+            </p>
+        </div>
+    </div>
     <div class="ui container headless">
         <div class="three ui attached steps">
             <a class="active step" data-template="PGSmallRules" id="form-step">

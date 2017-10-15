@@ -1,4 +1,12 @@
 <template name="PGLargeLayout">
+    <div class="ui fullscreen modal">
+        <div class="header">{{modalHeader}}</div>
+        <div class="content">
+            <p>
+                {{modalMessage}}
+            </p>
+        </div>
+    </div>
     <div class="ui container headless">
         <div class="four ui attached steps">
             <a class="active step" data-template="PGLargeRules" id="form-step">
@@ -44,4 +52,6 @@
             </form>
         </div>
     </div>
+    <br>
+    <br>
 </template>
