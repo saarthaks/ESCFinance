@@ -120,14 +120,7 @@ var validateForm = function() {
         && !!formFields['phones'][0]
         && !!formFields['schools'][0]
         && !!formFields['class'][0]
-        && !!formFields['majors'][0]
-        && !!formFields['names'][1]
-        && !!formFields['unis'][1]
-        && !!formFields['emails'][1]
-        && !!formFields['phones'][1]
-        && !!formFields['schools'][1]
-        && !!formFields['class'][1]
-        && !!formFields['majors'][1]) {
+        && !!formFields['majors'][0]) {
 
             if (!!formFields['projectName']
                 && !!formFields['requestedAmount']
