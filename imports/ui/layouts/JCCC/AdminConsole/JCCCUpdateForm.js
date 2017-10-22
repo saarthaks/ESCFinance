@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-import { JCCCRequests } from '../../api/jccc-requests.js';
-import { JCCCFinances } from '../../api/jccc-finances.js';
-import { JCCCSettingsDB } from '../../api/jccc-settings.js';
+import { JCCCRequests } from '../../../../api/jccc-requests.js';
+import { JCCCFinances } from '../../../../api/jccc-finances.js';
+import { JCCCSettingsDB } from '../../../../api/jccc-settings.js';
 
 import './JCCCUpdateFormTemplate.html';
 
