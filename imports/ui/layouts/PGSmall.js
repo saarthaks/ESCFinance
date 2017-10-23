@@ -183,7 +183,7 @@ var sendEmails = function(formFields) {
          + "https://docs.google.com/presentation/d/16SeU_9bi50uQrdl9JLrMWQHZOCsQpkexTO1q_g7wSUU/copy\n"
          + "2. Share the documents with us at ss4754@columbia.edu as well as with the rest of your teammates.\n"
          + "3. Fill in the templates! If you have any questions, feel free to reach out to us at ss4754@columbia.edu and we will help as best we can.\n"
-         + "3. Share the documents with us at treasurers@columbia.edu and with your club advisor.\n"
+         + "3. Share the documents with us at ss4754@columbia.edu and with your club advisor.\n"
          + "4. Sign up for a presentation slot here:\n"
          + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1BDy05XKuAcDtB4BnWNoQ2W1aUXt07N5GD7TeFDl0BOo/edit?usp=sharing\n\n"
          + "Good luck, and we look forward to reviewing your application!\n\n"
