@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-import { JCCCSettingsDB } from '../../api/jccc-settings.js';
-import { JCCCFinances } from '../../api/jccc-finances.js';
+import { JCCCSettingsDB } from '../../../../api/jccc-settings.js';
+import { JCCCFinances } from '../../../../api/jccc-finances.js';
 
 import './JCCCSettingsTemplate.html';
 

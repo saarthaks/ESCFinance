@@ -2,9 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import { JCCCRequests } from '../../api/jccc-requests.js';
-import { JCCCSettingsDB } from '../../api/jccc-settings.js';
-import { JCCCFinances } from '../../api/jccc-finances.js';
+import { JCCCRequests } from '../../../../api/jccc-requests.js';
+import { JCCCSettingsDB } from '../../../../api/jccc-settings.js';
+import { JCCCFinances } from '../../../../api/jccc-finances.js';
 
 import './JCCCDecisionFormTemplate.html';
 

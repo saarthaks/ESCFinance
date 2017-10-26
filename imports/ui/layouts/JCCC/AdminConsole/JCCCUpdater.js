@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating';
 
-import { JCCCRequests } from '../../api/jccc-requests.js';
+import { JCCCRequests } from '../../../../api/jccc-requests.js';
 
 import './JCCCUpdaterTemplate.html';
 import './JCCCUpdateForm.js';

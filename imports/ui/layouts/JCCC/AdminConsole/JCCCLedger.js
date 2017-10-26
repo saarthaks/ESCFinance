@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating';
 
-import { JCCCFinances } from '../../api/jccc-finances.js';
-import { JCCCRequests } from '../../api/jccc-requests.js';
+import { JCCCFinances } from '../../../../api/jccc-finances.js';
+import { JCCCRequests } from '../../../../api/jccc-requests.js';
 
 import './JCCCLedgerTemplate.html';
 import './JCCCLedgerEntry.js';
