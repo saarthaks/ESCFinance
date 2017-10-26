@@ -45,9 +45,15 @@ Accounts.onCreateUser(function(options, user) {
     return user;
 })
 
+Meteor.users.allow({
+    update: function (userId, doc, fields, modifier) {
+        return true;
+    }
+});
+
 Meteor.methods({
     'accounts.dropPGTeams': function() {
-        console.log('dropping');
+        console.log('dropping pg teams');
         return Meteor.users.remove({});
     },
 });

@@ -5,7 +5,7 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 const PGBudgets = new Mongo.Collection('pg-budgets');
 
-const BudgetItem = new SimpleSchema({
+const BudgetItemSchema = new SimpleSchema({
     "itemName": {type: String, label: "Budget Item Name"},
     "websiteLink": {type: String, label: "Budget Item Link"},
     "distributor": {type: String, label: "Budget Item Distributor"},
@@ -21,8 +21,9 @@ PGBudgets.schema = new SimpleSchema({
         label: "PG Team ID"
     },
     "monthlyBudget": {
-        type: [[BudgetItem]],
-        label: "PG Monthly Budget"
+        type: Object,
+        label: "PG Monthly Budget",
+        blackbox: true
     },
     "amountSpent": {
         type: Number,
@@ -34,11 +35,19 @@ PGBudgets.schema = new SimpleSchema({
 PGBudgets.attachSchema(PGBudgets.schema);
 
 export { PGBudgets };
+export { BudgetItemSchema };
+
+if (Meteor.isServer) {
+    Meteor.publish('pg-budgets', function PGBudgetsPublication() {
+        return PGBudgets.find();
+    });
+}
 
 Meteor.methods({
     'pg-budgets.insert'(formData) {
         PGBudgets.schema.validate(formData);
         PGBudgets.insert(formData);
+        console.log('inserted');
     },
     'pg-budgets.update'(settingId, formData) {
         PGBudgets.update({ _id: settingId }, { $set: formData });

@@ -3,32 +3,90 @@
     <table class="ui celled table">
         <thead>
             <tr class="sixteen wide">
-                <th class="four wide center aligned">Item</th>
+                <th class="two wide center aligned">Item</th>
                 <th class="two wide center aligned">Link</th>
                 <th class="two wide center aligned">Distributor</th>
-                <th class="two wide center aligned">Unit Price</th>
-                <th class="two wide center aligned">Qty.</th>
-                <th class="two wide center aligned">Total Cost</th>
-                <th class="two wide center aligned">Shipping</th>
+                <th class="three wide center aligned">Unit Price</th>
+                <th class="one wide center aligned">Qty.</th>
+                <th class="three wide center aligned">Shipping</th>
+                <th class="three wide center aligned">Total Cost</th>
             </tr>
         </thead>
         <tbody>
-            {{#if notEmpty}}
+            {{#if monthIsFilled}}
                 {{#each entry in entries}}
                     {{> Template.dynamic template="PGBudgetEntry" data=entry}}
                 {{/each}}
             {{else}}
-            <tr class="sixteen wide center aligned">
-                <th class="center aligned">
-                    <br>
-                    <button id="add-entry" class="ui button">Add Item</button>
-                    <br><br>
-                </th>
-            </tr>
+                {{#if addingRow}}
+                {{else}}
+                    <tr class="twelve wide center aligned">
+                        <th>
+                            <br>
+                            There are no entries yet.
+                            <br><br>
+                        </th>
+                    </tr>
+                {{/if}}
+            {{/if}}
+            {{#if addingRow}}
+                <tr class="sixteen wide">
+                    <th>
+                        <div class="ui row input fluid">
+                            <input type="text" name="rowItem">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="ui row input fluid">
+                            <input type="text" name="rowLink">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="ui row input fluid">
+                            <input type="text" name="rowDistributor">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="ui row input fluid labeled">
+                            <div class="ui label">$</div>
+                            <input type="text" name="rowPrice">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="ui row input fluid">
+                            <input type="text" name="rowQuant">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="ui row input fluid labeled">
+                            <div class="ui label">$</div>
+                            <input type="text" name="rowShipping">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="ui row input fluid labeled">
+                            <div class="ui label">$</div>
+                            <input type="text" name="rowCost">
+                        </div>
+                    </th>
+                </tr>
             {{/if}}
         </tbody>
         <tfoot>
             <tr>
+                {{#if addingRow}}
+                    <th colspan="2" class="ui center aligned">
+                        <div class="ui buttons">
+                            <button id="delete-entry" class="ui negative button">Delete</button>
+                            <div class="or"></div>
+                            <button id="save-entry" class="ui positive button">Save</button>
+                        </div>
+                    </th>
+                {{else}}
+                    <th colspan="2" class="ui center aligned">
+                        <button id="add-entry" class="ui button">Add Item</button>
+                    </th>
+                {{/if}}
                 <th colspan="8">
                     <div class="ui right floated pagination menu">
                         <a class="page item" id="oct">Oct</a>
@@ -43,4 +101,11 @@
             </tr>
         </tfoot>
     </table>
+    {{#if hasError}}
+        <div class="ui message">
+            <p>
+                {{errorMessage}}
+            </p>
+        </div>
+    {{/if}}
 </template>
