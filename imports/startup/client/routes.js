@@ -193,26 +193,26 @@ projectgrant.route('/current', {
 });
 projectgrant.route('/hub', {
     name: 'pg-hub',
-    triggersEnter: [(context, redirect) => {
-        if (!Meteor.user()) {
-            redirect('/login');
-        }
-    }],
+    // triggersEnter: [(context, redirect) => {
+    //     if (!Meteor.user()) {
+    //         redirect('/login');
+    //     }
+    // }],
     action() {
-        FlowRouter.go('/');
-        // BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
+        // FlowRouter.go('/');
+        BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
     }
 });
 projectgrant.route('/admin-console', {
     name: 'pg-admin',
-    triggersEnter: [(context, redirect) => {
-        if (!Meteor.user() || !Meteor.user().isAdmin) {
-            redirect('/login');
-        }
-    }],
+    // triggersEnter: [(context, redirect) => {
+    //     if (!Meteor.user() || !Meteor.user().isAdmin) {
+    //         redirect('/login');
+    //     }
+    // }],
     action() {
-        FlowRouter.go('/');
-        // BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
+        // FlowRouter.go('/');
+        BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
     }
 });
 FlowRouter.route('/login', {
