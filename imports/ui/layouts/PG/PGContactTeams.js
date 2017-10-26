@@ -1,3 +1,3 @@
 import { Template } from 'meteor/templating';
 
-import './PGOrderTemplate.html';
+import './PGContactTeamsTemplate.html';

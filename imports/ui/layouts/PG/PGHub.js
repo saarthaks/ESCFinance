@@ -4,6 +4,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import './PGHubLayout.html';
 import './PGBudgetViewer.js';
 import './PGOrderRequest.js';
+import './PGContactAdmin.js';
 import './PGTeamSettings.js';
 
 Template.PGHubLayout.onCreated( function() {

@@ -2,8 +2,9 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import './PGAdminLayout.html';
-import './PGOrder.js';
+import './PGRequests.js';
 import './PGReview.js';
+import './PGContactTeams.js';
 import './PGSettings.js';
 
 Template.PGAdminLayout.onCreated( function() {

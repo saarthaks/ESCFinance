@@ -1,14 +1,15 @@
 <template name="PGHubLayout">
     <div class="ui container headless">
         <div class="ui grid">
-            <div class="three wide column">
+            <div class="two wide column">
                 <div class="ui vertical fluid tabular menu">
                     <a data-template="PGBudgetViewer" class="item active" id="admin-tab">Review Budget</a>
                     <a data-template="PGOrderRequest" class="item" id="admin-tab">Order Parts</a>
+                    <a data-template="PGContactAdmin" class="item" id="admin-tab">Contact Admin</a>
                     <a data-template="PGTeamSettings" class="item" id="admin-tab">Settings</a>
                 </div>
             </div>
-            <div class="thirteen wide stretched column">
+            <div class="fourteen wide stretched column">
                 <div class="ui segment">
                     {{> Template.dynamic template=tab}}
                 </div>
