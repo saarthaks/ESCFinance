@@ -30,7 +30,7 @@ var updatePassword = function(template) {
         }, 1000);
         formElem.form('clear');
     } else {
-        formElem.form('valudate rules');
+        formElem.form('validate rules');
     }
 }
 

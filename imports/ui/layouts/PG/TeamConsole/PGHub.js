@@ -8,7 +8,7 @@ import './PGContactAdmin.js';
 import './PGTeamSettings.js';
 
 Template.PGHubLayout.onCreated( function() {
-    this.currentTab = new ReactiveVar("PGOrder");
+    this.currentTab = new ReactiveVar("PGBudgetViewer");
 });
 
 Template.PGHubLayout.helpers({
