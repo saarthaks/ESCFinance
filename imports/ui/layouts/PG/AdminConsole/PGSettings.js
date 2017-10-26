@@ -22,6 +22,26 @@ Template.PGSettings.onCreated( function() {
     this.addingUser = new ReactiveVar(false);
 })
 
+var sendSuccessEmail = function(team_data) {
+    const admin = Meteor.user().emails[0].address;
+    const from = "ESC Finance Committee <" + admin + ">";
+
+    //send account information
+    const to = team_data.teamEmail;
+    const cc = admin;
+    subject = "Welcome to the ESC Project Grant Program!";
+    body = "Hi!\n\n"
+         + "Welcome to the ESC Project Grants! Below are your team's login default credentials, which can be updated once you sign in at the link below:\n"
+         + "http://www.escfinances.com/project-grant/hub\n\n"
+         + "Username: " + team_data.teamName + "\n"
+         + "Password: " + team_data.teamName + "\n\n"
+         + "Once you have logged in, don't forget to update your budget!\n\n"
+         + "Best Regards,\n"
+         + "ESC Finance\n";
+
+    Meteor.call('sendEmailWithCC', to, from, subject, body, cc);
+}
+
 var addUser = function() {
     const formElem = $('.ui.form#add-user-form');
     formElem.form({ fields: newUserRules, inline: true });
@@ -31,7 +51,7 @@ var addUser = function() {
         const userId = Accounts.createUser({
             username: data.teamName,
             email: data.teamEmail,
-            password: "teampassword",
+            password: data.teamName,
             allocation: data.teamAllocation,
             isAdmin: false,
             hasBudget: false
@@ -39,7 +59,7 @@ var addUser = function() {
             if (error) {
                 console.log("Error: " + error.reason);
             } else {
-
+                sendSuccessEmail(data);
                 console.log('register success');
             }
         });

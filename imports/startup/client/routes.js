@@ -23,8 +23,8 @@ import '../../ui/layouts/PG/PGPastLayout.html';
 import '../../ui/layouts/PG/PGCurrentLayout.html';
 import '../../ui/layouts/PG/Applications/PGSmallLayout.html';
 import '../../ui/layouts/PG/Applications/PGLargeLayout.html';
-import '../../ui/layouts/PG/PGHubLayout.html';
-import '../../ui/layouts/PG/PGAdminLayout.html';
+import '../../ui/layouts/PG/TeamConsole/PGHubLayout.html';
+import '../../ui/layouts/PG/AdminConsole/PGAdminLayout.html';
 import '../../ui/layouts/LoginLayout.html';
 
 const userCollection = Meteor.subscribe('userData');

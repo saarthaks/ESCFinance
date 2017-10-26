@@ -14,6 +14,19 @@ Meteor.startup(() => {
 
         console.log("New admin created");
     }
+
+    if ( Meteor.users.find().count() === 1) {
+        Accounts.createUser({
+            username: 'PGAdmin',
+            email: 'ss4754+pg@columbia.edu',
+            password: 'password',
+            isAdmin: true,
+            hasBudget: false,
+            allocation: 0
+        });
+
+        console.log("New pg admin created");
+    }
 })
 
 

@@ -1,0 +1,25 @@
+<template name="PGTeamSettings">
+    <div class="ui fullscreen modal">
+        <div class="header">{{modalHeader}}</div>
+        <div class="content">
+            <p>
+                {{modalMessage}}
+            </p>
+        </div>
+    </div>
+    <div class="ui header">Update Team Settings</div>
+    <form class="ui form raised segment" id="update-password">
+        <h4 class="ui dividing header">Change Team Password</h4>
+        <div class="two fields">
+            <div class="field">
+                <label>Old Password</label>
+                <input type="text" name="oldPassword">
+            </div>
+            <div class="field">
+                <label>New Password</label>
+                <input type="text" name="newPassword">
+            </div>
+        </div>
+        <button type="submit" id="update-password" class="ui submit button">Update</button>
+    </form>
+</template>
