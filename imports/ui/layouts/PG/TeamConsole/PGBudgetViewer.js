@@ -84,10 +84,54 @@ var saveNewEntry = function() {
             "monthlyBudget": budget
         };
         Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
-        Template.instance().addingRow.set(false);
+        return true;
     } else {
-        Template.instance().errorMessage.set("Oops, looks like you've left field(s) blank.")
+        Template.instance().errorMessage.set("Oops, looks like you've left field(s) blank.");
+        return false;
     }
+}
+
+var editEntry = function(idx) {
+    const entry = {
+        'itemName' : $('input[name="rowItem"]').val(),
+        'websiteLink' : $('input[name="rowLink"]').val(),
+        'distributor' : $('input[name="rowDistributor"]').val(),
+        'unitPrice' : parseFloat($('input[name="rowPrice"]').val()),
+        'quantity' : parseInt($('input[name="rowQuant"]').val()),
+        'shippingCost' : parseFloat($('input[name="rowShipping"]').val()),
+        'cost' : parseFloat($('input[name="rowCost"]').val())
+    };
+
+    if (validateEntry(entry)) {
+        const teamID = Meteor.userId();
+        const budgetEntry = PGBudgets.find( {'teamID': teamID} ).fetch()[0];
+        var budget = budgetEntry['monthlyBudget'];
+        budget[Template.instance().currentPage.get()][idx] = entry;
+
+        const budgetUpdate = {
+            "monthlyBudget": budget
+        };
+        Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
+        return true;
+    } else {
+        Template.instance().errorMessage.set("Oops, looks like you've left field(s) blank.");
+        return false;
+    }
+}
+
+var removeEntry = function(entryData) {
+    const idx = entryData['idx'];
+
+    const teamID = Meteor.userId();
+    const budgetEntry = PGBudgets.find( {'teamID': teamID} ).fetch()[0];
+    var budget = budgetEntry['monthlyBudget'];
+
+    budget[Template.instance().currentPage.get()].splice(idx, 1);
+    const budgetUpdate = {
+        "monthlyBudget": budget
+    };
+    Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
+    return true;
 }
 
 Template.PGBudgetViewer.onCreated( function() {
@@ -97,22 +141,54 @@ Template.PGBudgetViewer.onCreated( function() {
     this.errorMessage = new ReactiveVar('');
 })
 
+Template.PGBudgetViewer.onDestroyed( function() {
+    Session.set('save-button', false);
+});
+
 Template.PGBudgetViewer.events({
     'click a.page.item': function(e, template) {
-        Template.instance().currentPage.set($(e.target).attr('id'));
+        if (Session.get('save-button')) {
+            Template.instance().errorMessage.set("Please save before changing pages.");
+        } else {
+            Template.instance().currentPage.set($(e.target).attr('id'));
+        }
+
     },
     'click #add-entry': function(e, template) {
+        Session.set('save-button', true);
         addNewEntry();
-        console.log('adding');
     },
     'click #delete-entry': function(e, template) {
-        Template.instance().addingRow.set(false);
         Template.instance().errorMessage.set('');
+        const editData = Session.get('editing');
+        if (!editData) {
+            Template.instance().addingRow.set(false);
+            Session.set('save-button', false);
+        } else {
+            if (removeEntry(editData)) {
+                Session.set('save-button', false)
+                Session.set('editing', null);
+                Session.set('isEditing', null);
+            }
+        }
     },
     'click #save-entry': function(e, template) {
         Template.instance().errorMessage.set('');
-        saveNewEntry();
-        console.log('saving');
+        const editData = Session.get('editing');
+        console.log(editData);
+        if (!editData) {
+            if (saveNewEntry()) {
+                Template.instance().addingRow.set(false);
+                Session.set('save-button', false);
+            }
+        } else {
+            const idx = Session.get('isEditing');
+            if (editEntry(idx)) {
+                Session.set('save-button', false)
+                Session.set('editing', null);
+                Session.set('isEditing', null);
+            }
+        }
     }
 });
 
@@ -133,6 +209,9 @@ Template.PGBudgetViewer.helpers({
     addingRow: function() {
         return Template.instance().addingRow.get();
     },
+    saveButton: function() {
+        return Session.get('save-button');
+    },
     hasError: function() {
         return !!Template.instance().errorMessage.get();
     },
@@ -142,7 +221,11 @@ Template.PGBudgetViewer.helpers({
     entries: function() {
         const teamID = Meteor.user()._id;
         const currentPage = Template.instance().currentPage.get();
-        const budget = PGBudgets.find( {'teamID': teamID} ).fetch()[0]['monthlyBudget'];
+        var budget = PGBudgets.find( {'teamID': teamID} ).fetch()[0]['monthlyBudget'];
+        for (i = 0; i < budget[currentPage].length; i++) {
+            budget[currentPage][i]['idx'] = i.toString();
+            budget[currentPage][i]['currentPage'] = currentPage;
+        }
         return budget[currentPage];
     }
 })

@@ -1,11 +1,54 @@
 <template name="PGBudgetEntry">
-    <tr>
-        <td>{{itemName}}</td>
-        <td>{{websiteLink}}</td>
-        <td>{{distributor}}</td>
-        <td>${{unitPrice}}</td>
-        <td>{{quantity}}</td>
-        <td>${{shippingCost}}</td>
-        <td>${{cost}}</td>
-    </tr>
+    {{#if isEditing}}
+        <tr class="sixteen wide">
+            <th>
+                <div class="ui row input fluid">
+                    <input type="text" name="rowItem" value="{{itemName}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid">
+                    <input type="text" name="rowLink" value="{{websiteLink}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid">
+                    <input type="text" name="rowDistributor" value="{{distributor}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid labeled">
+                    <div class="ui label">$</div>
+                    <input type="text" name="rowPrice" value="{{unitPrice}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid">
+                    <input type="text" name="rowQuant" value="{{quantity}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid labeled">
+                    <div class="ui label">$</div>
+                    <input type="text" name="rowShipping" value="{{shippingCost}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid labeled">
+                    <div class="ui label">$</div>
+                    <input type="text" name="rowCost" value="{{cost}}">
+                </div>
+            </th>
+        </tr>
+    {{else}}
+        <tr id="{{currentPage}}-{{idx}}">
+            <td id="{{currentPage}}-{{idx}}">{{itemName}}</td>
+            <td id="{{currentPage}}-{{idx}}">{{websiteLink}}</td>
+            <td id="{{currentPage}}-{{idx}}">{{distributor}}</td>
+            <td id="{{currentPage}}-{{idx}}">${{unitPrice}}</td>
+            <td id="{{currentPage}}-{{idx}}">{{quantity}}</td>
+            <td id="{{currentPage}}-{{idx}}">${{shippingCost}}</td>
+            <td id="{{currentPage}}-{{idx}}">${{cost}}</td>
+        </tr>
+    {{/if}}
 </template>
