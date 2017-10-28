@@ -13,6 +13,33 @@ const passwordRules = {
     }
 }
 
+const addressRules = {
+    firstName: {
+        identifier: 'firstName',
+        rules: [{ type: 'empty', prompt: "Please enter your first name" }]
+    },
+    lastName: {
+        identifier: 'lastName',
+        rules: [{ type: 'empty', prompt: "Please enter your last name" }]
+    },
+    streetAddress: {
+        identifier: 'streetAddress',
+        rules: [{ type: 'empty', prompt: "Please enter the street address" }]
+    },
+    city: {
+        identifier: 'city',
+        rules: [{ type: 'empty', prompt: "Please enter the city" }]
+    },
+    state: {
+        identifier: 'state',
+        rules: [{ type: 'empty', prompt: "Please enter the state" }]
+    },
+    zipcode: {
+        identifier: 'zipcode',
+        rules: [{ type: 'empty', prompt: "Please enter the zipcode" }]
+    }
+}
+
 var updatePassword = function(template) {
     const formElem = $('.ui.form#update-password');
     formElem.form({ fields: passwordRules, inline: true });
@@ -24,6 +51,25 @@ var updatePassword = function(template) {
         Accounts.changePassword(oldPassword, newPassword);
         Template.instance().modalHeader.set("Success!");
         Template.instance().modalMessage.set("You have successfully changed your password.");
+        $('.ui.modal').modal({inverted: true}).modal('show');
+        Meteor.setTimeout(() => {
+            $('.ui.modal').modal('hide');
+        }, 1000);
+        formElem.form('clear');
+    } else {
+        formElem.form('validate rules');
+    }
+}
+
+var updateAddress = function(template) {
+    const formElem = $('.ui.form#update-address');
+    formElem.form({ fields: passwordRules, inline: true });
+
+    if ( formElem.form('is valid')) {
+        const data = formElem.form('get values');
+        //TODO: update address
+        Template.instance().modalHeader.set("Success!");
+        Template.instance().modalMessage.set("You have successfully changed your address.");
         $('.ui.modal').modal({inverted: true}).modal('show');
         Meteor.setTimeout(() => {
             $('.ui.modal').modal('hide');
@@ -49,6 +95,11 @@ Template.PGTeamSettings.events({
         e.preventDefault();
         updateEmail(template);
         return false;
+    },
+    'submit form#update-address' : function(e, template) {
+        e.preventDefault();
+        updateAddress(template);
+        return false;
     }
 });
 
@@ -59,4 +110,25 @@ Template.PGTeamSettings.helpers({
     modalMessage: function() {
         return Template.instance().modalMessage.get();
     },
+    firstName: function() {
+        return '';
+    },
+    lastName: function() {
+        return '';
+    },
+    streetAddress: function() {
+        return "70 Morningside Dr."
+    },
+    mailAddress: function() {
+        return "#### Columbia Student Mail"
+    },
+    city: function() {
+        return '';
+    },
+    state: function() {
+        return '';
+    },
+    zipcode: function() {
+        return '';
+    }
 });
