@@ -1,5 +1,12 @@
 <template name="PGBudgetViewer">
     <div class="ui header">Project Budget: {{budgetMonth}}</div>
+    {{#if hasError}}
+        <div class="ui message">
+            <p>
+                {{errorMessage}}
+            </p>
+        </div>
+    {{/if}}
     <table class="ui celled table">
         <thead>
             <tr class="sixteen wide">
@@ -101,11 +108,12 @@
             </tr>
         </tfoot>
     </table>
-    {{#if hasError}}
-        <div class="ui message">
-            <p>
-                {{errorMessage}}
-            </p>
+    <h4 class="ui header">
+        <div class="left aligned">
+            Month Total: ${{monthTotal}}
         </div>
-    {{/if}}
+        <div class="right aligned">
+            Project Total: ${{projectTotal}}
+        </div>
+    </h4>
 </template>

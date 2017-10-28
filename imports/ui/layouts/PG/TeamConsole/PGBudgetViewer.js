@@ -227,5 +227,32 @@ Template.PGBudgetViewer.helpers({
             budget[currentPage][i]['currentPage'] = currentPage;
         }
         return budget[currentPage];
+    },
+    monthTotal: function() {
+        var total = 0;
+        const teamID = Meteor.user()._id;
+        const currentPage = Template.instance().currentPage.get();
+        if (Meteor.user().hasBudget) {
+            const budget = PGBudgets.find( {'teamID': teamID} ).fetch()[0]['monthlyBudget'][currentPage];
+            for (i = 0; i < budget.length; i++) {
+                total = total + budget[i]['cost'];
+            }
+        }
+        return total;
+    },
+    projectTotal: function() {
+        var total = 0;
+        const teamID = Meteor.user()._id;
+        const currentPage = Template.instance().currentPage.get();
+        if (Meteor.user().hasBudget) {
+            const monthlyBudget = PGBudgets.find( {'teamID': teamID} ).fetch()[0]['monthlyBudget'];
+            const budget = Object.values(monthlyBudget);
+            for (i = 0; i < budget.length; i++) {
+                total = total + budget[i].reduce((acc, entry) => {
+                    return acc + entry['cost'];
+                }, 0);
+            }
+        }
+        return total;
     }
 })

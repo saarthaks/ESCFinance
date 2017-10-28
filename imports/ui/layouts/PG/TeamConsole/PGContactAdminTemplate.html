@@ -1,5 +1,16 @@
 <template name="PGContactAdmin">
-    <p>
-        Contact admin here
-    </p>
+    <div class="ui header">Contact ESC Finance</div>
+    <form class="ui form segment" id="contact-form">
+        <div class="field">
+            <label>Subject</label>
+            <div class="ui input">
+                <input type="text" name="emailSubject">
+            </div>
+        </div>
+        <div class="field">
+            <label>Body</label>
+            <textarea name="emailBody" placeholder="How can we help you?"></textarea>
+        </div>
+        <button type="submit" id="submit-email" class="ui submit button">Send</button>
+    </form>
 </template>
