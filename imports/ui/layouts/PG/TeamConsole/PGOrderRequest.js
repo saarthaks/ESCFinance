@@ -2,6 +2,7 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import { PGBudgets } from '../../../../api/pg-budgets.js';
+import { PGRequests } from '../../../../api/pg-requests.js';
 
 import './PGOrderRequestTemplate.html';
 
@@ -22,7 +23,7 @@ const validationRules = {
 
 var updateRequestList = function(parts) {
     var requests = [];
-    const team = Meteor.user();
+    const team = Template.instance().team.get();
     const budget = PGBudgets.find( {'teamID': team._id} ).fetch()[0]['monthlyBudget'];
     for (i = 0; i < parts.length; i++) {
         const month = parts[i].slice(0,3);
@@ -33,12 +34,56 @@ var updateRequestList = function(parts) {
     Template.instance().requestList.set(requests);
 }
 
+var buildRequest = function(team, formData, part) {
+    var request = {
+        'fbLink': formData.fbLink,
+        'teamID': team._id,
+        'itemName': part.itemName,
+        'websiteLink': part.websiteLink,
+        'distributor': part.distributor,
+        'unitPrice': part.unitPrice,
+        'quantity': part.quantity,
+        'cost': part.cost,
+        'shippingCost': !!part.shippingCost ? part.shippingCost : 0.0
+    };
+
+    return request;
+}
+
+var sendRequestEmail = function(data) {
+    //TODO: finish email sending
+    const to = '';
+    const from = '';
+    const subject = "Project Grant Order Request";
+    const body = "Heads up!\n\n"
+        + "A new request has been placed by " + data.name + ". "
+        + "This request is for " + data.quantity + " parts for a total "
+        + "of $" + data.total + ". \n\n";
+
+    // Meteor.call('sendEmail', to, from, subject, body);
+}
+
 var submitForm = function(elem) {
     elem.form({ fields: validationRules, inline: true });
     if(elem.form('is valid')) {
         const data = elem.form('get values');
+        const team = Template.instance().team.get();
 
-        //TODO: add requests to pg-requests-db
+        const parts = Template.instance().requestList.get();
+        var total = 0;
+        for (i = 0; i < parts.length; i++) {
+            const requestInsert = buildRequest(team, data, parts[i]);
+            Meteor.call('pg-requests.insert', requestInsert);
+            total = total + parts[i].cost;
+        }
+
+        const messageData = {
+            'name': team.username,
+            'quantity': parts.length,
+            'total': total
+        };
+        sendRequestEmail(messageData);
+        //TODO: add requests to pg-requests
         //TODO: send email notifying that Team wishes to order parts
         elem.form('clear');
     } else {
@@ -48,6 +93,8 @@ var submitForm = function(elem) {
 
 Template.PGOrderRequest.onCreated( function() {
     Meteor.subscribe('pg-budgets');
+    Meteor.subscribe('pg-requests');
+    this.team = new ReactiveVar(Meteor.user());
     this.monthInView = new ReactiveVar(undefined);
     this.requestList = new ReactiveVar([]);
 });
@@ -80,7 +127,7 @@ Template.PGOrderRequest.events({
 Template.PGOrderRequest.helpers({
     budgetItems: function() {
         const month = Template.instance().monthInView.get();
-        const team = Meteor.user()
+        const team = Template.instance().team.get()
         if (month) {
             if (team.hasBudget) {
                 const budget = PGBudgets.find( {'teamID': team._id} ).fetch()[0]['monthlyBudget'][month];

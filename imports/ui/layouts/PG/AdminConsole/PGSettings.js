@@ -30,8 +30,8 @@ var sendSuccessEmail = function(team_data) {
     //send account information
     const to = team_data.teamEmail;
     const cc = admin;
-    subject = "Welcome to the ESC Project Grant Program!";
-    body = "Hi!\n\n"
+    const subject = "Welcome to the ESC Project Grant Program!";
+    const body = "Hi!\n\n"
          + "Welcome to the ESC Project Grants! Below are your team's login default credentials, which can be updated once you sign in at the link below:\n"
          + "http://www.escfinances.com/project-grant/hub\n\n"
          + "Username: " + team_data.teamName + "\n"
