@@ -67,7 +67,8 @@ var updateAddress = function(template) {
 
     if ( formElem.form('is valid')) {
         const data = formElem.form('get values');
-        //TODO: update address
+        const teamId = Meteor.userId();
+        Meteor.users.update({_id: teamId}, { $set: {'address': data} });
         Template.instance().modalHeader.set("Success!");
         Template.instance().modalMessage.set("You have successfully changed your address.");
         $('.ui.modal').modal({inverted: true}).modal('show');
@@ -111,24 +112,31 @@ Template.PGTeamSettings.helpers({
         return Template.instance().modalMessage.get();
     },
     firstName: function() {
-        return '';
+        const user = Meteor.user();
+        return user.address ? user.address.firstName : '';
     },
     lastName: function() {
-        return '';
+        const user = Meteor.user();
+        return user.address ? user.address.lastName : '';
     },
     streetAddress: function() {
-        return "70 Morningside Dr."
+        const user = Meteor.user();
+        return user.address ? user.address.streetAddress : "70 Morningside Dr.";
     },
     mailAddress: function() {
-        return "#### Columbia Student Mail"
+        const user = Meteor.user();
+        return (user.address && user.address.mailAddress) ? user.address.mailAddress : "#### Columbia Student Mail"
     },
     city: function() {
-        return '';
+        const user = Meteor.user();
+        return user.address ? user.address.city : '';
     },
     state: function() {
-        return '';
+        const user = Meteor.user();
+        return user.address ? user.address.state : '';
     },
     zipcode: function() {
-        return '';
+        const user = Meteor.user();
+        return user.address ? user.address.zipcode : '';
     }
 });

@@ -20,7 +20,8 @@ var newUserRules = {
 
 Template.PGSettings.onCreated( function() {
     this.addingUser = new ReactiveVar(false);
-})
+    this.currentTeams = new ReactiveVar(Roles.getUsersInRole('pgteam').fetch());
+});
 
 var sendSuccessEmail = function(team_data) {
     const admin = Meteor.user().emails[0].address;
@@ -35,7 +36,7 @@ var sendSuccessEmail = function(team_data) {
          + "http://www.escfinances.com/project-grant/hub\n\n"
          + "Username: " + team_data.teamName + "\n"
          + "Password: " + team_data.teamName + "\n\n"
-         + "Once you have logged in, don't forget to update your budget!\n\n"
+         + "Once you have logged in, don't forget to update shipping address and budget!\n\n"
          + "Best Regards,\n"
          + "ESC Finance\n";
 
@@ -52,14 +53,16 @@ var addUser = function() {
             username: data.teamName,
             email: data.teamEmail,
             password: data.teamName,
+            roles: ['pgteam'],
+            address: null,
             allocation: data.teamAllocation,
-            isAdmin: false,
             hasBudget: false
         }, function(error) {
             if (error) {
                 console.log("Error: " + error.reason);
             } else {
                 sendSuccessEmail(data);
+                Template.instance().currentTeams.set(Roles.getUsersInRole('pgteam').fetch());
                 console.log('register success');
             }
         });
@@ -72,18 +75,19 @@ var addUser = function() {
 
 var dropPGTeams = function() {
     const remaining = Meteor.call('accounts.dropPGTeams');
+    Template.instance().currentTeams.set(Roles.getUsersInRole('pgteam').fetch());
     console.log("Remaining teams: " + remaining);
 }
 
 Template.PGSettings.helpers({
     displayUsers: function() {
-        return (Meteor.users.find({ isAdmin: false }).count() > 0);
+        return (Template.instance().currentTeams.get().length > 0);
     },
     addingUser: function() {
         return Template.instance().addingUser.get();
     },
     teams: function() {
-        return Meteor.users.find({ isAdmin: false }).fetch();
+        return Template.instance().currentTeams.get();
     },
     primaryEmail: function(team) {
         return team.emails[0].address.toString();

@@ -1,13 +1,15 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 Meteor.startup(() => {
     if ( Meteor.users.find().count() === 0) {
-        Accounts.createUser({
+        id = Accounts.createUser({
             username: 'ESCAdmin',
             email: 'ss4754@columbia.edu',
             password: 'password',
-            isAdmin: true,
+            roles: ['jcccadmin'],
+            address: null,
             hasBudget: false,
             allocation: 0
         });
@@ -20,7 +22,8 @@ Meteor.startup(() => {
             username: 'PGAdmin',
             email: 'ss4754+pg@columbia.edu',
             password: 'password',
-            isAdmin: true,
+            roles: ['pgadmin'],
+            address: null,
             hasBudget: false,
             allocation: 0
         });
@@ -32,11 +35,12 @@ Meteor.startup(() => {
 
 Accounts.onCreateUser(function(options, user) {
     user.primaryEmail = options.email;
-    user.isAdmin = options.isAdmin;
+    user.roles = options.roles;
+    user.address = options.address;
     user.hasBudget = options.hasBudget;
     user.allocation = options.allocation;
 
-    if (!user.isAdmin) {
+    if (Roles.userIsInRole(user._id, 'pgteam')) {
         Meteor.setTimeout(function() {
             console.log(user._id);
             Accounts.sendVerificationEmail(user._id);
@@ -53,14 +57,15 @@ Meteor.users.allow({
 
 Meteor.methods({
     'accounts.dropPGTeams': function() {
-        console.log('dropping pg teams');
+        console.log('dropping all accounts');
+        //TODO: make this only remove pgteams
         return Meteor.users.remove({});
     },
 });
 
 Meteor.publish('userData', function() {
     return Meteor.users.find({}, {
-        fields: { primaryEmail: 1, isAdmin: 1, hasBudget: 1, allocation: 1 }
+        fields: { username: 1, primaryEmail: 1, roles: 1, address: 1, hasBudget: 1, allocation: 1 }
     });
     // if (this.userId) {
     //     return Meteor.users.find({ _id: this.userId }, {
