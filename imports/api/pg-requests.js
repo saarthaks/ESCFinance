@@ -9,7 +9,7 @@ PGRequests.schema = new SimpleSchema({
         type: String,
         label: "Request FB Link"
     },
-    "teamID": {
+    "teamName": {
         type: String,
         label: "Request Team ID"
     },

@@ -57,7 +57,11 @@ var validateEntry = function(entry) {
         && (entry.quantity > 0)
         && (entry.cost > 0)) {
 
-        return true;
+        if (entry.unitPrice*entry.quantity + entry.shippingCost === entry.cost) {
+            return true;
+        } else {
+            return undefined;
+        }
     } else {
         return false;
     }
@@ -73,8 +77,11 @@ var saveNewEntry = function() {
         'shippingCost' : parseFloat($('input[name="rowShipping"]').val()),
         'cost' : parseFloat($('input[name="rowCost"]').val())
     };
+    entry.shippingCost = !!entry.shippingCost ? entry.shippingCost : 0.0;
 
-    if (validateEntry(entry)) {
+    const isValid = validateEntry(entry);
+    if (isValid === true) {
+
         const teamID = Meteor.userId();
         const budgetEntry = PGBudgets.find( {'teamID': teamID} ).fetch()[0];
         var budget = budgetEntry['monthlyBudget'];
@@ -85,8 +92,11 @@ var saveNewEntry = function() {
         };
         Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
         return true;
-    } else {
+    } else if (isValid === false) {
         Template.instance().errorMessage.set("Oops, looks like you've left field(s) blank.");
+        return false;
+    } else if (isValid === undefined) {
+        Template.instance().errorMessage.set("Oops, looks like your costs don't add up.");
         return false;
     }
 }

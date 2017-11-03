@@ -37,7 +37,7 @@ var updateRequestList = function(parts) {
 var buildRequest = function(team, formData, part) {
     var request = {
         'fbLink': formData.fbLink,
-        'teamID': team._id,
+        'teamName': team.username,
         'itemName': part.itemName,
         'websiteLink': part.websiteLink,
         'distributor': part.distributor,

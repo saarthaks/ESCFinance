@@ -17,7 +17,7 @@ const BudgetItemSchema = new SimpleSchema({
 
 PGBudgets.schema = new SimpleSchema({
     "teamID": {
-        type: String, 
+        type: String,
         label: "PG Team ID"
     },
     "monthlyBudget": {

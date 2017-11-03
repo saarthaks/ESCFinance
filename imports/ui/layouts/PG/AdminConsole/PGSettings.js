@@ -55,7 +55,7 @@ var addUser = function() {
             password: data.teamName,
             roles: ['pgteam'],
             address: null,
-            allocation: data.teamAllocation,
+            allocation: parseFloat(data.teamAllocation),
             hasBudget: false
         }, function(error) {
             if (error) {
