@@ -1,4 +1,6 @@
 import { Template } from 'meteor/templating';
+import { ReactiveVar } from 'meteor/reactive-var';
+import { Roles } from 'meteor/alanning:roles';
 
 import './PGContactAdminTemplate.html';
 
@@ -14,13 +16,14 @@ const validationRules = {
 };
 
 var sendEmail = function(data) {
-    //TODO: finish email sending
-    const to = '';
-    const from = Meteor.user().emails[0].address;
+    const admin = Roles.getUsersInRole('pgadmin').fetch()[0];
+    const user = Meteor.user();
+    const to = "ESC Finance Committee <" + admin.primaryEmail + ">";
+    const from = user.username + " <" + user.primaryEmail + ">";
     const subject = data.emailSubject;
     const body = data.emailBody;
 
-    // Meteor.call('sendEmail', to, from, subject, body);
+    Meteor.call('sendEmail', to, from, subject, body);
 }
 
 var submitForm = function(elem) {
@@ -29,16 +32,38 @@ var submitForm = function(elem) {
     if(elem.form('is valid')) {
         const data = elem.form('get values');
         sendEmail(data);
+        Template.instance().modalHeader.set("Success!");
+        Template.instance().modalMessage.set("Your email has been sent!");
+        $('.ui.modal').modal({inverted: true}).modal('show');
+        Meteor.setTimeout(() => {
+            $('.ui.modal').modal('hide');
+            Template.instance().modalHeader.set(false);
+            Template.instance().modalMessage.set(false);
+        }, 2000);
         elem.form('clear');
     } else {
         elem.form('validate form');
     }
 }
 
+Template.PGContactAdmin.onCreated( function() {
+    this.modalHeader = new ReactiveVar(false);
+    this.modalMessage = new ReactiveVar(false);
+})
+
 Template.PGContactAdmin.events({
     'submit form': function(e, template) {
         e.preventDefault();
         submitForm( $('.ui.form') );
         return false;
+    }
+})
+
+Template.PGContactAdmin.helpers({
+    'modalHeader': function() {
+        return Template.instance().modalHeader.get();
+    },
+    'modalMessage': function() {
+        return Template.instance().modalMessage.get();
     }
 })

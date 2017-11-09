@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { Roles } from 'meteor/alanning:roles';
 
 import { PGBudgets } from '../../../../api/pg-budgets.js';
 import { PGRequests } from '../../../../api/pg-requests.js';
@@ -54,16 +55,19 @@ var buildRequest = function(team, formData, part) {
 }
 
 var sendRequestEmail = function(data) {
-    //TODO: finish email sending
-    const to = '';
-    const from = '';
+    const admin = Roles.getUsersInRole('pgadmin').fetch()[0];
+    const user = Meteor.user();
+    console.log(user);
+    const to = "ESC Finance Committee <" + admin.primaryEmail + ">";
+    const from = user.username + " <" + user.primaryEmail + ">";
+
     const subject = "Project Grant Order Request";
     const body = "Heads up!\n\n"
         + "A new request has been placed by " + data.name + ". "
         + "This request is for " + data.quantity + " items for a total "
         + "of $" + data.total + ". \n\n";
 
-    // Meteor.call('sendEmail', to, from, subject, body);
+    Meteor.call('sendEmail', to, from, subject, body);
 }
 
 var submitForm = function(elem) {
@@ -101,9 +105,11 @@ var submitForm = function(elem) {
             'total': total
         };
         sendRequestEmail(messageData);
-        //TODO: add requests to pg-requests
-        //TODO: send email notifying that Team wishes to order parts
+
         elem.form('clear');
+        Meteor.setTimeout(() => {
+            Session.set('newTab', 'PGBudgetViewer');
+        }, 500);
     } else {
         elem.form('validate rules');
     }

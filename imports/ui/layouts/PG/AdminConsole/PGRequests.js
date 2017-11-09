@@ -8,13 +8,6 @@ import { PGRequests } from '../../../../api/pg-requests.js';
 import './PGRequestEntry.js';
 import './PGRequestsTemplate.html';
 
-Tracker.autorun(() => {
-    if (Session.equals('shouldUpdate', true)) {
-        updateRequests();
-        Session.set('shouldUpdate', false);
-    }
-})
-
 var getRequests = function() {
     console.log('updating');
     const requests = PGRequests.find({ 'complete' : false }, { sort: {'distributor': 1} }).fetch()
@@ -121,7 +114,10 @@ Template.PGRequests.onCreated( function() {
 });
 
 Template.PGRequests.events({
-
+    'click button': function(e, template) {
+        console.log('button clicked');
+        updateRequests();
+    }
 });
 
 Template.PGRequests.helpers({

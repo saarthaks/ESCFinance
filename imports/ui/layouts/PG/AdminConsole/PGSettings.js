@@ -18,9 +18,24 @@ var newUserRules = {
     }
 }
 
+var loadTeams = function() {
+    const teamAccounts = Roles.getUsersInRole('pgteam').fetch();
+    console.log(teamAccounts);
+    var teams = [];
+    for (i = 0; i < teamAccounts.length; i++) {
+        teams.push({
+            'username' : teamAccounts[i].username,
+            'primaryEmail' : teamAccounts[i].primaryEmail,
+            'allocation' : teamAccounts[i].allocation,
+            'hasBudget' : teamAccounts[i].hasBudget.toString()
+        });
+    }
+    return teams;
+}
+
 Template.PGSettings.onCreated( function() {
     this.addingUser = new ReactiveVar(false);
-    this.currentTeams = new ReactiveVar(Roles.getUsersInRole('pgteam').fetch());
+    this.currentTeams = new ReactiveVar(loadTeams());
 });
 
 var sendSuccessEmail = function(team_data) {
@@ -49,23 +64,18 @@ var addUser = function() {
 
     if ( formElem.form('is valid') ) {
         const data = formElem.form('get values');
-        const userId = Accounts.createUser({
-            username: data.teamName,
-            email: data.teamEmail,
-            password: data.teamName,
-            roles: ['pgteam'],
-            address: null,
-            allocation: parseFloat(data.teamAllocation),
-            hasBudget: false
-        }, function(error) {
-            if (error) {
-                console.log("Error: " + error.reason);
-            } else {
-                sendSuccessEmail(data);
-                Template.instance().currentTeams.set(Roles.getUsersInRole('pgteam').fetch());
-                console.log('register success');
-            }
+        Meteor.call('accounts.createTeam', data);
+
+        sendSuccessEmail(data);
+        var newTeams = Template.instance().currentTeams.get();
+        newTeams.push({
+            'username' : data.teamName,
+            'primaryEmail' : data.teamEmail,
+            'allocation' : data.teamAllocation,
+            'hasBudget' : 'false'
         });
+        Template.instance().currentTeams.set(newTeams);
+        console.log('register success');
 
         formElem.form('clear');
     } else {
@@ -75,8 +85,7 @@ var addUser = function() {
 
 var dropPGTeams = function() {
     const remaining = Meteor.call('accounts.dropPGTeams');
-    Template.instance().currentTeams.set(Roles.getUsersInRole('pgteam').fetch());
-    console.log("Remaining teams: " + remaining);
+    Template.instance().currentTeams.set(loadTeams());
 }
 
 Template.PGSettings.helpers({

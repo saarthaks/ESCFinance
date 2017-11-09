@@ -57,10 +57,26 @@ Meteor.users.allow({
 
 Meteor.methods({
     'accounts.dropPGTeams': function() {
-        console.log('dropping all accounts');
-        //TODO: make this only remove pgteams
-        return Meteor.users.remove({});
+        console.log('dropping all pgteam accounts');
+        const pgteams = Roles.getUsersInRole('pgteam').fetch();
+        for (i = 0; i < pgteams.length; i++) {
+            Meteor.users.remove({ '_id': pgteams[i]._id });
+        }
+        return 0;
     },
+    'accounts.createTeam': function(data) {
+        console.log('adding pgteam');
+        const userId = Accounts.createUser({
+            username: data.teamName,
+            email: data.teamEmail,
+            password: data.teamName,
+            roles: ['pgteam'],
+            address: null,
+            allocation: parseFloat(data.teamAllocation),
+            hasBudget: false
+        });
+        return true;
+    }
 });
 
 Meteor.publish('userData', function() {

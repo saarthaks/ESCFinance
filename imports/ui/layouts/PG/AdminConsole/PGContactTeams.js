@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { Roles } from 'meteor/alanning:roles';
 
 import './PGContactTeamsTemplate.html';
 
@@ -19,13 +20,15 @@ const validationRules = {
 }
 
 var sendEmail = function(data) {
-    //TODO: finish email sending
-    const to = '';
-    const from = '';
+    const tos = data.recipSelection.split(',');
+    const admin = Meteor.user().emails[0].address;
+    const from = "ESC Finance Committee <" + admin + ">";
+    const cc = admin;
     const subject = data.emailSubject;
     const body = data.emailBody;
-
-    // Meteor.call('sendEmail', to, from, subject, body);
+    for (i = 0; i < tos.length; i++) {
+        Meteor.call('sendEmailWithCC', tos[i], from, subject, body, cc);
+    }
 }
 
 var submitForm = function(elem) {
@@ -38,10 +41,6 @@ var submitForm = function(elem) {
     } else {
         elem.form('validate form');
     }
-}
-
-var fetchTeams = function() {
-    //TODO
 }
 
 Template.PGContactTeams.onCreated( function() {
@@ -62,6 +61,10 @@ Template.PGContactTeams.events({
 
 Template.PGContactTeams.helpers({
     'teams': function() {
-        return fetchTeams();
+        return Roles.getUsersInRole('pgteam');
+    },
+    'extractAddress': function(team) {
+        console.log(team);
+        return team.address[0];
     }
 })
