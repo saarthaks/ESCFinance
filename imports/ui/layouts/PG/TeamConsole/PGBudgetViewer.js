@@ -234,6 +234,21 @@ Template.PGBudgetViewer.events({
 });
 
 Template.PGBudgetViewer.helpers({
+    teamUsername: function() {
+        return Meteor.user().username;
+    },
+    teamAllocation: function() {
+        return Meteor.user().allocation;
+    },
+    amountRemaining: function() {
+        const team = Meteor.user();
+        
+        if (!team.hasBudget) {
+            return team.allocation;
+        }
+        const amountSpent = PGBudgets.find({'teamID': team._id}).fetch()[0]['amountSpent'];
+        return team.allocation - amountSpent;
+    },
     budgetMonth: function() {
         return TAB_MAPPING[Template.instance().currentPage.get()];
     },

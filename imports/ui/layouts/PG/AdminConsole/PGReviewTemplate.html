@@ -60,7 +60,9 @@
                 {{#each entries}}
                     <tr>
                         <td id="{{id}}">{{itemName}}</td>
-                        <td id="{{id}}">{{websiteLink}}</td>
+                        <td id="{{id}}">
+                            <a href="{{websiteLink}}" target="_blank">{{websiteLink}}</a>
+                        </td>
                         <td id="{{id}}">{{distributor}}</td>
                         <td id="{{id}}">${{unitPrice}}</td>
                         <td id="{{id}}">{{quantity}}</td>

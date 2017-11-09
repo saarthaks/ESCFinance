@@ -56,7 +56,9 @@
                 {{#each requestList}}
                     <tr>
                         <td>{{itemName}}</td>
-                        <td>{{websiteLink}}</td>
+                        <td>
+                            <a href="{{websiteLink}}" target="_blank">{{websiteLink}}</a>
+                        </td>
                         <td>${{unitPrice}}</td>
                         <td>{{quantity}}</td>
                         <td>${{shippingCost}}</td>

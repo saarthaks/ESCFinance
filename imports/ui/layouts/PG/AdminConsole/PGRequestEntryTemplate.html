@@ -1,8 +1,10 @@
 <template name="PGRequestEntry">
-    <tr class="{{rowColor}}" id="{{team}}-{{item}}">
+    <tr class="{{rowColor}} entry" id="{{team}}-{{item}}">
         <td id="{{team}}-{{item}}">{{team}}</td>
         <td id="{{team}}-{{item}}">{{item}}</td>
-        <td id="{{team}}-{{item}}">{{link}}</td>
+        <td id="{{team}}-{{item}}">
+            <a href="{{link}}" target="_blank">{{link}}</a>
+        </td>
         <td id="{{team}}-{{item}}">{{distributor}}</td>
         <td id="{{team}}-{{item}}">{{quantity}}</td>
         <td id="{{team}}-{{item}}">${{cost}}</td>

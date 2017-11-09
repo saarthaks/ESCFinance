@@ -1,5 +1,25 @@
 <template name="PGBudgetViewer">
-    <div class="ui header">Project Budget: {{budgetMonth}}</div>
+    <div class="ui header">Project Budget</div>
+    <h4 class="ui dividing header">Overall Summary</h4>
+    <table class="ui celled table">
+        <thead>
+            <tr class="sixteen wide">
+                <th class="four wide center aligned">Team Name</th>
+                <th class="four wide center aligned">Allocated Amount</th>
+                <th class="four wide center aligned">Budget Total</th>
+                <th class="four wide center aligned">Amount Remaining</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{teamUsername}}</td>
+                <td>${{teamAllocation}}</td>
+                <td>${{projectTotal}}</td>
+                <td>${{amountRemaining}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4 class="ui dividing header">Budget Details: {{budgetMonth}}</h4>
     {{#if hasError}}
         <div class="ui message">
             <p>
@@ -7,7 +27,7 @@
             </p>
         </div>
     {{/if}}
-    <table class="ui celled table">
+    <table class="ui celled selectable table">
         <thead>
             <tr class="sixteen wide">
                 <th class="two wide center aligned">Item</th>
@@ -113,9 +133,6 @@
     <h4 class="ui header">
         <div class="left aligned">
             Month Total: ${{monthTotal}}
-        </div>
-        <div class="right aligned">
-            Project Total: ${{projectTotal}}
         </div>
     </h4>
 </template>

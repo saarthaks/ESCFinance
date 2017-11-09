@@ -85,7 +85,7 @@ Template.PGRequestEntry.onCreated( function() {
 });
 
 Template.PGRequestEntry.events({
-    'dblclick tr': function(e, template) {
+    'click tr.entry': function(e, template) {
         Template.instance().isViewing.set(!Template.instance().isViewing.get());
     },
     'submit form': function(e, template) {

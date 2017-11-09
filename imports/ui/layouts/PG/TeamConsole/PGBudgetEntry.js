@@ -40,7 +40,7 @@ Template.PGBudgetEntry.onDestroyed( function() {
 })
 
 Template.PGBudgetEntry.events({
-    'dblclick tr': function(e, template) {
+    'click tr': function(e, template) {
         const editId = $(e.target).attr('id')
         if (Template.instance().data['status'] == 1) {
             editEntry(editId);
@@ -78,6 +78,9 @@ Template.PGBudgetEntry.helpers({
         } else {
             return false;
         }
+    },
+    isDisabled: function () {
+        return (Template.instance().data['status'] == 1 || Template.instance().data['status'] == 3) ? "" : "disabled";
     },
     haveOrdered: function() {
         return Template.instance().data['status'] == 3;
