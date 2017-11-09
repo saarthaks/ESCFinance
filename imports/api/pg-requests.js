@@ -9,6 +9,10 @@ PGRequests.schema = new SimpleSchema({
         type: String,
         label: "Request FB Link"
     },
+    "requestMonth": {
+        type: String,
+        label: "Request Month"
+    },
     "teamName": {
         type: String,
         label: "Request Team ID"
@@ -44,6 +48,10 @@ PGRequests.schema = new SimpleSchema({
         label: "Request Item S/H",
         decimal: true,
         optional: true
+    },
+    "complete": {
+        type: Boolean,
+        label: "Request Complete"
     }
 });
 

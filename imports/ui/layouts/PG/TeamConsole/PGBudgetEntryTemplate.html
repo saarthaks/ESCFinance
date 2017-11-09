@@ -39,16 +39,35 @@
                     <input type="text" name="rowCost" value="{{cost}}">
                 </div>
             </th>
+            <th class="center aligned">{{mappedStatus}}</th>
         </tr>
     {{else}}
-        <tr id="{{currentPage}}-{{idx}}">
-            <td id="{{currentPage}}-{{idx}}">{{itemName}}</td>
-            <td id="{{currentPage}}-{{idx}}">{{websiteLink}}</td>
-            <td id="{{currentPage}}-{{idx}}">{{distributor}}</td>
-            <td id="{{currentPage}}-{{idx}}">${{unitPrice}}</td>
-            <td id="{{currentPage}}-{{idx}}">{{quantity}}</td>
-            <td id="{{currentPage}}-{{idx}}">${{shippingCost}}</td>
-            <td id="{{currentPage}}-{{idx}}">${{cost}}</td>
+        <tr id="{{id}}">
+            <td id="{{id}}">{{itemName}}</td>
+            <td id="{{id}}">{{websiteLink}}</td>
+            <td id="{{id}}">{{distributor}}</td>
+            <td id="{{id}}">${{unitPrice}}</td>
+            <td id="{{id}}">{{quantity}}</td>
+            <td id="{{id}}">${{shippingCost}}</td>
+            <td id="{{id}}">${{cost}}</td>
+            <td id="{{id}}">
+                {{#if haveOrdered}}
+                    <div class="field">
+                        <div class="ui selection dropdown fluid" id="{{id}}-status">
+                            <input type="hidden" name="{{id}}-input" id="{{id}}-status">
+                            <div class="default text">{{mappedStatus}}</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <div class="item" data-value="3">Ordered</div>
+                                <div class="item" data-value="4">Arrived</div>
+                            </div>
+                        </div>
+                    </div>
+                    {{loadDropdown}}
+                {{else}}
+                    {{mappedStatus}}
+                {{/if}}
+            </td>
         </tr>
     {{/if}}
 </template>

@@ -17,6 +17,24 @@ const TAB_MAPPING = {
     'apr': 'April'
 };
 
+const ITEM_STATUS = {
+    1 : "Pending",
+    2 : "Requested",
+    3 : "Ordered",
+    4 : "Arrived"
+};
+
+const RANDOM_LENGTH = 12;
+
+var randomString = function(length) {
+    var text = "";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+
 var initBudget = function(userId) {
     const teamID = userId;
     const monthlyBudget = {
@@ -50,14 +68,18 @@ var addNewEntry = function() {
 }
 
 var validateEntry = function(entry) {
-    if (entry.itemName
+    console.log(entry);
+    if (entry.id
+        && entry.itemName
         && entry.websiteLink
         && entry.distributor
         && (entry.unitPrice > 0)
         && (entry.quantity > 0)
-        && (entry.cost > 0)) {
+        && (entry.cost > 0)
+        && entry.status > 0
+        && entry.status <= 4) {
 
-        if (entry.unitPrice*entry.quantity + entry.shippingCost === entry.cost) {
+        if ((parseInt(100*(entry.unitPrice*entry.quantity + entry.shippingCost))/100) === entry.cost) {
             return true;
         } else {
             return undefined;
@@ -69,13 +91,15 @@ var validateEntry = function(entry) {
 
 var saveNewEntry = function() {
     const entry = {
+        'id' : randomString(RANDOM_LENGTH),
         'itemName' : $('input[name="rowItem"]').val(),
         'websiteLink' : $('input[name="rowLink"]').val(),
         'distributor' : $('input[name="rowDistributor"]').val(),
         'unitPrice' : parseFloat($('input[name="rowPrice"]').val()),
         'quantity' : parseInt($('input[name="rowQuant"]').val()),
         'shippingCost' : parseFloat($('input[name="rowShipping"]').val()),
-        'cost' : parseFloat($('input[name="rowCost"]').val())
+        'cost' : parseFloat($('input[name="rowCost"]').val()),
+        'status' : 1
     };
     entry.shippingCost = !!entry.shippingCost ? entry.shippingCost : 0.0;
 
@@ -101,18 +125,21 @@ var saveNewEntry = function() {
     }
 }
 
-var editEntry = function(idx) {
+var editEntry = function(id, idx) {
     const entry = {
+        'id' : id,
         'itemName' : $('input[name="rowItem"]').val(),
         'websiteLink' : $('input[name="rowLink"]').val(),
         'distributor' : $('input[name="rowDistributor"]').val(),
         'unitPrice' : parseFloat($('input[name="rowPrice"]').val()),
         'quantity' : parseInt($('input[name="rowQuant"]').val()),
         'shippingCost' : parseFloat($('input[name="rowShipping"]').val()),
-        'cost' : parseFloat($('input[name="rowCost"]').val())
+        'cost' : parseFloat($('input[name="rowCost"]').val()),
+        'status' : 1
     };
 
     if (validateEntry(entry)) {
+        console.log('valid entry');
         const teamID = Meteor.userId();
         const budgetEntry = PGBudgets.find( {'teamID': teamID} ).fetch()[0];
         var budget = budgetEntry['monthlyBudget'];
@@ -124,6 +151,7 @@ var editEntry = function(idx) {
         Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
         return true;
     } else {
+        console.log('invalid entry');
         Template.instance().errorMessage.set("Oops, looks like you've left field(s) blank.");
         return false;
     }
@@ -170,32 +198,35 @@ Template.PGBudgetViewer.events({
     },
     'click #delete-entry': function(e, template) {
         Template.instance().errorMessage.set('');
-        const editData = Session.get('editing');
+        const editData = Session.get('isEditing');
+        // const editData = Session.get('editing');
         if (!editData) {
             Template.instance().addingRow.set(false);
             Session.set('save-button', false);
         } else {
             if (removeEntry(editData)) {
                 Session.set('save-button', false)
-                Session.set('editing', null);
+                // Session.set('editing', null);
                 Session.set('isEditing', null);
             }
         }
     },
     'click #save-entry': function(e, template) {
         Template.instance().errorMessage.set('');
-        const editData = Session.get('editing');
+        const editData = Session.get('isEditing');
         console.log(editData);
         if (!editData) {
+            console.log('new entry');
             if (saveNewEntry()) {
                 Template.instance().addingRow.set(false);
                 Session.set('save-button', false);
             }
         } else {
-            const idx = Session.get('isEditing');
-            if (editEntry(idx)) {
+            // const idx = Session.get('isEditing');
+            // console.log('editing ' + idx);
+            if (editEntry(editData)) {
                 Session.set('save-button', false)
-                Session.set('editing', null);
+                // Session.set('editing', null);
                 Session.set('isEditing', null);
             }
         }
@@ -232,9 +263,11 @@ Template.PGBudgetViewer.helpers({
         const teamID = Meteor.user()._id;
         const currentPage = Template.instance().currentPage.get();
         var budget = PGBudgets.find( {'teamID': teamID} ).fetch()[0]['monthlyBudget'];
+        console.log(budget[currentPage]);
         for (i = 0; i < budget[currentPage].length; i++) {
             budget[currentPage][i]['idx'] = i.toString();
             budget[currentPage][i]['currentPage'] = currentPage;
+            budget[currentPage][i]['mappedStatus'] = ITEM_STATUS[budget[currentPage][i]['status']];
         }
         return budget[currentPage];
     },
@@ -248,7 +281,7 @@ Template.PGBudgetViewer.helpers({
                 total = total + budget[i]['cost'];
             }
         }
-        return total;
+        return parseInt(total*100)/100;
     },
     projectTotal: function() {
         var total = 0;
@@ -263,6 +296,6 @@ Template.PGBudgetViewer.helpers({
                 }, 0);
             }
         }
-        return total;
+        return parseInt(total*100)/100;
     }
 })

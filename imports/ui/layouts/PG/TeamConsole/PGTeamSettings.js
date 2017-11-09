@@ -63,7 +63,7 @@ var updatePassword = function(template) {
 
 var updateAddress = function(template) {
     const formElem = $('.ui.form#update-address');
-    formElem.form({ fields: passwordRules, inline: true });
+    formElem.form({ fields: addressRules, inline: true });
 
     if ( formElem.form('is valid')) {
         const data = formElem.form('get values');

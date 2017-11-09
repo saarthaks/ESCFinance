@@ -6,14 +6,16 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 const PGBudgets = new Mongo.Collection('pg-budgets');
 
 const BudgetItemSchema = new SimpleSchema({
+    "id": {type: String, label: "Budget Item ID"},
     "itemName": {type: String, label: "Budget Item Name"},
     "websiteLink": {type: String, label: "Budget Item Link"},
     "distributor": {type: String, label: "Budget Item Distributor"},
     "unitPrice": {type: Number, label: "Budget Item Unit Price", decimal: true},
     "quantity": {type: Number, label: "Budget Item Quantity"},
     "cost": {type: Number, label: "Budget Item Total Cost", decimal: true},
-    "shippingCost": {type: Number, label: "Budget Item S/H", decimal: true, optional: true}
-})
+    "shippingCost": {type: Number, label: "Budget Item S/H", decimal: true, optional: true},
+    "status": {type: Number, label: "Budget Item Status"}
+});
 
 PGBudgets.schema = new SimpleSchema({
     "teamID": {

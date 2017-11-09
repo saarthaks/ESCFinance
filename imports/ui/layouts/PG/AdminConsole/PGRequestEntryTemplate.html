@@ -1,5 +1,5 @@
 <template name="PGRequestEntry">
-    <tr id="{{team}}-{{item}}">
+    <tr class="{{rowColor}}" id="{{team}}-{{item}}">
         <td id="{{team}}-{{item}}">{{team}}</td>
         <td id="{{team}}-{{item}}">{{item}}</td>
         <td id="{{team}}-{{item}}">{{link}}</td>
@@ -23,7 +23,7 @@
                         {{city}}, {{state}}, {{zipcode}}
                     </p>
                 {{/if}}
-                <form class="ui form" id="form {{team}}-{{item}}">
+                <form class="ui form" id="{{team}}-{{item}}-form">
                     <div class="field">
                         <label>True Cost</label>
                         <div class="ui labeled input">

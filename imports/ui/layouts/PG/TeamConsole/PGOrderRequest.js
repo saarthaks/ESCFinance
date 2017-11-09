@@ -31,12 +31,14 @@ var updateRequestList = function(parts) {
         requests.push(budget[month][idx]);
     }
 
+
     Template.instance().requestList.set(requests);
 }
 
 var buildRequest = function(team, formData, part) {
     var request = {
         'fbLink': formData.fbLink,
+        'requestMonth': formData.requestMonth,
         'teamName': team.username,
         'itemName': part.itemName,
         'websiteLink': part.websiteLink,
@@ -44,7 +46,8 @@ var buildRequest = function(team, formData, part) {
         'unitPrice': part.unitPrice,
         'quantity': part.quantity,
         'cost': part.cost,
-        'shippingCost': !!part.shippingCost ? part.shippingCost : 0.0
+        'shippingCost': !!part.shippingCost ? part.shippingCost : 0.0,
+        'complete': false
     };
 
     return request;
@@ -57,7 +60,7 @@ var sendRequestEmail = function(data) {
     const subject = "Project Grant Order Request";
     const body = "Heads up!\n\n"
         + "A new request has been placed by " + data.name + ". "
-        + "This request is for " + data.quantity + " parts for a total "
+        + "This request is for " + data.quantity + " items for a total "
         + "of $" + data.total + ". \n\n";
 
     // Meteor.call('sendEmail', to, from, subject, body);
@@ -68,14 +71,29 @@ var submitForm = function(elem) {
     if(elem.form('is valid')) {
         const data = elem.form('get values');
         const team = Template.instance().team.get();
+        const budgetEntry = PGBudgets.find( {'teamID': team._id} ).fetch()[0];
+        var budget = budgetEntry['monthlyBudget'];
 
         const parts = Template.instance().requestList.get();
         var total = 0;
         for (i = 0; i < parts.length; i++) {
+            console.log(budget[data.requestMonth]);
+            for (j = 0; j < budget[data.requestMonth].length; j++) {
+                if (budget[data.requestMonth][j].itemName === parts[i].itemName) {
+                    budget[data.requestMonth][j].status = 2;
+                    break;
+                }
+            }
+
             const requestInsert = buildRequest(team, data, parts[i]);
             Meteor.call('pg-requests.insert', requestInsert);
             total = total + parts[i].cost;
         }
+
+        const budgetInsert = {
+            'monthlyBudget' : budget
+        };
+        Meteor.call('pg-budgets.update', budgetEntry._id, budgetInsert);
 
         const messageData = {
             'name': team.username,
@@ -111,6 +129,7 @@ Template.PGOrderRequest.events({
     },
     'change #parts-drop': function(e, template) {
         var parts = $('input[name="partSelection"]').val();
+        console.log(parts);
         parts = parts.split(',');
         if (parts[0] === "") {
             parts = [];
@@ -133,12 +152,14 @@ Template.PGOrderRequest.helpers({
                 const budget = PGBudgets.find( {'teamID': team._id} ).fetch()[0]['monthlyBudget'][month];
                 var items = [];
                 for (i = 0; i < budget.length; i++) {
-                    items.push({
-                        'month': month,
-                        'idx': i,
-                        'itemName': budget[i]['itemName'],
-                        'totalCost': budget[i]['cost']
-                    });
+                    if (budget[i]['status'] == 1) {
+                        items.push({
+                            'month': month,
+                            'idx': i,
+                            'itemName': budget[i]['itemName'],
+                            'totalCost': budget[i]['cost']
+                        });
+                    }
                 }
                 return items;
             }
