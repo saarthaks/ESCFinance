@@ -1,13 +1,13 @@
 <template name="PGRequestEntry">
-    <tr class="{{rowColor}} entry" id="{{team}}-{{item}}">
-        <td id="{{team}}-{{item}}">{{team}}</td>
-        <td id="{{team}}-{{item}}">{{item}}</td>
-        <td id="{{team}}-{{item}}">
+    <tr class="{{rowColor}} entry" id="{{team}}-{{id}}">
+        <td id="{{team}}-{{id}}">{{team}}</td>
+        <td id="{{team}}-{{id}}">{{item}}</td>
+        <td id="{{team}}-{{id}}">
             <a href="{{link}}" target="_blank">{{link}}</a>
         </td>
-        <td id="{{team}}-{{item}}">{{distributor}}</td>
-        <td id="{{team}}-{{item}}">{{quantity}}</td>
-        <td id="{{team}}-{{item}}">${{cost}}</td>
+        <td id="{{team}}-{{id}}">{{distributor}}</td>
+        <td id="{{team}}-{{id}}">{{quantity}}</td>
+        <td id="{{team}}-{{id}}">${{cost}}</td>
     </tr>
     {{#if isViewing}}
         <tr>
@@ -25,7 +25,7 @@
                         {{city}}, {{state}}, {{zipcode}}
                     </p>
                 {{/if}}
-                <form class="ui form" id="{{team}}-{{item}}-form">
+                <form class="ui form" id="{{team}}-{{id}}-form">
                     <div class="field">
                         <label>True Cost</label>
                         <div class="ui labeled input">

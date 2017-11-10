@@ -57,7 +57,6 @@ var buildRequest = function(team, formData, part) {
 var sendRequestEmail = function(data) {
     const admin = Roles.getUsersInRole('pgadmin').fetch()[0];
     const user = Meteor.user();
-    console.log(user);
     const to = "ESC Finance Committee <" + admin.primaryEmail + ">";
     const from = user.username + " <" + user.primaryEmail + ">";
 
@@ -81,7 +80,6 @@ var submitForm = function(elem) {
         const parts = Template.instance().requestList.get();
         var total = 0;
         for (i = 0; i < parts.length; i++) {
-            console.log(budget[data.requestMonth]);
             for (j = 0; j < budget[data.requestMonth].length; j++) {
                 if (budget[data.requestMonth][j].itemName === parts[i].itemName) {
                     budget[data.requestMonth][j].status = 2;
@@ -135,7 +133,6 @@ Template.PGOrderRequest.events({
     },
     'change #parts-drop': function(e, template) {
         var parts = $('input[name="partSelection"]').val();
-        console.log(parts);
         parts = parts.split(',');
         if (parts[0] === "") {
             parts = [];
@@ -180,7 +177,6 @@ Template.PGOrderRequest.helpers({
         return Template.instance().requestList.get();
     },
     totalRequest: function() {
-        console.log('calculating')
         var total = 0;
         const requests = Template.instance().requestList.get();
         for (i = 0; i < requests.length; i++) {

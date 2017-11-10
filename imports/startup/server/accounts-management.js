@@ -17,10 +17,10 @@ Meteor.startup(() => {
         console.log("New admin created");
     }
 
-    if ( Meteor.users.find().count() === 1) {
+    if (Meteor.users.find().count() === 1) {
         Accounts.createUser({
             username: 'PGAdmin',
-            email: 'ss4754+pg@columbia.edu',
+            email: 'cu-esc-finance@googlegroups.com',
             password: 'password',
             roles: ['pgadmin'],
             address: null,

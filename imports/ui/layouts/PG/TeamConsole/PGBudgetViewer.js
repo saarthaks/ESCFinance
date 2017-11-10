@@ -68,7 +68,6 @@ var addNewEntry = function() {
 }
 
 var validateEntry = function(entry) {
-    console.log(entry);
     if (entry.id
         && entry.itemName
         && entry.websiteLink
@@ -139,7 +138,6 @@ var editEntry = function(id, idx) {
     };
 
     if (validateEntry(entry)) {
-        console.log('valid entry');
         const teamID = Meteor.userId();
         const budgetEntry = PGBudgets.find( {'teamID': teamID} ).fetch()[0];
         var budget = budgetEntry['monthlyBudget'];
@@ -151,7 +149,6 @@ var editEntry = function(id, idx) {
         Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
         return true;
     } else {
-        console.log('invalid entry');
         Template.instance().errorMessage.set("Oops, looks like you've left field(s) blank.");
         return false;
     }
@@ -214,9 +211,7 @@ Template.PGBudgetViewer.events({
     'click #save-entry': function(e, template) {
         Template.instance().errorMessage.set('');
         const editData = Session.get('isEditing');
-        console.log(editData);
         if (!editData) {
-            console.log('new entry');
             if (saveNewEntry()) {
                 Template.instance().addingRow.set(false);
                 Session.set('save-button', false);
@@ -242,7 +237,7 @@ Template.PGBudgetViewer.helpers({
     },
     amountRemaining: function() {
         const team = Meteor.user();
-        
+
         if (!team.hasBudget) {
             return team.allocation;
         }
@@ -278,7 +273,6 @@ Template.PGBudgetViewer.helpers({
         const teamID = Meteor.user()._id;
         const currentPage = Template.instance().currentPage.get();
         var budget = PGBudgets.find( {'teamID': teamID} ).fetch()[0]['monthlyBudget'];
-        console.log(budget[currentPage]);
         for (i = 0; i < budget[currentPage].length; i++) {
             budget[currentPage][i]['idx'] = i.toString();
             budget[currentPage][i]['currentPage'] = currentPage;

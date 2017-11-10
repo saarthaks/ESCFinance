@@ -20,7 +20,6 @@ var newUserRules = {
 
 var loadTeams = function() {
     const teamAccounts = Roles.getUsersInRole('pgteam').fetch();
-    console.log(teamAccounts);
     var teams = [];
     for (i = 0; i < teamAccounts.length; i++) {
         teams.push({

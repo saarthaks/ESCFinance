@@ -64,7 +64,6 @@ Template.PGContactTeams.helpers({
         return Roles.getUsersInRole('pgteam');
     },
     'extractAddress': function(team) {
-        console.log(team);
         return team.address[0];
     }
 })
