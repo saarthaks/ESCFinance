@@ -23,8 +23,8 @@ import '../../ui/layouts/PG/PGPastLayout.html';
 import '../../ui/layouts/PG/PGCurrentLayout.html';
 import '../../ui/layouts/PG/Applications/PGSmallLayout.html';
 import '../../ui/layouts/PG/Applications/PGLargeLayout.html';
-import '../../ui/layouts/PG/PGHubLayout.html';
-import '../../ui/layouts/PG/PGAdminLayout.html';
+import '../../ui/layouts/PG/TeamConsole/PGHubLayout.html';
+import '../../ui/layouts/PG/AdminConsole/PGAdminLayout.html';
 import '../../ui/layouts/LoginLayout.html';
 
 const userCollection = Meteor.subscribe('userData');
@@ -116,7 +116,7 @@ jccc.route('/results', {
 jccc.route('/admin-console', {
     name: 'jccc-admin',
     triggersEnter: [(context, redirect) => {
-        if (!Meteor.user() || !Meteor.user().isAdmin) {
+        if (!Meteor.user() || !Roles.userIsInRole(Meteor.userId(), 'jcccadmin')) {
             Session.set('redirectURI', '/jccc/admin-console');
             console.log(Session.get('redirectURI'));
             redirect('/login');
@@ -194,25 +194,29 @@ projectgrant.route('/current', {
 projectgrant.route('/hub', {
     name: 'pg-hub',
     triggersEnter: [(context, redirect) => {
-        if (!Meteor.user()) {
+        if (!Meteor.user() || !Roles.userIsInRole(Meteor.userId(), 'pgteam')) {
+            Session.set('redirectURI', '/project-grant/hub');
+            console.log(Session.get('redirectURI'));
             redirect('/login');
         }
     }],
     action() {
-        FlowRouter.go('/');
-        // BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
+        // FlowRouter.go('/');
+        BlazeLayout.render('MainLayout', {body: 'PGHubLayout'});
     }
 });
 projectgrant.route('/admin-console', {
     name: 'pg-admin',
     triggersEnter: [(context, redirect) => {
-        if (!Meteor.user() || !Meteor.user().isAdmin) {
+        if (!Meteor.user() || !Roles.userIsInRole(Meteor.userId(), 'pgadmin')) {
+            Session.set('redirectURI', '/project-grant/admin-console');
+            console.log(Session.get('redirectURI'));
             redirect('/login');
         }
     }],
     action() {
-        FlowRouter.go('/');
-        // BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
+        // FlowRouter.go('/');
+        BlazeLayout.render('MainLayout', {body: 'PGAdminLayout'});
     }
 });
 FlowRouter.route('/login', {

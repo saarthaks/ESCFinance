@@ -1,0 +1,41 @@
+<template name="PGRequestEntry">
+    <tr class="{{rowColor}} entry" id="{{team}}-{{item}}">
+        <td id="{{team}}-{{item}}">{{team}}</td>
+        <td id="{{team}}-{{item}}">{{item}}</td>
+        <td id="{{team}}-{{item}}">
+            <a href="{{link}}" target="_blank">{{link}}</a>
+        </td>
+        <td id="{{team}}-{{item}}">{{distributor}}</td>
+        <td id="{{team}}-{{item}}">{{quantity}}</td>
+        <td id="{{team}}-{{item}}">${{cost}}</td>
+    </tr>
+    {{#if isViewing}}
+        <tr>
+            <td colspan="6">
+                {{#if hasAddress}}
+                    <p>
+                        {{firstName}} {{lastName}}
+                        <br>
+                        {{streetAddress}}
+                        <br>
+                        {{#if hasMailLine}}
+                            {{mailAddress}}
+                            <br>
+                        {{/if}}
+                        {{city}}, {{state}}, {{zipcode}}
+                    </p>
+                {{/if}}
+                <form class="ui form" id="{{team}}-{{item}}-form">
+                    <div class="field">
+                        <label>True Cost</label>
+                        <div class="ui labeled input">
+                            <div class="ui label">$</div>
+                            <input type="text" name="trueCost">
+                            <button type="submit" class="ui submit button">Complete</button>
+                        </div>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    {{/if}}
+</template>

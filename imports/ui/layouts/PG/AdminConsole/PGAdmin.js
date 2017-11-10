@@ -1,22 +1,23 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
-import './PGHubLayout.html';
-import './PGBudgetViewer.js';
-import './PGOrderRequest.js';
-import './PGTeamSettings.js';
+import './PGAdminLayout.html';
+import './PGRequests.js';
+import './PGReview.js';
+import './PGContactTeams.js';
+import './PGSettings.js';
 
-Template.PGHubLayout.onCreated( function() {
-    this.currentTab = new ReactiveVar("PGOrder");
+Template.PGAdminLayout.onCreated( function() {
+    this.currentTab = new ReactiveVar("PGRequests");
 });
 
-Template.PGHubLayout.helpers({
+Template.PGAdminLayout.helpers({
     tab: function() {
         return Template.instance().currentTab.get();
     }
 });
 
-Template.PGHubLayout.events({
+Template.PGAdminLayout.events({
     'click #admin-tab': function(e, template) {
         const cTab = $(e.target);
         $('.active').removeClass('active');

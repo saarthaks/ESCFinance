@@ -1,14 +1,15 @@
 <template name="PGAdminLayout">
     <div class="ui container headless">
         <div class="ui grid">
-            <div class="three wide column">
+            <div class="two wide column">
                 <div class="ui vertical fluid tabular menu">
-                    <a data-template="PGOrder" class="item active" id="admin-tab">Order Parts</a>
-                    <a data-template="PGReview" class="item" id="admin-tab">Review Budgets</a>
+                    <a data-template="PGRequests" class="item active" id="admin-tab">Requests</a>
+                    <a data-template="PGReview" class="item" id="admin-tab">View Budgets</a>
+                    <a data-template="PGContactTeams" class="item" id="admin-tab">Contact</a>
                     <a data-template="PGSettings" class="item" id="admin-tab">Settings</a>
                 </div>
             </div>
-            <div class="thirteen wide stretched column">
+            <div class="fourteen wide stretched column">
                 <div class="ui segment">
                     {{> Template.dynamic template=tab}}
                 </div>

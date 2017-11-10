@@ -1,0 +1,75 @@
+<template name="PGBudgetEntry">
+    {{#if isEditing}}
+        <tr class="sixteen wide">
+            <th>
+                <div class="ui row input fluid">
+                    <input type="text" name="rowItem" value="{{itemName}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid">
+                    <input type="text" name="rowLink" value="{{websiteLink}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid">
+                    <input type="text" name="rowDistributor" value="{{distributor}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid labeled">
+                    <div class="ui label">$</div>
+                    <input type="text" name="rowPrice" value="{{unitPrice}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid">
+                    <input type="text" name="rowQuant" value="{{quantity}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid labeled">
+                    <div class="ui label">$</div>
+                    <input type="text" name="rowShipping" value="{{shippingCost}}">
+                </div>
+            </th>
+            <th>
+                <div class="ui row input fluid labeled">
+                    <div class="ui label">$</div>
+                    <input type="text" name="rowCost" value="{{cost}}">
+                </div>
+            </th>
+            <th class="center aligned">{{mappedStatus}}</th>
+        </tr>
+    {{else}}
+        <tr class="{{isDisabled}}" id="{{id}}">
+            <td id="{{id}}">{{itemName}}</td>
+            <td id="{{id}}">
+                <a href="{{websiteLink}}" target="_blank">{{websiteLink}}</a>
+            </td>
+            <td id="{{id}}">{{distributor}}</td>
+            <td id="{{id}}">${{unitPrice}}</td>
+            <td id="{{id}}">{{quantity}}</td>
+            <td id="{{id}}">${{shippingCost}}</td>
+            <td id="{{id}}">${{cost}}</td>
+            <td id="{{id}}">
+                {{#if haveOrdered}}
+                    <div class="field">
+                        <div class="ui selection dropdown fluid" id="{{id}}-status">
+                            <input type="hidden" name="{{id}}-input" id="{{id}}-status">
+                            <div class="default text">{{mappedStatus}}</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <div class="item" data-value="3">Ordered</div>
+                                <div class="item" data-value="4">Arrived</div>
+                            </div>
+                        </div>
+                    </div>
+                    {{loadDropdown}}
+                {{else}}
+                    {{mappedStatus}}
+                {{/if}}
+            </td>
+        </tr>
+    {{/if}}
+</template>
