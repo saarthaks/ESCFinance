@@ -64,7 +64,8 @@ var sendRequestEmail = function(data) {
     const body = "Heads up!\n\n"
         + "A new request has been placed by " + data.name + ". "
         + "This request is for " + data.quantity + " items for a total "
-        + "of $" + data.total + ". \n\n";
+        + "of $" + data.total + ". \n\n"
+        + "You can check out their facebook update here: " + data.link + "\n\n";
 
     Meteor.call('sendEmail', to, from, subject, body);
 }
@@ -100,7 +101,8 @@ var submitForm = function(elem) {
         const messageData = {
             'name': team.username,
             'quantity': parts.length,
-            'total': total
+            'total': total,
+            'link': data.fbLink
         };
         sendRequestEmail(messageData);
 
