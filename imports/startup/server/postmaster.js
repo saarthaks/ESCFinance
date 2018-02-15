@@ -44,13 +44,18 @@ function scheduleMail(details) {
     return true;
 }
 
+toSendIds = [];
 futureEmails.find().forEach(function(mail) {
     if (mail.date < new Date()) {
+        toSendIds.push(mail._id);
         send(mail);
     } else {
         addEmail(mail._id, mail);
     }
 });
+for (id in toSendIds) {
+    futureEmails.remove(id);
+}
 
 SyncedCron.start();
 
