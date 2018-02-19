@@ -190,20 +190,64 @@ var sendEmails = function(data) {
     to = data.contactEmail;
     const cc = adminSetting.pocEmail;
     subject = "JCCC Application Additional Information";
+
+    var date = new Date();
+    const thursday = 4;
+    const friday = 5;    // 0 - 6 for Sunday, Monday, ... , Saturday
+    const saturday = 6;
+    const sunday = 0;
+    var w = date.getDay();
+    var reminderDate = new Date(date.getTime());
+    reminderDate.setDate(date.getDate() + (7 + thursday - date.getDay() - 1) % 7 +1)
+    reminderDate.setHours(8,0,0,0);
+
+    var submissionDate = new Date(date.getTime());
+    submissionDate.setDate(date.getDate() + (7 + friday - date.getDay() - 1) % 7 +1);
+    if(w === friday || w === saturday) {
+        date = submissionDate;
+    }
+    var presentationDate = new Date(date.getTime());
+    presentationDate.setDate(date.getDate() + (7 + sunday - date.getDay() - 1) % 7 +1);
+
     body = "Hi!\n\n"
-         + "Thank you for beginning the application for JCCC! There are still a few parts to the application, so please make sure you’ve completed the following instructions by Saturday at noon, to be considered in time.\n\n"
+         + "Thank you for beginning the application for JCCC! There are still a few parts to the application, so please make sure you’ve completed the following instructions by noon the coming Friday, "
+         + (parseInt(submissionDate.getMonth())+1) + "/" + submissionDate.getDate() + ", to be considered in time.\n\n"
          + "Instructions: \n"
          + "1. Visit the following links to generate your budget template:\n"
          + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1QrxH6N8D-awlQHc7wkKfbz7mP3ELbJhlWnNFXR2byJQ/copy\n"
          + "2. Fill in the templates! If you have any questions, feel free to reach out to us at treasurers@columbia.edu and we will help as best we can.\n"
          + "3. Share the documents with us at treasurers@columbia.edu and with your club advisor.\n"
-         + "4. Sign up for a presentation slot here:\n"
+         + "4. Sign up for a presentation slot here for our next meeting on Sunday, " + (parseInt(presentationDate.getMonth())+1) + "/" + presentationDate.getDate() + ":\n"
          + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1TATaSjF1ku0G9bEtLsY9zQS4n6qs8KA7uhlttGUNCgE/edit?usp=sharing\n\n"
          + "Good luck, and we look forward to reviewing your application!\n\n"
          + "Best Regards,\n"
          + "JCCC\n";
 
+    const reminderSubject = "REMINDER JCCC Application";
+    const reminder = "Hi!\n\n"
+             + "Thank you for beginning the application for JCCC. "
+             + "We'd just like to send out a friendly reminder to sign up for a presentation slot for our meeting this Sunday, " + (parseInt(presentationDate.getMonth())+1) + "/" + presentationDate.getDate() + ", "
+             + "and to forward your budget template to us at treasurers@columbia.edu, by noon this Friday, " + (parseInt(submissionDate.getMonth())+1) + "/" + submissionDate.getDate() + ".\n\n"
+             + "Link to generate a new budget template: " + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1QrxH6N8D-awlQHc7wkKfbz7mP3ELbJhlWnNFXR2byJQ/copy\n"
+             + "Link to presentation form: " + "https://docs.google.com/a/columbia.edu/spreadsheets/d/1TATaSjF1ku0G9bEtLsY9zQS4n6qs8KA7uhlttGUNCgE/edit?usp=sharing\n\n"
+             + "Good luck, and we look forward to reviewing your application!\n\n"
+             + "Best Regards,\n"
+             + "JCCC\n";
+
+    const email_order = {
+        'to' : to,
+        'from' : from,
+        'subject' : reminderSubject,
+        'text' : reminder,
+        'cc' : cc,
+        'date' : reminderDate
+    };
+
     Meteor.call('sendEmailWithCC', to, from, subject, body, cc);
+
+    if(w !== thursday) {
+        Meteor.call('scheduleMail', email_order);
+    }
 }
 
 var submitForm = function(template) {
