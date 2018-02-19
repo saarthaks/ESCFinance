@@ -21,7 +21,8 @@ const ITEM_STATUS = {
     1 : "Pending",
     2 : "Requested",
     3 : "Ordered",
-    4 : "Arrived"
+    4 : "Arrived",
+    5 : "Cancelled"
 };
 
 const RANDOM_LENGTH = 12;
@@ -76,7 +77,7 @@ var validateEntry = function(entry) {
         && (entry.quantity > 0)
         && (entry.cost > 0)
         && entry.status > 0
-        && entry.status <= 4) {
+        && entry.status <= 5) {
 
         if ((parseInt(100*(entry.unitPrice*entry.quantity + entry.shippingCost))/100) === entry.cost) {
             return true;

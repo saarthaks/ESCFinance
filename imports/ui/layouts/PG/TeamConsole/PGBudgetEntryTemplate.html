@@ -67,7 +67,21 @@
                     </div>
                     {{loadDropdown}}
                 {{else}}
-                    {{mappedStatus}}
+                    {{#if haveRequested}}
+                        <div class="field">
+                            <div class="ui selection dropdown fluid" id="{{id}}-status">
+                                <input type="hidden" name="{{id}}-input" id="{{id}}-status">
+                                <div class="default text">{{mappedStatus}}</div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <div class="item" data-value="2">Request</div>
+                                    <div class="item" data-value="5">Cancel</div>
+                                </div>
+                            </div>
+                        </div>
+                    {{else}}
+                        {{mappedStatus}}
+                    {{/if}}
                 {{/if}}
             </td>
         </tr>

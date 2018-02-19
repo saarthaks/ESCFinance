@@ -73,5 +73,8 @@ Meteor.methods({
     },
     'pg-requests.update'(settingId, formData) {
         PGRequests.update({ _id: settingId }, { $set: formData });
+    },
+    'pg-requests.remove'(team, link) {
+        PGRequests.remove({ teamName: team, websiteLink: link });
     }
 });

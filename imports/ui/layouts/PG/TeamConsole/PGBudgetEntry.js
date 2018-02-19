@@ -2,6 +2,7 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session'
 
 import { PGBudgets } from '../../../../api/pg-budgets.js';
+import { PGRequests } from '../../../../api/pg-requests.js';
 
 import './PGBudgetEntryTemplate.html';
 
@@ -52,15 +53,21 @@ Template.PGBudgetEntry.events({
         if (editId === dropdownId) {
             const inputId = Template.instance().data['id'] + "-input";
             const newStatus = $('input[name="' + inputId +'"]').val();
-            const teamID = Meteor.userId();
-            const budgetEntry = PGBudgets.find({ 'teamID': teamID }).fetch()[0];
-            var budget = budgetEntry['monthlyBudget'];
-            budget[Template.instance().data['currentPage']][Template.instance().data['idx']]['status'] = newStatus;
+            if(newStatus !== 5) {
+                const teamID = Meteor.userId();
+                const budgetEntry = PGBudgets.find({ 'teamID': teamID }).fetch()[0];
+                var budget = budgetEntry['monthlyBudget'];
+                budget[Template.instance().data['currentPage']][Template.instance().data['idx']]['status'] = newStatus;
 
-            const budgetUpdate = {
-                "monthlyBudget": budget
-            };
-            Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
+                const budgetUpdate = {
+                    "monthlyBudget": budget
+                };
+                Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
+            } else {
+                const team = Meteor.user();
+                const link = Template.instance().data['websiteLink'];
+                Meteor.call('pg-requests.remove', team, link);
+            }
             Template.instance().data['mappedStatus'] = newStatus;
         }
     }
@@ -76,7 +83,10 @@ Template.PGBudgetEntry.helpers({
         }
     },
     isDisabled: function () {
-        return (Template.instance().data['status'] == 1 || Template.instance().data['status'] == 3) ? "" : "disabled";
+        return (Template.instance().data['status'] < 4) ? "" : "disabled";
+    },
+    haveRequested: function() {
+        return Template.instance().data['status'] == 2;
     },
     haveOrdered: function() {
         return Template.instance().data['status'] == 3;
