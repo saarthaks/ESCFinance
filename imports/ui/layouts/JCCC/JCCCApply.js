@@ -194,6 +194,7 @@ var sendEmails = function(data) {
     var date = new Date();
     const thursday = 4;
     const friday = 5;    // 0 - 6 for Sunday, Monday, ... , Saturday
+    const saturday = 6;
     const sunday = 0;
     var w = date.getDay();
     var reminderDate = new Date(date.getTime());
@@ -202,7 +203,7 @@ var sendEmails = function(data) {
 
     var submissionDate = new Date(date.getTime());
     submissionDate.setDate(date.getDate() + (7 + friday - date.getDay() - 1) % 7 +1);
-    if(w === 5 || w === 6) {
+    if(w === friday || w === saturday) {
         date = submissionDate;
     }
     var presentationDate = new Date(date.getTime());
@@ -243,7 +244,10 @@ var sendEmails = function(data) {
     };
 
     Meteor.call('sendEmailWithCC', to, from, subject, body, cc);
-    Meteor.call('scheduleMail', email_order);
+
+    if(w !== thursday) {
+        Meteor.call('scheduleMail', email_order);
+    }
 }
 
 var submitForm = function(template) {
