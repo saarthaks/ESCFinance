@@ -14,14 +14,12 @@ var logPurchase = function(formElem) {
     const team = Meteor.users.findOne({"username": Template.instance().data.team});
     const budgetEntry = PGBudgets.find({ 'teamID': team._id }).fetch()[0];
     formElem.form({ fields: logRules, inline: true });
+    const trueCost = parseFloat(formElem.form('get values')['trueCost']);
 
-    if ( formElem.form('is valid') ) {
+    if ( !isNaN(trueCost) && formElem.form('is valid') ) {
         // update budget with final cost and "ordered" status, and update amountSpent with new cost
-        const trueCost = parseFloat(formElem.form('get values')['trueCost']);
         var monthBudget = budgetEntry['monthlyBudget'];
-        console.log(monthBudget);
         const budget = monthBudget[Template.instance().data.month];
-        console.log(budget);
         for (i = 0; i < budget.length; i++) {
             if (budget[i].itemName === Template.instance().data.item) {
                 budget[i].cost = trueCost;
@@ -39,7 +37,6 @@ var logPurchase = function(formElem) {
         Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
 
         // update requests complete status in pg-requests
-        console.log(Template.instance().data.id);
         const requestUpdate = {
             "complete": true
         };
@@ -90,7 +87,7 @@ Template.PGRequestEntry.events({
     },
     'submit form': function(e, template) {
         e.preventDefault();
-        const idtag = ".ui.form#" + Template.instance().data.team + "-" + Template.instance().data.item + "-form"
+        const idtag = ".ui.form#" + Template.instance().data.team + "-" + Template.instance().data.id + "-form"
         const formElem = $(idtag);
         logPurchase(formElem);
         return false;

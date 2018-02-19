@@ -9,14 +9,11 @@ import './PGRequestEntry.js';
 import './PGRequestsTemplate.html';
 
 var getRequests = function() {
-    console.log('updating');
     const requests = PGRequests.find({ 'complete' : false }, { sort: {'distributor': 1} }).fetch()
-    console.log(requests);
     var totalRequest = 0;
     var groupRequests = {};
     var reqs = [];
     for (i = 0; i < requests.length; i++) {
-        console.log(requests[i]);
         totalRequest = totalRequest + requests[i].cost;
         reqs.push({
             "id": requests[i]._id,
@@ -29,12 +26,10 @@ var getRequests = function() {
             "cost": requests[i].cost,
             "complete": requests[i].complete
         });
-        console.log(reqs);
         if (groupRequests[requests[i].teamName]) {
             groupRequests[requests[i].teamName]['amountRequested'] = groupRequests[requests[i].teamName]['amountRequested'] + requests[i].cost;
         } else {
             const team = Meteor.users.findOne({'username': requests[i].teamName})
-            console.log(team);
             const alloc = team.allocation
             const spent = PGBudgets.findOne({'teamID': team._id}).amountSpent;
             groupRequests[requests[i].teamName] = {
@@ -45,9 +40,6 @@ var getRequests = function() {
             };
         }
     }
-    console.log(totalRequest);
-    console.log(groupRequests);
-    console.log(reqs);
 
     const update = {
         'requestCount': requests.length,
@@ -60,14 +52,11 @@ var getRequests = function() {
 }
 
 var updateRequests = function() {
-    console.log('updating');
     const requests = PGRequests.find({ 'complete' : false }, { sort: {'distributor': 1} }).fetch()
-    console.log(requests);
     var totalRequest = 0;
     var groupRequests = {};
     var reqs = [];
     for (i = 0; i < requests.length; i++) {
-        console.log(requests[i]);
         totalRequest = totalRequest + requests[i].cost;
         reqs.push({
             "id": requests[i]._id,
@@ -80,12 +69,10 @@ var updateRequests = function() {
             "cost": requests[i].cost,
             "complete": requests[i].complete
         });
-        console.log(reqs);
         if (groupRequests[requests[i].teamName]) {
             groupRequests[requests[i].teamName]['amountRequested'] = groupRequests[requests[i].teamName]['amountRequested'] + requests[i].cost;
         } else {
             const team = Meteor.users.findOne({'username': requests[i].teamName})
-            console.log(team);
             const alloc = team.allocation
             const spent = PGBudgets.findOne({'teamID': team._id}).amountSpent;
             groupRequests[requests[i].teamName] = {
@@ -115,7 +102,6 @@ Template.PGRequests.onCreated( function() {
 
 Template.PGRequests.events({
     'click button': function(e, template) {
-        console.log('button clicked');
         updateRequests();
     }
 });

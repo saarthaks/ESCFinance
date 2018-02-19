@@ -16,11 +16,11 @@ echo "Finished moving current build"
 
 echo "Deleting current build files from /build/bundle..."
 cd ~/Projects/build/bundle
-rm README
-rm main.js
+rm -f README
+rm -f main.js
 rm -rf programs
 rm -rf server
-rm star.json
+rm -f star.json
 echo "Finished deleting current build files"
 
 cd ~/Projects

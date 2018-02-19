@@ -47,15 +47,11 @@ Template.PGBudgetEntry.events({
         }
     },
     'change div.ui.selection.dropdown.fluid': function(e, template) {
-        console.log('changed');
         const editId = $(e.target).attr('id');
-        console.log(editId);
         const dropdownId = Template.instance().data['id'] + "-status";
-        console.log(dropdownId);
         if (editId === dropdownId) {
             const inputId = Template.instance().data['id'] + "-input";
             const newStatus = $('input[name="' + inputId +'"]').val();
-            console.log(newStatus);
             const teamID = Meteor.userId();
             const budgetEntry = PGBudgets.find({ 'teamID': teamID }).fetch()[0];
             var budget = budgetEntry['monthlyBudget'];
