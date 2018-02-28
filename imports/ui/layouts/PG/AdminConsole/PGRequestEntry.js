@@ -85,6 +85,30 @@ Template.PGRequestEntry.events({
     'click tr.entry': function(e, template) {
         Template.instance().isViewing.set(!Template.instance().isViewing.get());
     },
+    'click button.cancel': function(e, template) {
+        e.preventDefault();
+        const team = Meteor.users.findOne({"username": Template.instance().data.team});
+        const budgetEntry = PGBudgets.find({ 'teamID': team._id }).fetch()[0];
+        var monthBudget = budgetEntry['monthlyBudget'];
+        const budget = monthBudget[Template.instance().data.month];
+        for (i = 0; i < budget.length; i++) {
+            if (budget[i].itemName === Template.instance().data.item) {
+                budget[i].status = 5;
+                break;
+            }
+        }
+        monthBudget[Template.instance().data.month] = budget;
+
+        const budgetUpdate = {
+            "monthlyBudget": monthBudget,
+        };
+
+        Meteor.call('pg-budgets.update', budgetEntry._id, budgetUpdate);
+
+        Meteor.call('pg-requests.remove', Template.instance().data.team, Template.instance().data.link);
+        Session.set('shouldUpdate', true);
+        Template.instance().isViewing.set(false);
+    },
     'submit form': function(e, template) {
         e.preventDefault();
         const idtag = ".ui.form#" + Template.instance().data.team + "-" + Template.instance().data.id + "-form"

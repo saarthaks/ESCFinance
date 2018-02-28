@@ -20,7 +20,8 @@ const ITEM_STATUS = {
     1 : "Pending",
     2 : "Requested",
     3 : "Ordered",
-    4 : "Arrived"
+    4 : "Arrived",
+    5 : "Cancelled"
 };
 
 Template.PGReview.onCreated( function() {

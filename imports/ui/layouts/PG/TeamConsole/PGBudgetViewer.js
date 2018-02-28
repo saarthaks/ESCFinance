@@ -303,7 +303,11 @@ Template.PGBudgetViewer.helpers({
             const budget = Object.values(monthlyBudget);
             for (i = 0; i < budget.length; i++) {
                 total = total + budget[i].reduce((acc, entry) => {
-                    return acc + entry['cost'];
+                    if (entry['status'] != 5) {
+                        return acc + entry['cost'];
+                    } else {
+                        return acc;
+                    }
                 }, 0);
             }
         }
