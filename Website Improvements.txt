@@ -1,0 +1,18 @@
+Project Grants
+ - truncate all displayed numbers
+ - request-pane list, add column for date applied, sort by column
+ - require a fb link for submitting updates
+ - email when a group submits a order request
+ - reliable emailing from website
+ - require shipping address to submit an order request
+ - keep tables inside box for request-pane and budget-pane
+ - export a csv file of purchases per group
+ - way to disable application forms
+
+JCCC
+ - make constitution dynamic
+ - viewer-pane: add date applied
+
+Dynamic pages solution:
+ - Data-loader standard
+	* required for following pages: /, /jccc/about, /jccc/constition

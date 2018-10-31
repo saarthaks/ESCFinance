@@ -1,4 +1,5 @@
 node_modules/
 private/
 *.swp
+/lib/constants.js
 notes.txt
