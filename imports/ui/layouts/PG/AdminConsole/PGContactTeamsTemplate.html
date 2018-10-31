@@ -1,0 +1,29 @@
+<template name="PGContactTeams">
+    <div class="ui header">Contact Teams</div>
+    <form class="ui form segment" id="contact-form">
+        <div class="field">
+            <label>Recipient(s)</label>
+            <div class="ui multiple selection scrolling dropdown" id="recip-drop">
+                <div class="default text">Choose at least 1</div>
+                <i class="dropdown icon"></i>
+                <input type="hidden" name="recipSelection">
+                <div class="menu">
+                    {{#each teams}}
+                        <div class="item" data-value="{{primaryEmail}}">{{username}}</div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label>Subject</label>
+            <div class="ui input">
+                <input type="text" name="emailSubject">
+            </div>
+        </div>
+        <div class="field">
+            <label>Body</label>
+            <textarea name="emailBody"></textarea>
+        </div>
+        <button type="submit" id="submit-email" class="ui submit button">Send</button>
+    </form>
+</template>

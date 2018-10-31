@@ -22,3 +22,7 @@ h1.ui.header.main {
 .ui.container.primary {
     margin-top: 20px;
 }
+
+.ui.row.input {
+    margin: 3px 3px 3px 3px;
+}
